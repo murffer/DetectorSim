@@ -42,7 +42,6 @@
 
 class G4LogicalVolume;
 class G4Material;
-class G4UniformMagField;
 class DetectorMessenger;
 class Materials;
 
@@ -61,7 +60,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
 		void SetSize     (G4double);              
 		void SetMaterial (G4String);            
-		void SetMagField (G4double);
 
 		void UpdateGeometry();
 
@@ -82,7 +80,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
 		G4double              fBoxSize;
 		G4Material*           fMaterial;     
-		G4UniformMagField*    fMagField;
 
 		DetectorMessenger* fDetectorMessenger;
 		Materials* materials;

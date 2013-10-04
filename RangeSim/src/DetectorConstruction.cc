@@ -57,7 +57,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 DetectorConstruction::DetectorConstruction()
-:fPBox(0), fLBox(0), fMaterial(0), fMagField(0)
+:fPBox(0), fLBox(0), fMaterial(0)
 {
   fBoxSize = 10*m;
   // Creating Detector Materials
@@ -141,31 +141,6 @@ void DetectorConstruction::SetSize(G4double value)
   fBoxSize = value;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-#include "G4FieldManager.hh"
-#include "G4TransportationManager.hh"
-
-void DetectorConstruction::SetMagField(G4double fieldValue)
-{
-  //apply a global uniform magnetic field along Z axis
-  G4FieldManager* fieldMgr
-   = G4TransportationManager::GetTransportationManager()->GetFieldManager();
-
-  if (fMagField) delete fMagField;        //delete the existing magn field
-
-  if (fieldValue!=0.)                        // create a new one if non nul
-    {
-      fMagField = new G4UniformMagField(G4ThreeVector(0.,0.,fieldValue));
-      fieldMgr->SetDetectorField(fMagField);
-      fieldMgr->CreateChordFinder(fMagField);
-    }
-   else
-    {
-      fMagField = 0;
-      fieldMgr->SetDetectorField(fMagField);
-    }
-}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
