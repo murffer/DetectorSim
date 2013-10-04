@@ -44,51 +44,53 @@ class G4LogicalVolume;
 class G4Material;
 class G4UniformMagField;
 class DetectorMessenger;
+class Materials;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
-  public:
-  
-    DetectorConstruction();
-   ~DetectorConstruction();
+	public:
 
-  public:
-  
-     virtual G4VPhysicalVolume* Construct();
-     
-     void SetSize     (G4double);              
-     void SetMaterial (G4String);            
-     void SetMagField (G4double);
+		DetectorConstruction();
+		~DetectorConstruction();
 
-     void UpdateGeometry();
-     
-  public:
-  
-     const
-     G4VPhysicalVolume* GetWorld()      {return fPBox;};           
-                    
-     G4double           GetSize()       {return fBoxSize;};      
-     G4Material*        GetMaterial()   {return fMaterial;};
-     
-     void               PrintParameters();
-                       
-  private:
-  
-     G4VPhysicalVolume*    fPBox;
-     G4LogicalVolume*      fLBox;
-     
-     G4double              fBoxSize;
-     G4Material*           fMaterial;     
-     G4UniformMagField*    fMagField;
-     
-     DetectorMessenger* fDetectorMessenger;
+	public:
 
-  private:
-    
-     void               DefineMaterials();
-     G4VPhysicalVolume* ConstructVolumes();     
+		virtual G4VPhysicalVolume* Construct();
+
+		void SetSize     (G4double);              
+		void SetMaterial (G4String);            
+		void SetMagField (G4double);
+
+		void UpdateGeometry();
+
+	public:
+
+		const
+			G4VPhysicalVolume* GetWorld()      {return fPBox;};           
+
+		G4double           GetSize()       {return fBoxSize;};      
+		G4Material*        GetMaterial()   {return fMaterial;};
+
+		void               PrintParameters();
+
+	private:
+
+		G4VPhysicalVolume*    fPBox;
+		G4LogicalVolume*      fLBox;
+
+		G4double              fBoxSize;
+		G4Material*           fMaterial;     
+		G4UniformMagField*    fMagField;
+
+		DetectorMessenger* fDetectorMessenger;
+		Materials* materials;
+
+	private:
+
+		void               DefineMaterials();
+		G4VPhysicalVolume* ConstructVolumes();     
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

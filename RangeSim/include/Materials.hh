@@ -21,13 +21,6 @@ class Materials{
     // Methods
     Materials();
     void CreateMaterials();
-    void SetOpticalPropertiesTeflon();
-    void SetOpticalPropertiesGS20();
-    void SetOpticalPropertiesBK7();
-    void SetOpticalPropertiesSilicone();
-    void SetOpticalPropertiesAir();
-    void SetOpticalPropertiesPMMA();
-    void SetOpticalPropertiesEJ426();
 
     // Fields
     static Materials* instance;   /* Materials Instance         */
