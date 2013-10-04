@@ -125,7 +125,7 @@ void DetectorConstruction::PrintParameters()
 void DetectorConstruction::SetMaterial(G4String materialChoice)
 {
   // search the material by its name
-  G4Material* pttoMaterial = G4Material::GetMaterial(name,true);
+  G4Material* pttoMaterial = materials->GetMaterial(materialChoice);
   
   if (pttoMaterial) { fMaterial = pttoMaterial;
     } else {
