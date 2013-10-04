@@ -1,11 +1,13 @@
 The setup of Geant4 MPI on the necluster is explained.
-
---------
-	ERROR: currently these instructions work for compiling but fail to work for the actually running of an example!
---------
+-------------
+The latest version of GEANT4 on the cluster has the G4MPI install as root, and these instructions are not necessary.
+-------------
 
 Build Instructions
 ==================
+--------
+	ERROR: currently these instructions work for compiling but fail to work for the actually running of an example!
+--------
 
 	The G4 MPI libary chosen was the [/extended/parallel/MPI](http://geant4.web.cern.ch/geant4/UserDocumentation/Doxygen/examples_doc/html/Examples_MPI.html) by Koichi Murakami. This was chosen because it does not require the dependances (TOP-c) of the other dependacies.
 
