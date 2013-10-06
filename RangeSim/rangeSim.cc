@@ -39,12 +39,10 @@
 #include "DetectorConstruction.hh"
 #include "PhysicsList.hh"
 #include "PrimaryGeneratorAction.hh"
-#include "SteppingVerbose.hh"
 
 #include "RunAction.hh"
 #include "EventAction.hh"
 #include "TrackingAction.hh"
-#include "SteppingAction.hh"
 #include "StackingAction.hh"
 
 #ifdef G4VIS_USE
@@ -61,9 +59,6 @@ int main(int argc,char** argv) {
  
   //choose the Random engine
   CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine);
-  
-  //my Verbose output class
-  G4VSteppingVerbose::SetInstance(new SteppingVerbose);
     
   // Construct the default run manager
   G4RunManager * runManager = new G4RunManager;
@@ -82,7 +77,6 @@ int main(int argc,char** argv) {
   runManager->SetUserAction(run = new RunAction(det,prim)); 
   runManager->SetUserAction(event = new EventAction());
   runManager->SetUserAction(new TrackingAction(prim,run));
-  runManager->SetUserAction(new SteppingAction(run,event));
   runManager->SetUserAction(new StackingAction());
      
   // get the pointer to the User Interface manager 
