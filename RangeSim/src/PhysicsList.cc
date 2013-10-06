@@ -3,6 +3,7 @@
 #include "G4EmStandardPhysics.hh"
 #include "G4EmStandardPhysics_option4.hh"
 #include "HadronPhysicsQGSP_BERT_HP.hh"
+#include "G4IonPhysics.hh"
 /**
  * PhysicsList
  *
@@ -13,13 +14,14 @@
  *  - EM Standard Physics
  */
 PhysicsList::PhysicsList() : G4VModularPhysicsList() {
-    currentDefaultCut   = 10*nm;
+    currentDefaultCut   = 1*um;
 
     // SetVerboseLevel(1);
 
     // Adding Physics List
     RegisterPhysics( new HadronPhysicsQGSP_BERT_HP());
     RegisterPhysics( new G4EmStandardPhysics_option4());
+    RegisterPhysics( new G4IonPhysics());
 }
 
 /**
