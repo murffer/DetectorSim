@@ -13,6 +13,7 @@
 #include "RunAction.hh"
 #include "EventAction.hh"
 #include "TrackingAction.hh"
+#include "SteppingAction.hh"
 #include "StackingAction.hh"
 
 #ifdef G4VIS_USE
@@ -47,6 +48,7 @@ int main(int argc,char** argv) {
   runManager->SetUserAction(run = new RunAction(det,prim)); 
   runManager->SetUserAction(event = new EventAction());
   runManager->SetUserAction(new TrackingAction(prim,run));
+  runManager->SetUserAction(new SteppingAction(run,event));
   runManager->SetUserAction(new StackingAction());
      
   // get the pointer to the User Interface manager 
