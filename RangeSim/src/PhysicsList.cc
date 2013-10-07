@@ -5,9 +5,6 @@
 #include "PhysicsList.hh"
 #include "PhysicsListMessenger.hh"
  
-#include "PhysListEmStandard.hh"
-#include "PhysListEmStandardSS.hh"
-
 #include "G4EmStandardPhysics.hh"
 #include "G4EmStandardPhysics_option1.hh"
 #include "G4EmStandardPhysics_option2.hh"
@@ -40,8 +37,8 @@ PhysicsList::PhysicsList(DetectorConstruction* p)
   SetVerboseLevel(1);
 
   // EM physics
-  fEmName = G4String("local");
-  fEmPhysicsList = new PhysListEmStandard(fEmName);
+  fEmName = G4String("emlivermore");
+  fEmPhysicsList =  new G4EmLivermorePhysics();
 
 }
 
@@ -188,13 +185,8 @@ void PhysicsList::AddPhysicsList(const G4String& name)
   
   if (name == fEmName) return;
 
-  if (name == "local") {
-
-    fEmName = name;
-    delete fEmPhysicsList;
-    fEmPhysicsList = new PhysListEmStandard(name);
     
-  } else if (name == "emstandard_opt0") {
+  if (name == "emstandard_opt0") {
 
     fEmName = name;
     delete fEmPhysicsList;
@@ -223,12 +215,6 @@ void PhysicsList::AddPhysicsList(const G4String& name)
     fEmName = name;
     delete fEmPhysicsList;
     fEmPhysicsList = new G4EmStandardPhysics_option4();
-        
-  } else if (name == "standardSS") {
-
-    fEmName = name;
-    delete fEmPhysicsList;
-    fEmPhysicsList = new PhysListEmStandardSS(name);
     
   } else if (name == "emlivermore") {
     fEmName = name;
