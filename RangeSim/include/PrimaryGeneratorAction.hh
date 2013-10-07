@@ -13,6 +13,8 @@ public:
   PrimaryGeneratorAction();    
   virtual ~PrimaryGeneratorAction();
   virtual void GeneratePrimaries(G4Event* event);
+  
+  G4GeneralParticleSource* GetParticleGun() {return fParticleGun;}
 
 private:
   G4GeneralParticleSource*  fParticleGun; // G4 particle gun

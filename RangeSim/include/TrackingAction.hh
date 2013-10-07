@@ -5,7 +5,7 @@
 
 class PrimaryGeneratorAction;
 class RunAction;
-
+class G4GeneralParticleSource;
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class TrackingAction : public G4UserTrackingAction {
