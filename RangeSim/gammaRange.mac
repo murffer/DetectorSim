@@ -6,25 +6,21 @@
 /control/verbose 2
 /run/verbose 2
 #
-/testem/det/setMat G4_Al 
+/testem/det/setMat G4_POLYSTYRENE 
 /testem/det/setSize 10 m
 #
 /run/initialize
 #
 /control/execute co60Source.mac
 #
-/analysis/h1/set 1 100 0   50 cm        #track length of primary
-/analysis/h1/set 2 100 0  300 none      #nb steps of primary
-/analysis/h1/set 3 200 0   20 mm        #step size of primary
+/analysis/h1/set 1 100 0  250 cm        #track length of primary
+/analysis/h1/set 2 100 0  50 none      #nb steps of primary
+/analysis/h1/set 3 200 0  50  cm        #step size of primary
 /analysis/h1/set 4 100 0  1.5 MeV       #total energy deposit
 /analysis/h1/set 5 100 0   1.5 MeV      #sec. chared energy spectrum
 /analysis/h1/set 6 100 0   1.5 MeV      #sec. neutral energy spectrum
 /analysis/h1/setAscii 1  
 #
-/analysis/setFileName run0 
-/run/beamOn 2000
+/analysis/setFileName co60Range
+/run/beamOn 100000
 #
-/process/eLoss/verbose 0
-#
-/analysis/setFileName run1
-/run/beamOn 2000
