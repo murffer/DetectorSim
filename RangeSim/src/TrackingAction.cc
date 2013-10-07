@@ -4,7 +4,7 @@
 #include "HistoManager.hh"
 
 #include "G4Track.hh"
-
+#include "G4GeneralParticleSource.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 TrackingAction::TrackingAction(PrimaryGeneratorAction* prim, RunAction* run)

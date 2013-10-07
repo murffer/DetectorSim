@@ -4,6 +4,7 @@
 #include "HistoManager.hh"
 
 #include "G4Run.hh"
+#include "G4GeneralParticleSource.hh"
 #include "G4RunManager.hh"
 #include "G4UnitsTable.hh"
 #include "G4EmCalculator.hh"

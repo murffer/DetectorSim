@@ -8,7 +8,7 @@ project(rangeSim)
 # You can set WITH_GEANT4_UIVIS to OFF via the command line or ccmake/cmake-gui
 # to build a batch mode only executable
 #
-set(Geant4_DIR "/opt/geant4/geant4-9.6.2/lib64/Geant4-9.6.2/")
+set(Geant4_DIR $ENV{G4INSTALL_CMAKE})
 option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
 if(WITH_GEANT4_UIVIS)
   find_package(Geant4 REQUIRED ui_all vis_all)
@@ -41,7 +41,7 @@ target_link_libraries(rangeSim ${Geant4_LIBRARIES} )
 # relies on these scripts being in the current working directory.
 #
 set(rangeSim_SCRIPTS
-    erange.mac photon.mac range.mac runs.mac vis.mac
+    erange.mac photon.mac range.mac runs.mac vis.mac co60Source.mac gammaRange.mac beamSource.mac rxnProductRange.mac
   )
 
 foreach(_script ${rangeSim_SCRIPTS})

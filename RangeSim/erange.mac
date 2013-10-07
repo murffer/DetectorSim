@@ -7,30 +7,62 @@
 /control/verbose 2
 /run/verbose 2
 #
-/testem/det/setMat G4_WATER
+/testem/det/setMat G4_POLYSTYRENE 
 #
-/testem/phys/addPhysics  local
+#/testem/phys/addPhysics  local
 ###/testem/phys/addPhysics  empenelope
-###/testem/phys/addPhysics  emlivermore
+#/testem/phys/addPhysics  emlivermore
 #
 /run/initialize
 #
-# csda condition
-/testem/phys/setCuts 1 km
+# 1 MeV
 #
-# no step limitation from eLoss
-/process/eLoss/StepFunction 1 100 um
+/gps/particle e-
+/control/execute beamSource.mac
+/gps/ene/mono 1 MeV
 #
-# eliminate straggling
-/process/eLoss/fluct false
-/process/inactivate msc
+/analysis/h1/set 1 100 0  7.5 mm        #track length of primary
+/analysis/h1/set 2 100 0  25 none      #nb steps of primary
+/analysis/h1/set 3 200 0  1 mm       #step size of primary
+/analysis/h1/set 4 100 0.5  1.5 MeV      #total energy deposit
+/analysis/h1/set 5 100 0   1 MeV      #sec. chared energy spectrum
+/analysis/h1/set 6 100 0   1 MeV      #sec. neutral energy spectrum
 #
-/testem/gun/setDefault
-/gun/particle e-
-/gun/energy 100 keV
+/analysis/setFileName 1000KeVElectronRange
+/run/beamOn 100000
 #
-/tracking/verbose 1
-/run/beamOn 5
+#
+# 100 keV
+#
+/gps/particle e-
+/control/execute beamSource.mac
+/gps/ene/mono 100 keV
+#
+/analysis/h1/set 1 100 0  250 um        #track length of primary
+/analysis/h1/set 2 100 0  5 none       #nb steps of primary
+/analysis/h1/set 3 200 0  150  um       #step size of primary
+/analysis/h1/set 4 100 75  125 keV      #total energy deposit
+/analysis/h1/set 5 100 0   50 keV      #sec. chared energy spectrum
+/analysis/h1/set 6 100 0   50 keV      #sec. neutral energy spectrum
+#
+/analysis/setFileName 100KeVElectronRange
+/run/beamOn 100000
+#
+# 10 keV
+#
+/gps/particle e-
+/control/execute beamSource.mac
+/gps/ene/mono 10 keV
+#
+/analysis/h1/set 1 100 0  5 um        #track length of primary
+/analysis/h1/set 2 100 0  5 none      #nb steps of primary
+/analysis/h1/set 3 200 0  5  um       #step size of primary
+/analysis/h1/set 4 100 5  15 keV      #total energy deposit
+/analysis/h1/set 5 100 0   10 keV      #sec. chared energy spectrum
+/analysis/h1/set 6 100 0   10 keV      #sec. neutral energy spectrum
+#
+/analysis/setFileName 10KeVElectronRange
+/run/beamOn 100000
 #
 ###/analysis/setFileName std.1km
 ###/analysis/h1/set 1 200 0 2000 um		# csda range
