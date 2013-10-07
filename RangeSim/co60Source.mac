@@ -1,0 +1,34 @@
+# 1D Co60 beam incident upon a surface of radius 3 mm in the y-z plane
+# at the origin.  Beam is traveling along the x-axis
+#
+/gps/source/intensity 1.
+/gps/particle gamma
+/gps/pos/type Beam
+/gps/pos/rot1 0 1 0
+/gps/pos/rot2 0 0 1
+/gps/pos/shape Circle 
+/gps/pos/centre 0. 0. 0. mm
+/gps/pos/radius 3. mm
+/gps/ang/rot1 0 0 1
+/gps/ang/rot2 0 1 0
+/gps/ang/type beam1d  
+/gps/ene/type Mono
+/gps/ene/mono 1.3325 MeV
+
+# beam #2
+/gps/source/add 1.
+/gps/particle gamma
+/gps/pos/type Beam
+/gps/pos/shape Circle 
+/gps/pos/rot1 0 1 0
+/gps/pos/rot2 0 0 1
+/gps/pos/shape Circle 
+/gps/pos/centre 0. 0. 0. mm
+/gps/pos/radius 3. mm
+/gps/pos/sigma_r .0 mm
+/gps/ang/rot1 0 0 1
+/gps/ang/rot2 0 1 0
+/gps/ang/type beam1d  
+# Energy
+/gps/ene/type Mono
+/gps/energy 1.1732 MeV
