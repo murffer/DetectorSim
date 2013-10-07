@@ -8,7 +8,7 @@ project(rangeSim)
 # You can set WITH_GEANT4_UIVIS to OFF via the command line or ccmake/cmake-gui
 # to build a batch mode only executable
 #
-set(Geant4_DIR "/opt/geant4/geant4-9.6.2/lib64/Geant4-9.6.2/")
+set(Geant4_DIR $ENV{G4INSTALL_CMAKE})
 option(WITH_GEANT4_UIVIS "Build example with Geant4 UI and Vis drivers" ON)
 if(WITH_GEANT4_UIVIS)
   find_package(Geant4 REQUIRED ui_all vis_all)
