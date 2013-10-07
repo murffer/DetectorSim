@@ -37,7 +37,7 @@ int main(int argc,char** argv) {
   DetectorConstruction* det;
   PrimaryGeneratorAction* prim;
   runManager->SetUserInitialization(det = new DetectorConstruction);
-  runManager->SetUserInitialization(new PhysicsList());
+  runManager->SetUserInitialization(new PhysicsList(det));
   runManager->SetUserAction(prim = new PrimaryGeneratorAction(det));
       
   // set user action classes

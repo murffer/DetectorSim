@@ -30,6 +30,7 @@ class PhysicsList: public G4VModularPhysicsList
     
     void AddDecay();
     void AddRadioactiveDecay();
+    void AddStepMax();
 
     virtual void SetCuts();
     void SetCutForGamma(G4double);

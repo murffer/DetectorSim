@@ -176,6 +176,9 @@ void PhysicsList::ConstructProcess()
   //
   AddRadioactiveDecay();  
 
+  // step limitation (as a full process)
+  //  
+  AddStepMax();    
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -291,6 +294,26 @@ void PhysicsList::AddRadioactiveDecay()
   ph->RegisterProcess(radioactiveDecay, G4GenericIon::GenericIon());
 }
 
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+#include "StepMax.hh"
+
+void PhysicsList::AddStepMax()
+{
+  // Step limitation seen as a process
+  StepMax* stepMaxProcess = new StepMax();
+
+  theParticleIterator->reset();
+  while ((*theParticleIterator)()){
+      G4ParticleDefinition* particle = theParticleIterator->value();
+      G4ProcessManager* pmanager = particle->GetProcessManager();
+
+      if (stepMaxProcess->IsApplicable(*particle))
+        {
+          pmanager ->AddDiscreteProcess(stepMaxProcess);
+        }
+  }
+}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
