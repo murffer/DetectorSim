@@ -41,7 +41,7 @@ target_link_libraries(rangeSim ${Geant4_LIBRARIES} )
 # relies on these scripts being in the current working directory.
 #
 set(rangeSim_SCRIPTS
-    erange.mac runs.mac vis.mac co60Source.mac gammaRange.mac beamSource.mac rxnProductRange.mac ChargedParticleSecondaryEnergy.C
+    erange.mac vis.mac co60Source.mac gammaRange.mac beamSource.mac rxnProductRange.mac ChargedParticleSecondaryEnergy.C
   )
 
 foreach(_script ${rangeSim_SCRIPTS})
