@@ -12,23 +12,31 @@
 #include "Randomize.hh"
 #include <iomanip>
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * User hook into the run of the GEANT4 simulation, mostly for obtaining
+ * analysis.
+ * 
+ * @param det - the geometry of the simulation
+ * @param kin - primary generator of this simulation
+ */
 RunAction::RunAction(DetectorConstruction* det, PrimaryGeneratorAction* kin)
 :fDetector(det), fPrimary(kin)
 { 
  fHistoManager = new HistoManager();
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 RunAction::~RunAction()
 {
  delete fHistoManager;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Preforms the intilization of the run by setting the number of tracks, 
+ * secondaries, and ranges
+ *
+ * @param aRun - the run object
+ */
 void RunAction::BeginOfRunAction(const G4Run* aRun)
 {  
   G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
@@ -51,8 +59,11 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
   }   
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Summerizes the run and prints the output along with saving the histograms
+ *
+ * @param aRun - the run object
+ */
 void RunAction::EndOfRunAction(const G4Run* aRun)
 { 
   G4int NbOfEvents = aRun->GetNumberOfEvent();
@@ -161,5 +172,3 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
   // show Rndm status
   CLHEP::HepRandom::showEngineStatus(); 
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
