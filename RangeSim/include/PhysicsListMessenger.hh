@@ -29,6 +29,8 @@ class PhysicsListMessenger: public G4UImessenger
     
     G4UIdirectory*             fPhysDir;
     G4UIcmdWithADoubleAndUnit* fGammaCutCmd;
+    G4UIcmdWithADoubleAndUnit* fAlphaCutCmd;
+    G4UIcmdWithADoubleAndUnit* fTritonCutCmd;
     G4UIcmdWithADoubleAndUnit* fElectCutCmd;
     G4UIcmdWithADoubleAndUnit* fProtoCutCmd;    
     G4UIcmdWithADoubleAndUnit* fAllCutCmd;

@@ -13,6 +13,8 @@
 #
 /run/initialize
 /testem/phys/setECut  10 nm
+/testem/phys/setACut  1 um
+/testem/phys/setTCut  1 um
 #
 # 2.05  MeV alpha
 #

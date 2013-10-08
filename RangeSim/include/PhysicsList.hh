@@ -26,12 +26,16 @@ class PhysicsList: public G4VModularPhysicsList
     void SetCutForGamma(G4double);
     void SetCutForElectron(G4double);
     void SetCutForPositron(G4double);
+    void SetCutForAlpha(G4double);
+    void SetCutForTriton(G4double);
     void GetRange(G4double);
       
   private:
-    G4double fCutForGamma;        /* Default gamma cut    */
-    G4double fCutForElectron;     /* Default electron cut */
-    G4double fCutForPositron;     /* Default positron cut */
+    G4double fCutForGamma;        /** Default gamma cut    */
+    G4double fCutForElectron;     /** Default electron cut */
+    G4double fCutForPositron;     /** Default positron cut */
+    G4double fCutForAlpha;        /** Defualt alpha cut    */
+    G4double fCutForTriton;       /** Default triton cut   */
     G4double fCurrentDefaultCut;  /* Default cut for all particles  */
     
     G4VPhysicsConstructor* fEmPhysicsList;  /* Default physics list       */
