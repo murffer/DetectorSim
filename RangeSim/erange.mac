@@ -1,17 +1,12 @@
-# $Id: erange.mac,v 1.2 2009-09-15 12:51:49 maire Exp $
 #
-# Macro file for "TestEm1.cc"
+# Macro file for "rangeSim.cc"
 # 
 # compute the csda range of primary particle
 #
-/control/verbose 2
-/run/verbose 2
+/control/verbose 0
+/run/verbose 0
 #
 /testem/det/setMat G4_POLYSTYRENE 
-#
-#/testem/phys/addPhysics  local
-###/testem/phys/addPhysics  empenelope
-#/testem/phys/addPhysics  emlivermore
 #
 /run/initialize
 #
@@ -64,8 +59,3 @@
 /analysis/setFileName 10KeVElectronRange
 /run/beamOn 100000
 #
-###/analysis/setFileName std.1km
-###/analysis/h1/set 1 200 0 2000 um		# csda range
-###/analysis/h1/set 1 250 0 5000 um
-#
-###/run/beamOn 20000
