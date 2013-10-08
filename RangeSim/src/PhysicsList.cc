@@ -1,13 +1,11 @@
-//
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Sets the physics list of the simulation
+ *
+ * The physics list are electromagnetic based, using the G4 Kernal defaults
+ */
 #include "PhysicsList.hh"
 #include "PhysicsListMessenger.hh"
  
-#include "PhysListEmStandard.hh"
-#include "PhysListEmStandardSS.hh"
-
 #include "G4EmStandardPhysics.hh"
 #include "G4EmStandardPhysics_option1.hh"
 #include "G4EmStandardPhysics_option2.hh"
@@ -22,37 +20,41 @@
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Creates the default PhysicsList. The default list is the Livermore physics.
+ *
+ * @param p - the detector construction
+ *
+ */
 PhysicsList::PhysicsList(DetectorConstruction* p) 
 : G4VModularPhysicsList()
 {
   G4LossTableManager::Instance();
   fDet = p;
   
-  fCurrentDefaultCut   = 1.0*mm;
-  fCutForGamma         = fCurrentDefaultCut;
-  fCutForElectron      = fCurrentDefaultCut;
-  fCutForPositron      = fCurrentDefaultCut;
+  fCurrentDefaultCut   = 1.0*mm;              /* The default range cut  */
+  fCutForGamma         = fCurrentDefaultCut;  /* Default gamma cut      */
+  fCutForElectron      = fCurrentDefaultCut;  /* Default electron cut   */
+  fCutForPositron      = fCurrentDefaultCut;  /* Default positron cut   */
 
-  fMessenger = new PhysicsListMessenger(this);
+  fMessenger = new PhysicsListMessenger(this);  /* Physics List Messenger   */
 
   SetVerboseLevel(1);
 
   // EM physics
-  fEmName = G4String("local");
-  fEmPhysicsList = new PhysListEmStandard(fEmName);
+  fEmName = G4String("emlivermore");
+  fEmPhysicsList =  new G4EmLivermorePhysics();
 
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Deconstructor
+ */
 PhysicsList::~PhysicsList()
 {
   delete fMessenger;
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 // Bosons
 #include "G4ChargedGeantino.hh"
@@ -97,8 +99,13 @@ PhysicsList::~PhysicsList()
 #include "G4Alpha.hh"
 #include "G4GenericIon.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Constructs the particles
+ *
+ * Particles are: bosons, leptons, mesons, bayrons, and nuclei. The bosons are 
+ * for the gammas, the leptons for the electrons, the bayrons for protons and 
+ * neturons, and the nuclei for the triton and alpha.
+ */
 void PhysicsList::ConstructParticle()
 {
 // pseudo-particles
@@ -148,10 +155,10 @@ void PhysicsList::ConstructParticle()
   G4GenericIon::GenericIonDefinition();
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Adds Processes to the particles
+ */
 #include "G4EmProcessOptions.hh"
-
 void PhysicsList::ConstructProcess()
 {
   // Transportation
@@ -178,8 +185,11 @@ void PhysicsList::ConstructProcess()
 
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Adds a physics list to the default
+ *
+ * @param name - name of the physics list
+ */
 void PhysicsList::AddPhysicsList(const G4String& name)
 {
   if (verboseLevel>1) {
@@ -188,13 +198,8 @@ void PhysicsList::AddPhysicsList(const G4String& name)
   
   if (name == fEmName) return;
 
-  if (name == "local") {
-
-    fEmName = name;
-    delete fEmPhysicsList;
-    fEmPhysicsList = new PhysListEmStandard(name);
     
-  } else if (name == "emstandard_opt0") {
+  if (name == "emstandard_opt0") {
 
     fEmName = name;
     delete fEmPhysicsList;
@@ -223,12 +228,6 @@ void PhysicsList::AddPhysicsList(const G4String& name)
     fEmName = name;
     delete fEmPhysicsList;
     fEmPhysicsList = new G4EmStandardPhysics_option4();
-        
-  } else if (name == "standardSS") {
-
-    fEmName = name;
-    delete fEmPhysicsList;
-    fEmPhysicsList = new PhysListEmStandardSS(name);
     
   } else if (name == "emlivermore") {
     fEmName = name;
@@ -247,11 +246,11 @@ void PhysicsList::AddPhysicsList(const G4String& name)
            << G4endl;
   }
 }
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Sets up the decay process
+ */
 #include "G4ProcessManager.hh"
 #include "G4Decay.hh"
-
 void PhysicsList::AddDecay()
 { 
   // Decay Process
@@ -275,11 +274,11 @@ void PhysicsList::AddDecay()
   }
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Sets up the radioactive decay
+ */
 #include "G4PhysicsListHelper.hh"
 #include "G4RadioactiveDecay.hh"
-
 void PhysicsList::AddRadioactiveDecay()
 {  
   G4RadioactiveDecay* radioactiveDecay = new G4RadioactiveDecay();
@@ -292,12 +291,12 @@ void PhysicsList::AddRadioactiveDecay()
 }
 
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Sets the default cuts for gamma, electrons, and positrons
+ */
 #include "G4Gamma.hh"
 #include "G4Electron.hh"
 #include "G4Positron.hh"
-
 void PhysicsList::SetCuts()
 {
   if (verboseLevel >0) {
@@ -313,35 +312,43 @@ void PhysicsList::SetCuts()
 
   if (verboseLevel>0) DumpCutValuesTable();
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Sets the gamma cuts
+ *
+ * @param cut - the range for the cut
+ */
 void PhysicsList::SetCutForGamma(G4double cut)
 {
   fCutForGamma = cut;
   SetParticleCuts(fCutForGamma, G4Gamma::Gamma());
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Sets the electron cuts
+ *
+ * @param cut - the range for the cut
+ */
 void PhysicsList::SetCutForElectron(G4double cut)
 {
   fCutForElectron = cut;
   SetParticleCuts(fCutForElectron, G4Electron::Electron());
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Sets the positron cuts
+ *
+ * @param cut - the range for the cut
+ */
 void PhysicsList::SetCutForPositron(G4double cut)
 {
   fCutForPositron = cut;
   SetParticleCuts(fCutForPositron, G4Positron::Positron());
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Computes the CSDA range for electrons
+ *
+ * @param val - energy of the electron
+ */
 #include "G4Material.hh"
-
 void PhysicsList::GetRange(G4double val)
 {
   G4LogicalVolume* lBox = fDet->GetWorld()->GetLogicalVolume();
@@ -358,7 +365,3 @@ void PhysicsList::GetRange(G4double val)
   G4cout << "energy   : " << G4BestUnit(val,"Energy") << G4endl;
   G4cout << "range    : " << G4BestUnit(cut,"Length") << G4endl;
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-

@@ -1,29 +1,30 @@
-
 #include "HistoManager.hh"
 #include "G4UnitsTable.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-HistoManager::HistoManager()
-  : fFileName("testem1")
+/**
+ * Creates a Histogram manger with the default name
+ */
+HistoManager::HistoManager(): fFileName("rangeSim")
 {
   Book();
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Deconstructor
+ */
 HistoManager::~HistoManager()
 {
   delete G4AnalysisManager::Instance();
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Sets up the histograms
+ *
+ * The histograms are inactived as the number of bins and the range of the
+ * histograms have not been set.  The type of analysis is done by the selection
+ * of the namespace in HistoManger.hh
+ */
 void HistoManager::Book()
 {
   // Create or get analysis manager
-  // The choice of analysis technology is done via selection of a namespace
-  // in HistoManager.hh
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   analysisManager->SetFileName(fFileName);
   analysisManager->SetVerboseLevel(1);
@@ -39,7 +40,7 @@ void HistoManager::Book()
                   "step size of primary particle",               //3
                   "total energy deposit",                        //4
                   "energy of charged secondaries at creation",   //5
-                  "energy of neutral secondaries at creation"    //6                  
+                  "energy of neutral secondaries at creation"    //6
                  };
   // Default values (to be reset via /analysis/h1/set command)               
   G4int nbins = 100;
@@ -47,11 +48,8 @@ void HistoManager::Book()
   G4double vmax = 100.;
 
   // Create all histograms as inactivated 
-  // as we have not yet set nbins, vmin, vmax
   for (G4int k=0; k<kMaxHisto; k++) {
     G4int ih = analysisManager->CreateH1(id[k], title[k], nbins, vmin, vmax);
     analysisManager->SetActivation(G4VAnalysisManager::kH1, ih, false);
   }
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

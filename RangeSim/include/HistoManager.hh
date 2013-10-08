@@ -1,4 +1,3 @@
-
 #ifndef HistoManager_h
 #define HistoManager_h 1
 
@@ -6,9 +5,7 @@
 
 #include "g4root.hh"
 //#include "g4xml.hh"
-////#include "g4hbook.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class HistoManager
 {
@@ -18,10 +15,7 @@ class HistoManager
 
   private:
     void Book();
-    G4String fFileName;
+    G4String fFileName;   /** Default filename */
 };
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #endif
 

@@ -6,22 +6,18 @@
 class PrimaryGeneratorAction;
 class RunAction;
 class G4GeneralParticleSource;
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class TrackingAction : public G4UserTrackingAction {
 
   public:  
     TrackingAction(PrimaryGeneratorAction*, RunAction*);
-   ~TrackingAction() {};
-   
+    ~TrackingAction() {};
+
     virtual void  PreUserTrackingAction(const G4Track*);
     virtual void PostUserTrackingAction(const G4Track*);
-    
+
   private:
-    PrimaryGeneratorAction* fPrimary;
-    RunAction*              fRunAction;
+    PrimaryGeneratorAction* fPrimary;   /** Primary Generator Action  */
+    RunAction*              fRunAction; /** RunAction                 */
 };
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #endif

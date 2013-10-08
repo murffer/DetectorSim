@@ -1,6 +1,3 @@
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #ifndef EventAction_h
 #define EventAction_h 1
 
@@ -8,35 +5,42 @@
 #include "globals.hh"
 
 class EventActionMessenger;
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 class EventAction : public G4UserEventAction
 {
   public:
     EventAction();
-   ~EventAction();
+    ~EventAction();
 
   public:
     virtual void BeginOfEventAction(const G4Event*);
     virtual void   EndOfEventAction(const G4Event*);
-    
+    /**
+     * Increment the energy deposition of the event
+     *
+     * @param Edep - the energy deposition of the event
+     */
     void AddEdep(G4double Edep)    {fTotalEnergyDeposit += Edep;};      
+    /**
+     * @return the energy deposition of the event
+     */
     G4double GetEnergyDeposit()    {return fTotalEnergyDeposit;};    
+    /**
+     * Sets the draw flag
+     */
     void SetDrawFlag(G4String val) {fDrawFlag = val;};
+    /**
+     * Sets the print modulos
+     *
+     * @param val - the print modulos
+     */
     void SetPrintModulo(G4int val) {fPrintModulo = val;};
-            
-    
+
+
   private:
-    G4double               fTotalEnergyDeposit;   
-    G4String               fDrawFlag;
-    G4int                  fPrintModulo;
-    
+    G4double               fTotalEnergyDeposit; /** Total Energy Depositon  */
+    G4String               fDrawFlag;           /** Flag to draw the energy */
+    G4int                  fPrintModulo;        /** Print modulos           */
+
     EventActionMessenger*  fEventMessenger;
 };
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #endif
-
-    
