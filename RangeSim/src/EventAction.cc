@@ -1,6 +1,3 @@
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #include "EventAction.hh"
 
 #include "EventActionMessenger.hh"
@@ -9,23 +6,30 @@
 #include "G4Event.hh"
 #include "G4UnitsTable.hh"
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Creates an event hook for each event.
+ *
+ * The default print is set to every 10,000 events along without drawing and
+ * using the default EventActionMessenger.
+ */
 EventAction::EventAction()
-:fDrawFlag("none"),fPrintModulo(10000),fEventMessenger(0)
+  :fDrawFlag("none"),fPrintModulo(10000),fEventMessenger(0)
 {
   fEventMessenger = new EventActionMessenger(this);
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Deconstructor by deleting the event messenger
+ */
 EventAction::~EventAction()
 {
   delete fEventMessenger;
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Initilizes the energy deposition of the event and prints the event
+ * if the event is the modulus of the fPrintModulo
+ *
+ * @param evt - the event
+ */
 void EventAction::BeginOfEventAction(const G4Event* evt)
 {
  G4int evtNb = evt->GetEventID();
@@ -38,19 +42,13 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
  //additional initializations            
  fTotalEnergyDeposit = 0.;
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+/**
+ * Fills the energy deposition at the end of the event. The histogram is filled
+ * using the G4AnalysisManagerInstance, as setup in RunAction.
+ *
+ * @param evt - the event
+ */
 void EventAction::EndOfEventAction(const G4Event*)
 {
-
   G4AnalysisManager::Instance()->FillH1(4,fTotalEnergyDeposit);
-  
-  ////if (fDrawFlag != "none") G4cout << " Energy deposit: "
-  ////                               << G4BestUnit(fTotalEnergyDeposit,"Energy")
-  ////                               << G4endl;
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-
