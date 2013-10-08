@@ -1,0 +1,9 @@
+#!/bin/bash
+# running MCNP by submitting jobs to TORQUE/Maui
+
+#PBS -q gen1
+#PBS -V
+#PBS -l nodes=1:ppn=2
+#PBS -N Gamma Run
+cd $PBS_O_WORKDIR
+.$G4WORKDIR/bin/Linux-g++/polymerFilm macros/gRun.mac > GammaOutput.txt

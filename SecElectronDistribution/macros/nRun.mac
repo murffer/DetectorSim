@@ -1,0 +1,24 @@
+# Setting up verbosity
+/tracking/verbose 1
+/run/verbose 0
+#
+# Setting up the analysis
+#
+/Analysis/setParticleName neutron
+#
+# Setting up the source
+#
+/control/execute macros/neutronSource.mac
+#
+# Setting up the detector
+#
+/PolymerTransport/det/setAbsMat PS_Detector
+/PolymerTransport/det/setGapMat G4_PLEXIGLASS
+/PolymerTransport/det/setGapThick 1 cm
+/PolymerTransport/det/setRadius 10 cm
+#
+# Running through absorber thickness
+/PolymerTransport/det/setAbsThick 5 cm
+/PolymerTransport/det/update
+/run/beamOn 1000
+#

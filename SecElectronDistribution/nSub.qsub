@@ -1,0 +1,12 @@
+#!/bin/bash
+# running MCNP by submitting jobs to TORQUE/Maui
+
+#PBS -q gen1
+#PBS -V
+#PBS -l nodes=1:ppn=2
+#PBS -N Neutron 
+cd $PBS_O_WORKDIR
+echo "Current Directory: $(pwd)"
+.$G4WORKDIR/bin/Linux-g++/polymerFilm macros/nRun.mac > NeutronOutput.txt
+
+
