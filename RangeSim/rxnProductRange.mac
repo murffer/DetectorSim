@@ -28,7 +28,7 @@
 /analysis/h1/set 6 100 0  2.1 keV      #sec. neutral energy spectrum
 #
 /analysis/setFileName alphaRange
-/run/beamOn 10000
+/run/beamOn 100000
 #
 #
 # 2.73 MeV Triton
@@ -45,4 +45,4 @@
 /analysis/h1/set 6 100 0   2.75 MeV      #sec. neutral energy spectrum
 #
 /analysis/setFileName tritonRange 
-/run/beamOn 10000
+/run/beamOn 100000
