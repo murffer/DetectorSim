@@ -1,0 +1,16 @@
+# Can be run in batch, without graphic
+# or interactively: Idle> /control/execute run1.mac
+#
+# Shooting a photon at the detector
+# neutrons, electrons can be shot with: neutron, e-
+/gun/particle alpha
+/gun/energy 5 MeV
+/gun/direction 0 0 1
+/run/beamOn 10000
+
+#
+# Activate/inactivate physics processes
+#
+# /process/list
+# /process/inactivate eBrem
+#
