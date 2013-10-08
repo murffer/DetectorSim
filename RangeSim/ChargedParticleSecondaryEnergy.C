@@ -6,7 +6,7 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
-
+/*
 #include <TH1F.h>
 #include <TFile.h>
 #include <TLegend.h>
@@ -21,7 +21,7 @@
 #include <TROOT.h>
 #include <TStyle.h>
 #include <THStack.h>
-
+*/
 using namespace std;
 /**
  * Saving Histogram Data
@@ -47,12 +47,15 @@ void ExportHistogram(TFile* f,const char* histKey,const char* outputfile){
  * @brief Plots an array of histogram
  * @param hist  - TObjArray of histograms
  * @param names - TObjArray of histgram names (thickness)
+ * @param xMin - minumm x value
+ * @param xMax - maximum x value
  * @param title - title of the histogram
  * @param xLabel- x axis label
+ * @param norm  - normalization
  * @param drawLogX - flag to draw logarathmic in X
  * @param drawLogY - flag to draw logarathmic in Y
  */
-void PlotHistogram(TObjArray *hist, TObjArray *names,double xMin, double xMax,const char *title,const char *xLabel, const char* histFileName, bool drawLogX, bool drawLogY){
+void PlotHistogram(TObjArray *hist, TObjArray *names,double xMin, double xMax,const char *title,const char *xLabel, const char* histFileName, double norm,bool drawLogX, bool drawLogY){
     TH1F* h = NULL;
     TObjString *s = NULL;
     gStyle->SetOptStat(0);
@@ -69,9 +72,12 @@ void PlotHistogram(TObjArray *hist, TObjArray *names,double xMin, double xMax,co
         s = (TObjString*) names->At(i);
         leg->AddEntry(h,s->String().Data(),"l");
             h->Sumw2();
-            h->Scale(1.0/100000)
-            //h->Scale(1.0/h->Integral());
-            //h->Scale(1.0/h->GetEntries());
+            if (norm == 0){
+             // h->Scale(1.0/h->Integral());
+              h->Scale(1.0/h->GetEntries());
+            }
+            else
+              h->Scale(1.0/norm);
         h->SetLineColor(i+1);
         hs->Add(h);
     }
@@ -102,15 +108,24 @@ int main(){
     TFile* fT = new TFile("tritonRange.root","r");
     
     TObjArray *hist = new TObjArray();
-    hist->Add(fG->Get("5"));
     hist->Add(fA->Get("5"));
     hist->Add(fT->Get("5"));
     TObjArray *names = new TObjArray();
-    names->Add(new TObjString("{}^{60}Co"));
     names->Add(new TObjString("Alpha"));
     names->Add(new TObjString("Triton"));
-    bool logX = false;
-    bool logY = true;
-    PlotHistogram(hist,names,0,120,"Energy of Charged Particles at Creation","Energy [MeV]","ChargedParticleEnergy.png",logX,logY);
+    PlotHistogram(hist,names,35,85,"Energy of Charged Particles at Creation","Energy [keV]","AlphaTritonChargedParticleEnergy.png",10000,false,true);
    
+    TObjArray *hist = new TObjArray();
+    hist->Add(fG->Get("5"));
+    TObjArray *names = new TObjArray();
+    names->Add(new TObjString("{}^{60}Co"));
+    PlotHistogram(hist,names,0,200,"Energy of Charged Particles at Creation","Energy [MeV]","Co60ChargedParticleEnergy.png",100000,false,true);
+    
+    TObjArray *hist = new TObjArray();
+    hist->Add(fT->Get("1"));
+    hist->Add(fA->Get("1"));
+    TObjArray *names = new TObjArray();
+    names->Add(new TObjString("Alpha"));
+    names->Add(new TObjString("Triton"));
+    PlotHistogram(hist,names,0,100,"","Range [um]","AlphaTritonRange.png",0,false,false);
 }
