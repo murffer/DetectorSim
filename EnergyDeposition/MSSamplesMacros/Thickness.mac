@@ -1,0 +1,57 @@
+#
+# Setting up the detector
+#
+/PolymerTransport/det/setAbsMat DETECTORMAT
+/PolymerTransport/det/setGapMat G4_PLEXIGLASS
+/PolymerTransport/det/setGapThick 1 cm
+/PolymerTransport/det/setRadius 10 cm
+#
+# Running through absorber thickness
+/PolymerTransport/det/setAbsThick 1 cm
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
+/PolymerTransport/det/setAbsThick 5 mm
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
+/PolymerTransport/det/setAbsThick 2 mm
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
+/PolymerTransport/det/setAbsThick 1 mm
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
+/PolymerTransport/det/setAbsThick 0.5 mm
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
+/PolymerTransport/det/setAbsThick 300 um
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
+/PolymerTransport/det/setAbsThick 200 um
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
+/PolymerTransport/det/setAbsThick 150 um
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
+/PolymerTransport/det/setAbsThick 100 um
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
+/PolymerTransport/det/setAbsThick 50 um
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
+/PolymerTransport/det/setAbsThick 25 um
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
+/PolymerTransport/det/setAbsThick 15 um
+/PolymerTransport/det/update
+/run/beamOn NUMPARTICLES
+#
