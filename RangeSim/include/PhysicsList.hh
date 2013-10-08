@@ -1,11 +1,3 @@
-//
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//
-// 14.10.02 (V.Ivanchenko) provide modular list on base of old PhysicsList
-//
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #ifndef PhysicsList_h
 #define PhysicsList_h 1
 
@@ -16,7 +8,6 @@ class DetectorConstruction;
 class PhysicsListMessenger;
 class G4VPhysicsConstructor;
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class PhysicsList: public G4VModularPhysicsList
 {
@@ -38,19 +29,15 @@ class PhysicsList: public G4VModularPhysicsList
     void GetRange(G4double);
       
   private:
-    G4double fCutForGamma;
-    G4double fCutForElectron;
-    G4double fCutForPositron;
-    G4double fCurrentDefaultCut;
+    G4double fCutForGamma;        /* Default gamma cut    */
+    G4double fCutForElectron;     /* Default electron cut */
+    G4double fCutForPositron;     /* Default positron cut */
+    G4double fCurrentDefaultCut;  /* Default cut for all particles  */
     
-    G4VPhysicsConstructor* fEmPhysicsList;
-    G4String               fEmName;
+    G4VPhysicsConstructor* fEmPhysicsList;  /* Default physics list       */
+    G4String               fEmName;         /* Name of the physics list   */
     
-    DetectorConstruction* fDet;
-    PhysicsListMessenger* fMessenger;         
+    DetectorConstruction* fDet;             /* Pointer to the detector    */
+    PhysicsListMessenger* fMessenger;       /* Physics list messenger     */  
 };
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
 #endif
-
