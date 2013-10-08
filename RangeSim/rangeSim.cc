@@ -1,6 +1,12 @@
-// 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo...... 
+/**
+ * rangeSim.cc
+ *
+ * Simulation of alpha, tritons, electrons and photons
+ *
+ * Matthew J. Urffer (matthew.urffer@gmail.com)
+ *
+ * This code is based on TestEm1 from the GEANT4 examples.
+ */ 
 
 #include "G4RunManager.hh"
 #include "G4UImanager.hh"
@@ -24,8 +30,9 @@
 #include "G4UIExecutive.hh"
 #endif
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
- 
+/**
+ * Setup and run the GEANT4 Simulation
+ */
 int main(int argc,char** argv) {
  
   //choose the Random engine
@@ -34,7 +41,6 @@ int main(int argc,char** argv) {
   // Construct the default run manager
   G4RunManager * runManager = new G4RunManager;
 
-  // set mandatory initialization classes
   DetectorConstruction* det;
   PrimaryGeneratorAction* prim;
   runManager->SetUserInitialization(det = new DetectorConstruction);
@@ -80,10 +86,6 @@ int main(int argc,char** argv) {
     }
 
   // job termination 
-  //
   delete runManager;
-
   return 0;
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo...... 
