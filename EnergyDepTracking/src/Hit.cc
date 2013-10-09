@@ -1,4 +1,4 @@
-#include "CaloHit.hh"
+#include "Hit.hh"
 #include "G4UnitsTable.hh"
 #include "G4VVisManager.hh"
 #include "G4Circle.hh"
@@ -6,23 +6,23 @@
 #include "G4VisAttributes.hh"
 
 #include <iomanip>
-G4Allocator<CaloHit> HitAllocator;
+G4Allocator<Hit> HitAllocator;
 
-CaloHit::CaloHit(): G4VHit(){
+Hit::Hit(): G4VHit(){
     // Initilization preformed in intilization list
 }
 
 /**
- * Destroctor of CaloHit
+ * Destroctor of Hit
  */
-CaloHit::~CaloHit() {}
+Hit::~Hit() {}
 
 /**
  * Print
  *
  * Print's out information about the hit
  */
-void CaloHit::Print(){
+void Hit::Print(){
 	G4cout << "  trackID: " << trackID <<" particle: "
          <<particle->GetParticleName()<<" rank: "<<particleRank
 		     <<"\nvolume: "<<volume->GetName()

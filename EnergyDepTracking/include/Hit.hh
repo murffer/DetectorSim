@@ -1,5 +1,5 @@
-#ifndef CaloHit_h
-#define CaloHit_h 1
+#ifndef Hit_h
+#define Hit_h 1
 
 #include "G4VHit.hh"
 #include "G4ThreeVector.hh"
@@ -18,10 +18,10 @@
  *  -  deposition in volume
  *  - geometric information
  */
-class CaloHit : public G4VHit {
+class Hit : public G4VHit {
 	public:
-		CaloHit();
-		~CaloHit();
+		Hit();
+		~Hit();
 
 
 		inline void* operator new(size_t);
@@ -66,18 +66,18 @@ class CaloHit : public G4VHit {
 		G4VPhysicalVolume* GetVolume()      {return volume;};
 };
 
-typedef G4THitsCollection<CaloHit> CaloHitsCollection;
-extern G4Allocator<CaloHit> HitAllocator;
+typedef G4THitsCollection<Hit> HitsCollection;
+extern G4Allocator<Hit> HitAllocator;
 
-inline void* CaloHit::operator new(size_t){
+inline void* Hit::operator new(size_t){
 	void *aHit;
 	aHit = (void *) HitAllocator.MallocSingle();
 	return aHit;
 }
 
 
-inline void CaloHit::operator delete(void *aHit){
-	HitAllocator.FreeSingle((CaloHit*) aHit);
+inline void Hit::operator delete(void *aHit){
+	HitAllocator.FreeSingle((Hit*) aHit);
 }
 #endif
 

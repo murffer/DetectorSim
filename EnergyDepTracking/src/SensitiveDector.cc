@@ -1,5 +1,5 @@
-#include "CaloSensitiveDetector.hh"
-#include "CaloHit.hh"
+#include "SensitiveDetector.hh"
+#include "Hit.hh"
 #include "G4HCofThisEvent.hh"
 #include "G4Step.hh"
 #include "G4ThreeVector.hh"
@@ -7,7 +7,7 @@
 #include "G4ios.hh"
 #include "G4TouchableHistory.hh"
 
-CaloSensitiveDetector::CaloSensitiveDetector(const G4String& name,
+SensitiveDetector::SensitiveDetector(const G4String& name,
         const G4String& HCname) :
     G4VSensitiveDetector(name),hitCollection(NULL) {
 
@@ -15,13 +15,13 @@ CaloSensitiveDetector::CaloSensitiveDetector(const G4String& name,
     }
 
 
-CaloSensitiveDetector::~CaloSensitiveDetector(){ }
+SensitiveDetector::~SensitiveDetector(){ }
 
 
-void CaloSensitiveDetector::Initialize(G4HCofThisEvent* HCE){
+void SensitiveDetector::Initialize(G4HCofThisEvent* HCE){
 
     // Create Hits Collection
-    hitCollection = new CaloHitsCollection(SensitiveDetectorName,collectionName[0]); 
+    hitCollection = new HitsCollection(SensitiveDetectorName,collectionName[0]); 
     G4int HCID = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
     HCE->AddHitsCollection( HCID, hitCollection );
 }
@@ -31,7 +31,7 @@ void CaloSensitiveDetector::Initialize(G4HCofThisEvent* HCE){
  *
  * Adds a hit to the sensitive detector, depending on the step
  */
-G4bool CaloSensitiveDetector::ProcessHits(G4Step* aStep,G4TouchableHistory*){
+G4bool SensitiveDetector::ProcessHits(G4Step* aStep,G4TouchableHistory*){
 
     G4double edep = aStep->GetTotalEnergyDeposit();
     G4double stepLength = aStep->GetStepLength();
@@ -45,7 +45,7 @@ G4bool CaloSensitiveDetector::ProcessHits(G4Step* aStep,G4TouchableHistory*){
         (aStep->GetPreStepPoint()->GetTouchable());
 
 
-    CaloHit* newHit = new CaloHit();
+    Hit* newHit = new Hit();
     newHit->SetTrackID	(aStep->GetTrack()->GetTrackID());
     newHit->SetParentID    (aStep->GetTrack()->GetParentID());
     newHit->SetEdep		(edep);
@@ -61,7 +61,7 @@ G4bool CaloSensitiveDetector::ProcessHits(G4Step* aStep,G4TouchableHistory*){
 }
 
 
-void CaloSensitiveDetector::EndOfEvent(G4HCofThisEvent*)
+void SensitiveDetector::EndOfEvent(G4HCofThisEvent*)
 {
     if (verboseLevel > 1){
         G4int nOfHits = hitCollection->entries();
