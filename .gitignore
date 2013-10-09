@@ -19,3 +19,16 @@ CMakeFiles
 Makefile
 cmake_install.cmake
 install_manifest.txt
+
+# OS-X Ignore
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+
+# VIM 
+*.s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~

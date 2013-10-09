@@ -1,0 +1,50 @@
+# Invesigation of the primary particles of the Li-6 reaction products
+#
+# Macro file for "rangeSim.cc"
+# 
+# compute the csda range of primary particle
+#
+/control/verbose 0
+/run/verbose 0
+#/tracking/verbose 1
+#
+/testem/det/setMat G4_POLYSTYRENE 
+#
+#
+/run/initialize
+/testem/phys/setECut  10 nm
+/testem/phys/setACut  1 um
+/testem/phys/setTCut  1 um
+#
+# 2.05  MeV alpha
+#
+/gps/particle alpha
+/control/execute beamSource.mac
+/gps/ene/mono 2.05 MeV
+#
+/analysis/h1/set 1 100 0  75 um        #track length of primary
+/analysis/h1/set 2 100 0  25 none      #nb steps of primary
+/analysis/h1/set 3 200 0  50 um       #step size of primary
+/analysis/h1/set 4 100 0  2.1 MeV      #total energy deposit
+/analysis/h1/set 5 100 0  2.5 keV      #sec. chared energy spectrum
+/analysis/h1/set 6 100 0  2.1 keV      #sec. neutral energy spectrum
+#
+/analysis/setFileName alphaRange
+/run/beamOn 10000
+#
+#
+# 2.73 MeV Triton
+#
+/gps/particle triton
+/control/execute beamSource.mac
+/gps/ene/mono 2.73 MeV
+#
+/analysis/h1/set 1 100 0  75 um        #track length of primary
+/analysis/h1/set 2 100 0  5 none       #nb steps of primary
+/analysis/h1/set 3 200 0  50  um       #step size of primary
+/analysis/h1/set 4 100 0  2.75 MeV      #total energy deposit
+/analysis/h1/set 5 100 0   2.5 keV      #sec. chared energy spectrum
+/analysis/h1/set 6 100 0   2.75 MeV      #sec. neutral energy spectrum
+#
+/analysis/setFileName tritonRange 
+/run/beamOn 10000

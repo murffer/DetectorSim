@@ -1,0 +1,25 @@
+# Macro file for "rangeSim.cc"
+# (can be run in batch, without graphic)
+#
+# Co60 Gamma; all processes
+#
+/control/verbose 0
+/run/verbose 0
+#
+/testem/det/setMat G4_POLYSTYRENE 
+/testem/det/setSize 10 m
+#
+/run/initialize
+#
+/control/execute co60Source.mac
+#
+/analysis/h1/set 1 100 0  250 cm        #track length of primary
+/analysis/h1/set 2 100 0  50 none      #nb steps of primary
+/analysis/h1/set 3 200 0  50  cm        #step size of primary
+/analysis/h1/set 4 100 0  1.5 MeV       #total energy deposit
+/analysis/h1/set 5 100 0  1500 keV      #sec. chared energy spectrum
+/analysis/h1/set 6 100 0   1.5 MeV      #sec. neutral energy spectrum
+#
+/analysis/setFileName co60Range
+/run/beamOn 100000
+#
