@@ -53,5 +53,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction
   private:
 
     G4VPhysicalVolume* ConstructVolumes();     
+		void SetSensitiveDetectors();
 };
 #endif

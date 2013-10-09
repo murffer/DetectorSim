@@ -17,6 +17,9 @@
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "CaloSensitiveDetector.hh"
+#include "G4SDManager.hh"
+
 /**
  * Constructs the semi-infinite box 
  *
@@ -24,10 +27,10 @@
  */
 DetectorConstruction::DetectorConstruction() :fPBox(0), fLBox(0), fMaterial(0)
 {
-  fBoxSize = 10*m;
+  fBoxSize = 10*cm;
   // Creating Detector Materials
   materials = Materials::GetInstance();
-  SetMaterial("G4_WATER");  
+  SetMaterial("G4_POLYSTYRENE");  
   fDetectorMessenger = new DetectorMessenger(this);
 }
 
@@ -66,7 +69,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   fPBox = new G4PVPlacement(0,G4ThreeVector(),fLBox,fMaterial->GetName(),0,false,0);
 
   PrintParameters();
-
+  SetSensitiveDetectors();
   //always return the root volume
   return fPBox;
 }
@@ -77,6 +80,21 @@ void DetectorConstruction::PrintParameters()
 {
   G4cout << "\n The Box is " << G4BestUnit(fBoxSize,"Length")
     << " of " << fMaterial->GetName() << G4endl;
+}
+/**
+ * SetSensitiveDetectors
+ *
+ * Setting the Sensitive Detectors of the Detector
+ */
+void DetectorConstruction::SetSensitiveDetectors(){
+    G4SDManager* SDman = G4SDManager::GetSDMpointer();
+    caloSD = new CaloSensitiveDetector("SD/CaloSD","CaloHitCollection");
+    SDman->AddNewDetector(caloSD);
+    fLBox->SetSensitiveDetector(caloSD);
+
+    // Setting the Maximum Step Size
+    G4double maxStep = 0.01*absThickness;
+    fLBox->SetUserLimits(new G4UserLimits(maxStep));
 }
 /**
  * Sets the detector material
