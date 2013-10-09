@@ -4,7 +4,7 @@
 /**
  * Creates a Histogram manger with the default name
  */
-HistoManager::HistoManager(): fFileName("rangeSim")
+HistoManager::HistoManager(): fFileName("EnergyDepTrack")
 {
   Book();
 }
@@ -25,31 +25,25 @@ HistoManager::~HistoManager()
 void HistoManager::Book()
 {
   // Create or get analysis manager
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  analysisManager->SetFileName(fFileName);
-  analysisManager->SetVerboseLevel(1);
-  analysisManager->SetFirstHistoId(1);     // start histogram numbering from 1
-  analysisManager->SetActivation(true);    // enable inactivation of histograms
+  G4AnalysisManager* man = G4AnalysisManager::Instance();
+  man->SetFileName(fFileName);
+  man->SetVerboseLevel(1);
+  man->SetFirstHistoId(1);     // start histogram numbering from 1
+  man->SetActivation(true);    // enable inactivation of histograms
   
-  // Define histograms start values
-  const G4int kMaxHisto = 6;
-  const G4String id[] = { "1", "2", "3" , "4", "5", "6"};
-  const G4String title[] = 
-                { "total track length of primary particle",      //1
-                  "nb steps of primary particle",                //2
-                  "step size of primary particle",               //3
-                  "total energy deposit",                        //4
-                  "energy of charged secondaries at creation",   //5
-                  "energy of neutral secondaries at creation"    //6
-                 };
-  // Default values (to be reset via /analysis/h1/set command)               
-  G4int nbins = 100;
-  G4double vmin = 0.;
-  G4double vmax = 100.;
 
   // Create all histograms as inactivated 
-  for (G4int k=0; k<kMaxHisto; k++) {
-    G4int ih = analysisManager->CreateH1(id[k], title[k], nbins, vmin, vmax);
-    analysisManager->SetActivation(G4VAnalysisManager::kH1, ih, false);
-  }
+ G4int ih = man->CreateH1(1,"Energy Deposition",100,0*MeV,10*MeV);
+ man->SetActivation(G4VAnalysisManager::kH1, ih, false);
+ ih = man->CreateH2(2,"Positional Energy Depositon",100,0*cm,10*cm,100,0*cm,10*cm); 
+ man->SetActivation(G4VAnalysisManager::kH2, ih, false);
+ 
+ // Creating Ntuple
+ ih = man->CreateNtuple("0", "Energy Deposition and Position");
+ man->CreateNtupleDColumn("EDep");
+ man->CreateNtupleDColumn("x");
+ man->CreateNtupleDColumn("y");
+ man->CreateNtupleDColumn("z");
+ man->FinishNtuple();
+ man->SetActivation(G4VAnalysisManager::kNtuple, ih, false);
 }
