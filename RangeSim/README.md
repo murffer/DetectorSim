@@ -57,4 +57,10 @@ One can control the name of the histograms file with the command:
    It is also possible to print selected histograms on an ascii file:
    /analysis/h1/setAscii id
    All selected histos will be written on a file name.ascii  (default testem1)
+
+A utility file, `Range.C` has been written to plot the chaged particle creation energies for the alpha, triton, and Co60 runs.  This can be loaded into the root enviroment with:
     
+    root[#] .L Range.C
+    root[#] main()
+
+Upon the invocation of main the script will run

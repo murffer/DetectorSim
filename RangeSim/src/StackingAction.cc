@@ -2,6 +2,8 @@
 #include "HistoManager.hh"
 
 #include "G4Track.hh"
+#include "G4VProcess.hh"
+
 /**
  * Default Constructor - nothing to be done
  */
@@ -26,8 +28,23 @@ StackingAction::ClassifyNewTrack(const G4Track* track)
   G4double charge = track->GetDefinition()->GetPDGCharge();
 
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-
-  if (charge != 0.) analysisManager->FillH1(5,energy);
+  
+  if (charge != 0.){
+    analysisManager->FillH1(5,energy);
+/*
+    G4ParticleDefinition* p = track->GetDefinition();
+    // Only filling for electrons
+    if (p->GetPDGEncoding() == 11){
+      G4String procName = track->GetCreatorProcess()->GetProcessName();
+      if(procName == "hIoni")
+        analysisManager->FillH1(7,energy);
+      if(procName == "compt")
+        analysisManager->FillH1(8,energy);
+      //analysisManager->FillH1(5,energy);
+    }
+ */
+  }
   else              analysisManager->FillH1(6,energy);   
+//  return fKill;
   return fUrgent;
 }

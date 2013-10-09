@@ -1,71 +1,63 @@
-# $Id: erange.mac,v 1.2 2009-09-15 12:51:49 maire Exp $
 #
-# Macro file for "TestEm1.cc"
+# Macro file for "rangeSim.cc"
 # 
 # compute the csda range of primary particle
 #
-/control/verbose 2
-/run/verbose 2
+/control/verbose 0
+/run/verbose 0
 #
 /testem/det/setMat G4_POLYSTYRENE 
 #
-#/testem/phys/addPhysics  local
-###/testem/phys/addPhysics  empenelope
-#/testem/phys/addPhysics  emlivermore
-#
 /run/initialize
 #
-# 1 MeV
+# Simulated Ranges
+/gps/particle e-
+/control/execute beamSource.mac
+/gps/ene/mono 1 keV
+/run/beamOn 10000
 #
 /gps/particle e-
 /control/execute beamSource.mac
-/gps/ene/mono 1 MeV
-#
-/analysis/h1/set 1 100 0  7.5 mm        #track length of primary
-/analysis/h1/set 2 100 0  25 none      #nb steps of primary
-/analysis/h1/set 3 200 0  1 mm       #step size of primary
-/analysis/h1/set 4 100 0.5  1.5 MeV      #total energy deposit
-/analysis/h1/set 5 100 0   1 MeV      #sec. chared energy spectrum
-/analysis/h1/set 6 100 0   1 MeV      #sec. neutral energy spectrum
-#
-/analysis/setFileName 1000KeVElectronRange
-/run/beamOn 100000
-#
-#
-# 100 keV
+/gps/ene/mono 2.2 keV
+/run/beamOn 10000
 #
 /gps/particle e-
 /control/execute beamSource.mac
-/gps/ene/mono 100 keV
-#
-/analysis/h1/set 1 100 0  250 um        #track length of primary
-/analysis/h1/set 2 100 0  5 none       #nb steps of primary
-/analysis/h1/set 3 200 0  150  um       #step size of primary
-/analysis/h1/set 4 100 75  125 keV      #total energy deposit
-/analysis/h1/set 5 100 0   50 keV      #sec. chared energy spectrum
-/analysis/h1/set 6 100 0   50 keV      #sec. neutral energy spectrum
-#
-/analysis/setFileName 100KeVElectronRange
-/run/beamOn 100000
-#
-# 10 keV
+/gps/ene/mono 4.6 keV
+/run/beamOn 10000
 #
 /gps/particle e-
 /control/execute beamSource.mac
 /gps/ene/mono 10 keV
+/run/beamOn 10000
 #
-/analysis/h1/set 1 100 0  5 um        #track length of primary
-/analysis/h1/set 2 100 0  5 none      #nb steps of primary
-/analysis/h1/set 3 200 0  5  um       #step size of primary
-/analysis/h1/set 4 100 5  15 keV      #total energy deposit
-/analysis/h1/set 5 100 0   10 keV      #sec. chared energy spectrum
-/analysis/h1/set 6 100 0   10 keV      #sec. neutral energy spectrum
+/gps/particle e-
+/control/execute beamSource.mac
+/gps/ene/mono 22 keV
+/run/beamOn 10000
 #
-/analysis/setFileName 10KeVElectronRange
-/run/beamOn 100000
+/gps/particle e-
+/control/execute beamSource.mac
+/gps/ene/mono 46 keV
+/run/beamOn 10000
 #
-###/analysis/setFileName std.1km
-###/analysis/h1/set 1 200 0 2000 um		# csda range
-###/analysis/h1/set 1 250 0 5000 um
+/gps/particle e-
+/control/execute beamSource.mac
+/gps/ene/mono 100 keV
+/run/beamOn 10000
 #
-###/run/beamOn 20000
+/gps/particle e-
+/control/execute beamSource.mac
+/gps/ene/mono 220 keV
+/run/beamOn 10000
+#
+/gps/particle e-
+/control/execute beamSource.mac
+/gps/ene/mono 460 keV
+/run/beamOn 10000
+#
+/gps/particle e-
+/control/execute beamSource.mac
+/gps/ene/mono 1000 keV
+/run/beamOn 10000
+#

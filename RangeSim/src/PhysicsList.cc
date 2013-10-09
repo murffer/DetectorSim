@@ -36,6 +36,8 @@ PhysicsList::PhysicsList(DetectorConstruction* p)
   fCutForGamma         = fCurrentDefaultCut;  /* Default gamma cut      */
   fCutForElectron      = fCurrentDefaultCut;  /* Default electron cut   */
   fCutForPositron      = fCurrentDefaultCut;  /* Default positron cut   */
+  fCutForAlpha         = fCurrentDefaultCut;  /* Default cut for alpha  */
+  fCutForTriton        = fCurrentDefaultCut;  /* Default cut for triton */
 
   fMessenger = new PhysicsListMessenger(this);  /* Physics List Messenger   */
 
@@ -177,11 +179,11 @@ void PhysicsList::ConstructProcess()
     
   // Decay Process
   //
-  AddDecay();
+  //AddDecay();
     
   // Decay Process
   //
-  AddRadioactiveDecay();  
+  //AddRadioactiveDecay();  
 
 }
 
@@ -309,6 +311,8 @@ void PhysicsList::SetCuts()
   SetCutValue(fCutForGamma, "gamma");
   SetCutValue(fCutForElectron, "e-");
   SetCutValue(fCutForPositron, "e+");
+  SetCutValue(fCutForAlpha, "alpha");
+  SetCutValue(fCutForTriton, "triton");
 
   if (verboseLevel>0) DumpCutValuesTable();
 }
@@ -321,6 +325,28 @@ void PhysicsList::SetCutForGamma(G4double cut)
 {
   fCutForGamma = cut;
   SetParticleCuts(fCutForGamma, G4Gamma::Gamma());
+}
+
+/**
+ * Sets the triton cuts
+ *
+ * @param cut - the range for the cut
+ */
+void PhysicsList::SetCutForTriton(G4double cut)
+{
+  fCutForTriton = cut;
+  SetParticleCuts(fCutForTriton, G4Triton::Triton());
+}
+
+/**
+ * Sets the alpha cuts
+ *
+ * @param cut - the range for the cut
+ */
+void PhysicsList::SetCutForAlpha(G4double cut)
+{
+  fCutForAlpha = cut;
+  SetParticleCuts(fCutForAlpha, G4Alpha::Alpha());
 }
 
 /**

@@ -1,9 +1,0 @@
-# Runs all reaction products and the electron ranges
-#
-# Macro file for "rangeSim.cc"
-# (can be run in batch, without graphic)
-#
-# 
-/control/execute gammaRange.mac       # Co-60 gamma
-/control/execute rxnProductRange.mac  # Li-6(n,triton)alpha reaction products
-/control/execute eRange.mac           # Electron Ranges

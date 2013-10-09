@@ -9,11 +9,11 @@
 /**
  * Creates an event hook for each event.
  *
- * The default print is set to every 10,000 events along without drawing and
- * using the default EventActionMessenger.
+ * The default print is set to every 100,000 events along without drawing 
+ * and using the default EventActionMessenger.
  */
 EventAction::EventAction()
-  :fDrawFlag("none"),fPrintModulo(10000),fEventMessenger(0)
+  :fDrawFlag("none"),fPrintModulo(100000),fEventMessenger(0)
 {
   fEventMessenger = new EventActionMessenger(this);
 }

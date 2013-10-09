@@ -36,6 +36,20 @@ PhysicsListMessenger::PhysicsListMessenger(PhysicsList* pPhys)
   fProtoCutCmd->SetUnitCategory("Length");
   fProtoCutCmd->SetRange("Pcut>0.0");
   fProtoCutCmd->AvailableForStates(G4State_PreInit,G4State_Idle);  
+  
+  fAlphaCutCmd = new G4UIcmdWithADoubleAndUnit("/testem/phys/setACut",this);  
+  fAlphaCutCmd->SetGuidance("Set alpha cut.");
+  fAlphaCutCmd->SetParameterName("Acut",false);
+  fAlphaCutCmd->SetUnitCategory("Length");
+  fAlphaCutCmd->SetRange("Acut>0.0");
+  fAlphaCutCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+  
+  fTritonCutCmd = new G4UIcmdWithADoubleAndUnit("/testem/phys/setTCut",this);  
+  fTritonCutCmd->SetGuidance("Set triton cut.");
+  fTritonCutCmd->SetParameterName("Tcut",false);
+  fTritonCutCmd->SetUnitCategory("Length");
+  fTritonCutCmd->SetRange("Tcut>0.0");
+  fTritonCutCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 
   fAllCutCmd = new G4UIcmdWithADoubleAndUnit("/testem/phys/setCuts",this);  
   fAllCutCmd->SetGuidance("Set cut for all.");
@@ -62,6 +76,8 @@ PhysicsListMessenger::PhysicsListMessenger(PhysicsList* pPhys)
 PhysicsListMessenger::~PhysicsListMessenger()
 {
   delete fGammaCutCmd;
+  delete fTritonCutCmd;
+  delete fAlphaCutCmd;
   delete fElectCutCmd;
   delete fProtoCutCmd;
   delete fAllCutCmd;
@@ -80,6 +96,12 @@ void PhysicsListMessenger::SetNewValue(G4UIcommand* command,
      
   if( command == fElectCutCmd )
    { fPhysicsList->SetCutForElectron(fElectCutCmd->GetNewDoubleValue(newValue));}
+  
+  if( command == fAlphaCutCmd )
+   { fPhysicsList->SetCutForAlpha(fAlphaCutCmd->GetNewDoubleValue(newValue));}
+  
+  if( command == fTritonCutCmd )
+   { fPhysicsList->SetCutForTriton(fTritonCutCmd->GetNewDoubleValue(newValue));}
      
   if( command == fProtoCutCmd )
    { fPhysicsList->SetCutForPositron(fProtoCutCmd->GetNewDoubleValue(newValue));}
