@@ -4,5 +4,6 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 
 add_subdirectory(EnergyDeposition)
+add_subdirectory(EnergyDepTracking)
 
-add_custom_target(G4DetectorSim DEPENDS EnergyDeposition)
+add_custom_target(DetectorSim DEPENDS EDepTracking EnergyDeposition)
