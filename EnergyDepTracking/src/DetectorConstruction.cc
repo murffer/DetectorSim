@@ -1,7 +1,6 @@
 #include <vector>
 
 #include "DetectorConstruction.hh"
-#include "DetectorMessenger.hh"
 #include "G4Material.hh"
 #include "G4NistManager.hh"
 #include "Materials.hh"
@@ -20,6 +19,7 @@
 
 #include "SensitiveDetector.hh"
 #include "G4SDManager.hh"
+#include "G4UserLimits.hh"
 
 /**
  * Constructs the semi-infinite box 
@@ -43,8 +43,8 @@ DetectorConstruction::DetectorConstruction() :fPBox(0), fLBox(0), fMaterial(0)
  */
 DetectorConstruction::~DetectorConstruction()
 {
-  std::vector<G4LogiclVoume*>::iterator it;
-  for (it = fLogicChamber.begin() it != fLogicChamber.end(); it++){
+  std::vector<G4LogicalVolume*>::iterator it;
+  for (it = fLogicChamber.begin(); it != fLogicChamber.end(); it++){
     delete *it;
   }
 }
