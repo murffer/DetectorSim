@@ -26,11 +26,14 @@ Analysis* Analysis::singleton = 0;
  *
  * Creates an Analysis object 
  */
-Analysis::Analysis(){ }
+Analysis::Analysis(){ 
+  fHistoManager = new HistoManager();
+}
 /**
  * Nothing to do!
  */
 Analysis::~Analysis(){
+  delete fHistoManager; 
 }
 
 /**
@@ -39,6 +42,10 @@ Analysis::~Analysis(){
  * @brief - called before each run.
  */
 void Analysis::PrepareNewRun(const G4Run* aRun){
+  G4AnalysisManager *man  = G4AnalysisManager::Instance();
+  if (man->IsActive()){
+    man->OpenFile();
+  }
   G4cout<<"Prepared run "<<aRun->GetRunID()<<G4endl;
 }
 
@@ -98,4 +105,10 @@ void Analysis::EndOfEvent(const G4Event* event){
  * Called at the end of a run, which summerizes the run
  */
 void Analysis::EndOfRun(const G4Run* aRun){
+  // Save Histograms
+  G4AnalysisManager* man = G4AnalysisManager::Instance();
+  if (man->IsActive()){
+    man->Write();
+    man->CloseFile();
+  }
 }

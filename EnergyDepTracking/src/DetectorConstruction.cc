@@ -74,7 +74,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 
   // Creating the new geoemtry
   G4Box* sBox = new G4Box("Container",fBoxSize/2,fBoxSize/2,fBoxSize/2);
-  fLBox = new G4LogicalVolume(sBox,fMaterial,fMaterial->GetName());
+  fLBox = new G4LogicalVolume(sBox,fMaterial,"Wordl");
   fPBox = new G4PVPlacement(0,G4ThreeVector(),fLBox,fMaterial->GetName(),0,false,0);
 
   // Creating the Sensitive Detector

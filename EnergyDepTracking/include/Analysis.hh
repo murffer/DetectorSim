@@ -9,7 +9,7 @@
 #include "CaloHit.hh"
 
 #include "globals.hh"
-
+class HistoManager;
 class Analysis {
 
     public:
@@ -36,6 +36,6 @@ class Analysis {
 
         // Accumulation Variables
         G4double eDepEvent;
-
+        HistoManager* fHistoManager;
 };
 #endif
