@@ -17,6 +17,9 @@
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "G4VisAttributes.hh"
+#include "G4Colour.hh"
+
 #include "SensitiveDetector.hh"
 #include "G4SDManager.hh"
 #include "G4UserLimits.hh"
@@ -33,9 +36,9 @@
  */
 DetectorConstruction::DetectorConstruction() :fPBox(0), fLBox(0), fMaterial(0)
 {
-  fBoxSize = 1*cm;
-  fNumChambers=21;
-  fMaxStep=1*um;
+  fBoxSize = 100*um;
+  fNumChambers=11;
+  fMaxStep=0.1*um;
   // Creating Detector Materials
   materials = Materials::GetInstance();
   SetMaterial("G4_POLYSTYRENE");  
@@ -79,10 +82,14 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
 
   // Creating the new geoemtry
   G4Box* sBox = new G4Box("Container",fBoxSize/2,fBoxSize/2,fBoxSize/2);
-  fLBox = new G4LogicalVolume(sBox,fMaterial,"Wordl");
+  fLBox = new G4LogicalVolume(sBox,fMaterial,"World");
   fPBox = new G4PVPlacement(0,G4ThreeVector(),fLBox,fMaterial->GetName(),0,false,false);
 
-  // Creating the Sensitive Detector
+    {G4VisAttributes* atb = new G4VisAttributes(G4Colour::White());
+    atb->SetVisibility(false);
+    fLBox->SetVisAttributes(atb);}
+  
+    // Creating the Sensitive Detector
   G4SDManager* SDman = G4SDManager::GetSDMpointer();
   SD = new SensitiveDetector("SD/SD","HitCollection");
   SDman->AddNewDetector(SD);
@@ -95,7 +102,10 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
       // Creating the solid and logical volumes
       G4Box* solid = new G4Box("chamber",voxelSize/2,voxelSize/2,fBoxSize/2);
       G4LogicalVolume* log = new G4LogicalVolume(solid,fMaterial,"Chamber");
-
+      
+    {G4VisAttributes* atb = new G4VisAttributes(G4Colour::White());
+    atb->SetVisibility(false);
+    log->SetVisAttributes(atb);}
       // initilizaiton and adding to geoemtry
       log->SetSensitiveDetector(SD);
       log->SetUserLimits(new G4UserLimits(fMaxStep));
