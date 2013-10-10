@@ -1,22 +1,45 @@
-# Macro file for example B2
+# Visulizaiton Creation
 # 
 # Can be run in batch, without graphic
 # or interactively: Idle> /control/execute run1.mac
 #
 # Default kinematics: 
-# proton 3 GeV in direction (0.,0.,1.)
-# 1 event with tracking/verbose
 /run/initialize
 #
 /gun/particle e-
-/tracking/verbose 0
-/gun/energy 3 MeV
-#/analysis/h1/set 1 100 0  5 MeV    # Energy Deposition
-/run/beamOn 100
+/gun/energy 100 keV
+/run/beamOn 10
+
+# set print mode to vectored
+/vis/ogl/set/printMode vectored
+/vis/ogl/set/printSize 300 300
+/vis/ogl/set/printFilename electronTrack
+/vis/ogl/printEPS
+
+/vis/viewer/flush
 #
-# 1 event with printing hits
+# 2.05 MeV Alpha
 #
-#/tracking/verbose 0
-#/hits/verbose 0
-#/run/beamOn 10
+/gun/particle alpha
+/gun/energy 2.05 MeV
+/run/beamOn 10
+
+# set print mode to vectored
+/vis/ogl/set/printMode vectored
+/vis/ogl/set/printSize 300 300
+/vis/ogl/set/printFilename alphaTrack 
+/vis/ogl/printEPS
+
+/vis/viewer/flush
 #
+# 2.75 MeV Alpha
+#
+/gun/particle triton
+/gun/energy 2.78 MeV
+/run/beamOn 10
+
+# set print mode to vectored
+/vis/ogl/set/printMode vectored
+/vis/ogl/set/printSize 300 300
+/vis/ogl/set/printFilename tritonTrack 
+/vis/ogl/printEPS

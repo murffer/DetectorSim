@@ -132,22 +132,25 @@ void Analysis::EndOfEvent(const G4Event* event){
  *
  * Called at the end of a run, which summerizes the run
  */
+#include <iostream>
+#include <fstream>
 void Analysis::EndOfRun(const G4Run* aRun){
   
   G4int NbOfEvents = aRun->GetNumberOfEvent();
   G4double n = double(NbOfEvents);
 
   // Outputing the data
+  std::ofstream fout;
+  fout.open("Output.csv");
   for(G4int i = 0; i < numVoxels; i++){
     // Computing the mean and rms
     G4double mean = eDepEvent[i]/n;
     G4double mean2 = eDepEvent2[i]/n;
     G4double rms = mean2 - mean*mean;
     if (rms > 0. ) rms = std::sqrt(rms); else rms = 0.;
-    G4cout<<i<<" ( "<<xPos[i]<<" , "<<yPos[i]<<" )  "
-      <<G4BestUnit(mean,"Energy")<<" +/- "<<G4BestUnit(rms,"Energy")
-      <<G4endl;
+    fout<<xPos[i]<<","<<yPos[i]<<","<<mean/keV<<","<<rms/keV<<std::endl;
   }
+  fout.close();
   
   // Save Histograms
   G4AnalysisManager* man = G4AnalysisManager::Instance();
