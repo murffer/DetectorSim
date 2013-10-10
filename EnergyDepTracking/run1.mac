@@ -16,9 +16,7 @@
 #
 # 1 event with printing hits
 #
-/tracking/verbose 0
-/hits/verbose 0
-/run/beamOn 10
-#
-# set target and chamber material
+#/tracking/verbose 0
+#/hits/verbose 0
+#/run/beamOn 10
 #
