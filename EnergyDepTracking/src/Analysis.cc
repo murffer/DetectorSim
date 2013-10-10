@@ -39,7 +39,6 @@ void Analysis::SetupVoxelPositions(){
     xPos[i] = 0;
     yPos[i] = 0;
   }
-
 }
 /**
  * Sets the x, y position of the voxel number
@@ -145,7 +144,7 @@ void Analysis::EndOfRun(const G4Run* aRun){
     G4double mean2 = eDepEvent2[i]/n;
     G4double rms = mean2 - mean*mean;
     if (rms > 0. ) rms = std::sqrt(rms); else rms = 0.;
-    G4cout<<i<<"\t"
+    G4cout<<i<<" ( "<<xPos[i]<<" , "<<yPos[i]<<" )  "
       <<G4BestUnit(mean,"Energy")<<" +/- "<<G4BestUnit(rms,"Energy")
       <<G4endl;
   }
