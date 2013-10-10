@@ -42,6 +42,10 @@ target_link_libraries(polymerEDep ${Geant4_LIBRARIES})
 # relies on these scripts being in the current working directory.
 #
 set(PEDEP_SCRIPTS
+init.mac
+init_vis.mac
+vis.mac
+run1.mac
   )
 
 foreach(_script ${PEDEP_SCRIPTS})
