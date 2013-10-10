@@ -26,11 +26,15 @@
  * Constructs the semi-infinite box 
  *
  * Defaults are a 10 m box of G4_POLYSTYRENE
+ *
+ * The number of voxels or discretizition for the energy depostion is set with 
+ * the FNumChambers parameter.  This number should be an odd number in order to
+ * have the 0,0 voxel at the origin of the particle gun.
  */
 DetectorConstruction::DetectorConstruction() :fPBox(0), fLBox(0), fMaterial(0)
 {
   fBoxSize = 1*cm;
-  fNumChambers=10;
+  fNumChambers=101;
   fMaxStep=1*um;
   // Creating Detector Materials
   materials = Materials::GetInstance();
@@ -76,7 +80,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   // Creating the new geoemtry
   G4Box* sBox = new G4Box("Container",fBoxSize/2,fBoxSize/2,fBoxSize/2);
   fLBox = new G4LogicalVolume(sBox,fMaterial,"Wordl");
-  fPBox = new G4PVPlacement(0,G4ThreeVector(),fLBox,fMaterial->GetName(),0,false,0);
+  fPBox = new G4PVPlacement(0,G4ThreeVector(),fLBox,fMaterial->GetName(),0,false,false);
 
   // Creating the Sensitive Detector
   G4SDManager* SDman = G4SDManager::GetSDMpointer();
@@ -95,7 +99,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
       // initilizaiton and adding to geoemtry
       log->SetSensitiveDetector(SD);
       log->SetUserLimits(new G4UserLimits(fMaxStep));
-      new G4PVPlacement(0,G4ThreeVector(x+voxelSize/2,y+voxelSize/2,0),log,"Chamber",fLBox,false,copyNum,true);
+      new G4PVPlacement(0,G4ThreeVector(x+voxelSize/2,y+voxelSize/2,0),log,"Chamber",fLBox,false,copyNum,false);
 
       // Adding to storage and incrementing
       fLogicChamber.push_back(log);
