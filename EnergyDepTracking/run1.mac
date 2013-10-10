@@ -1,0 +1,24 @@
+# Macro file for example B2
+# 
+# Can be run in batch, without graphic
+# or interactively: Idle> /control/execute run1.mac
+#
+# Default kinematics: 
+# proton 3 GeV in direction (0.,0.,1.)
+# 1 event with tracking/verbose
+/run/initialize
+#
+/gun/particle e-
+/tracking/verbose 0
+/gun/energy 3 MeV
+#/analysis/h1/set 1 100 0  5 MeV    # Energy Deposition
+/run/beamOn 100
+#
+# 1 event with printing hits
+#
+/tracking/verbose 0
+/hits/verbose 0
+/run/beamOn 10
+#
+# set target and chamber material
+#
