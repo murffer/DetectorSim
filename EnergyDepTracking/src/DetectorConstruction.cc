@@ -87,7 +87,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   G4int copyNum = 0;
   for(G4double x = -fBoxSize/2; x < fBoxSize/2; x += voxelSize){
     for(G4double y = -fBoxSize/2; y < fBoxSize/2; y += voxelSize){
-      
       // Creating the solid and logical volumes
       G4Box* solid = new G4Box("chamber",voxelSize/2,voxelSize/2,fBoxSize/2);
       G4LogicalVolume* log = new G4LogicalVolume(solid,fMaterial,"Chamber");
@@ -95,7 +94,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
       // initilizaiton and adding to geoemtry
       log->SetSensitiveDetector(SD);
       log->SetUserLimits(new G4UserLimits(fMaxStep));
-      new G4PVPlacement(0,G4ThreeVector(x,y,0),log,"Chamber",fLBox,false,copyNum,true);
+      new G4PVPlacement(0,G4ThreeVector(x+voxelSize/2,y+voxelSize/2,0),log,"Chamber",fLBox,false,copyNum,true);
 
       // Adding to storage and incrementing
       fLogicChamber.push_back(log);
