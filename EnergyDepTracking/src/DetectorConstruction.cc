@@ -34,7 +34,7 @@
 DetectorConstruction::DetectorConstruction() :fPBox(0), fLBox(0), fMaterial(0)
 {
   fBoxSize = 1*cm;
-  fNumChambers=101;
+  fNumChambers=21;
   fMaxStep=1*um;
   // Creating Detector Materials
   materials = Materials::GetInstance();
