@@ -39,11 +39,11 @@ void HistoManager::Book()
  man->SetActivation(G4VAnalysisManager::kH2, ih, false);
  
  // Creating Ntuple
- ih = man->CreateNtuple("0", "Energy Deposition and Position");
+ man->CreateNtuple("0", "Energy Deposition and Position");
  man->CreateNtupleDColumn("EDep");
  man->CreateNtupleDColumn("x");
  man->CreateNtupleDColumn("y");
  man->CreateNtupleDColumn("z");
  man->FinishNtuple();
- man->SetActivation(G4VAnalysisManager::kNtuple, ih, false);
+ //man->SetActivation(G4VAnalysisManager::kNtuple, ih, false);
 }

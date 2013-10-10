@@ -2,11 +2,12 @@
 #define SensitiveDetector_h 1
 
 #include "G4VSensitiveDetector.hh"
-#include "Hit.hh"
+#include "CaloHit.hh"
 
 class G4Step;
 class G4HCofThisEvent;
 class G4TouchableHistory;
+class CaloHit;
 
 class SensitiveDetector : public G4VSensitiveDetector
 {
