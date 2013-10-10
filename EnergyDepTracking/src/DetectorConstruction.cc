@@ -21,6 +21,7 @@
 #include "G4SDManager.hh"
 #include "G4UserLimits.hh"
 
+#include "Analysis.hh"
 /**
  * Constructs the semi-infinite box 
  *
@@ -101,6 +102,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
       copyNum++;
     }
   }
+  Analysis::GetInstance()->SetNumberVoxels(copyNum);
   PrintParameters();
   
   //always return the root volume
