@@ -1,6 +1,7 @@
+#include <vector>
+
 #include "DetectorConstruction.hh"
 #include "DetectorMessenger.hh"
-
 #include "G4Material.hh"
 #include "G4NistManager.hh"
 #include "Materials.hh"
@@ -17,28 +18,36 @@
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 
-#include "CaloSensitiveDetector.hh"
+#include "SensitiveDetector.hh"
 #include "G4SDManager.hh"
 
 /**
  * Constructs the semi-infinite box 
  *
- * Defaults are a 10 m box of G4_Water without a magnetic field
+ * Defaults are a 10 m box of G4_POLYSTYRENE
  */
 DetectorConstruction::DetectorConstruction() :fPBox(0), fLBox(0), fMaterial(0)
 {
-  fBoxSize = 10*cm;
+  fBoxSize = 1*cm;
+  fNumChambers=10;
+  fMaxStep=1*um;
   // Creating Detector Materials
   materials = Materials::GetInstance();
   SetMaterial("G4_POLYSTYRENE");  
-  fDetectorMessenger = new DetectorMessenger(this);
 }
 
 /**
  * Deconstructor
+ *
+ * Cleaning up the logical volume vector
  */
 DetectorConstruction::~DetectorConstruction()
-{ delete fDetectorMessenger;}
+{
+  std::vector<G4LogiclVoume*>::iterator it;
+  for (it = fLogicChamber.begin() it != fLogicChamber.end(); it++){
+    delete *it;
+  }
+}
 
 /**
  * Constructs the detector volume
@@ -68,8 +77,33 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   fLBox = new G4LogicalVolume(sBox,fMaterial,fMaterial->GetName());
   fPBox = new G4PVPlacement(0,G4ThreeVector(),fLBox,fMaterial->GetName(),0,false,0);
 
+  // Creating the Sensitive Detector
+  G4SDManager* SDman = G4SDManager::GetSDMpointer();
+  SD = new SensitiveDetector("SD/SD","HitCollection");
+  SDman->AddNewDetector(SD);
+
+  // Creating tracking chambers
+  G4double voxelSize = fBoxSize/fNumChambers;
+  G4int copyNum = 0;
+  for(G4double x = -fBoxSize/2; x < fBoxSize/2; x += voxelSize){
+    for(G4double y = -fBoxSize/2; y < fBoxSize/2; y += voxelSize){
+      
+      // Creating the solid and logical volumes
+      G4Box* solid = new G4Box("chamber",voxelSize/2,voxelSize/2,fBoxSize/2);
+      G4LogicalVolume* log = new G4LogicalVolume(solid,fMaterial,"Chamber");
+
+      // initilizaiton and adding to geoemtry
+      log->SetSensitiveDetector(SD);
+      log->SetUserLimits(new G4UserLimits(fMaxStep));
+      new G4PVPlacement(0,G4ThreeVector(x,y,0),log,"Chamber",fLBox,false,copyNum,true);
+
+      // Adding to storage and incrementing
+      fLogicChamber.push_back(log);
+      copyNum++;
+    }
+  }
   PrintParameters();
-  SetSensitiveDetectors();
+  
   //always return the root volume
   return fPBox;
 }
@@ -80,21 +114,6 @@ void DetectorConstruction::PrintParameters()
 {
   G4cout << "\n The Box is " << G4BestUnit(fBoxSize,"Length")
     << " of " << fMaterial->GetName() << G4endl;
-}
-/**
- * SetSensitiveDetectors
- *
- * Setting the Sensitive Detectors of the Detector
- */
-void DetectorConstruction::SetSensitiveDetectors(){
-    G4SDManager* SDman = G4SDManager::GetSDMpointer();
-    caloSD = new CaloSensitiveDetector("SD/CaloSD","CaloHitCollection");
-    SDman->AddNewDetector(caloSD);
-    fLBox->SetSensitiveDetector(caloSD);
-
-    // Setting the Maximum Step Size
-    G4double maxStep = 0.01*absThickness;
-    fLBox->SetUserLimits(new G4UserLimits(maxStep));
 }
 /**
  * Sets the detector material

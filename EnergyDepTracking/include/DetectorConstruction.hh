@@ -6,8 +6,8 @@
 
 class G4LogicalVolume;
 class G4Material;
-class DetectorMessenger;
 class Materials;
+class SensitiveDetector;
 
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
@@ -41,18 +41,20 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
   private:
 
-    G4VPhysicalVolume*    fPBox;          /* Physical Volume  */
-    G4LogicalVolume*      fLBox;          /* Logical Volume   */
+    G4VPhysicalVolume*    fPBox;          /** Physical Volume  */
+    G4LogicalVolume*      fLBox;          /** Logical Volume   */
 
-    G4double              fBoxSize;       /* Length of side of a box  */
-    G4Material*           fMaterial;      /* Material of the detector */
+    G4double              fBoxSize;       /** Length of side of a box  */
+    G4Material*           fMaterial;      /** Material of the detector */
+    G4int                 fNumChambers;   /** Number of Voxel Chambers */
+    SensitiveDetector*    SD;             /** Sensitive Detector       */
+    std::vector<G4LogicalVolume*> fLogicChamber; /** Logical Volumes Voxels */
 
-    DetectorMessenger* fDetectorMessenger;
+    G4double              fMaxStep;       /** Maximum Step Size  */
     Materials* materials;                 
 
   private:
 
     G4VPhysicalVolume* ConstructVolumes();     
-		void SetSensitiveDetectors();
 };
 #endif
