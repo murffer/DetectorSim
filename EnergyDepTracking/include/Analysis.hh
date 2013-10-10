@@ -29,6 +29,8 @@ class Analysis {
         void EndOfRun(const G4Run* aRun);
         
         void SetNumberVoxels(const G4int nV){numVoxels  = nV;};
+        void SetVoxelPosition(G4int,G4double,G4double);
+        void SetupVoxelPositions();
    private:
 
         // Singleton Analysis
@@ -38,6 +40,8 @@ class Analysis {
         // Accumulation Variables
         HistoManager* fHistoManager;
         G4int numVoxels;
+        G4double *xPos;
+        G4double *yPos;
         G4double *eDepEvent;
         G4double *eDepEvent2;
         G4double eDepEventTotal;

@@ -102,7 +102,16 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
       copyNum++;
     }
   }
+  // Setting up the analysis
   Analysis::GetInstance()->SetNumberVoxels(copyNum);
+  Analysis::GetInstance()->SetupVoxelPositions();
+  copyNum = 0;
+  for(G4double x = -fBoxSize/2; x < fBoxSize/2; x += voxelSize){
+    for(G4double y = -fBoxSize/2; y < fBoxSize/2; y += voxelSize){
+      Analysis::GetInstance()->SetVoxelPosition(copyNum,x+voxelSize/2,y+voxelSize/2);
+      copyNum++;
+    }
+  }
   PrintParameters();
   
   //always return the root volume

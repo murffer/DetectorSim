@@ -29,10 +29,38 @@ Analysis::Analysis(){
   fHistoManager = new HistoManager();
 }
 /**
+ * Allocates the memory for storing the voxel positions
+ */
+void Analysis::SetupVoxelPositions(){
+  // Setting up the positions
+  xPos = new G4double [numVoxels];
+  yPos = new G4double [numVoxels];
+  for (G4int i = 0; i < numVoxels; i++){
+    xPos[i] = 0;
+    yPos[i] = 0;
+  }
+
+}
+/**
+ * Sets the x, y position of the voxel number
+ *
+ * @param voxNum - voxel number
+ * @param x  - x position of the voxel
+ * @param y - y positon of the voxel
+ */
+void Analysis::SetVoxelPosition(G4int voxNum, G4double x, G4double y){
+  xPos[voxNum] = x;
+  yPos[voxNum] = y;
+}
+/**
  * Nothing to do!
  */
 Analysis::~Analysis(){
   delete fHistoManager; 
+  delete xPos;
+  delete yPos;
+  delete eDepEvent;
+  delete eDepEvent2;
 }
 
 /**
