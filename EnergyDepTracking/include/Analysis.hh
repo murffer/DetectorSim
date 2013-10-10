@@ -6,7 +6,7 @@
 #include "G4VHitsCollection.hh"
 #include "G4String.hh"
 
-#include "CaloHit.hh"
+#include "Hit.hh"
 
 #include "globals.hh"
 
@@ -33,9 +33,6 @@ class Analysis {
         // Singleton Analysis
         Analysis();
         static Analysis *singleton;
-        G4double maxHistEnergy;
-        G4double posHistBinWidth;
-        G4bool EDepPosAnalysis = false;
 
         // Accumulation Variables
         G4double eDepEvent;
