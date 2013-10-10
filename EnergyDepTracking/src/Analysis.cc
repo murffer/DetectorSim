@@ -63,7 +63,7 @@ void Analysis::EndOfEvent(const G4Event* event){
 
   G4VHitsCollection *hc;
   G4int chamberNum;
-  Hit *hit;
+  CaloHit *hit;
   std::map<int,G4double> eDepMap; 
   // Iterating through the hit collection to accumulate the energy deposition 
   G4int numHitColl = event->GetHCofThisEvent()->GetNumberOfCollections();
@@ -72,7 +72,7 @@ void Analysis::EndOfEvent(const G4Event* event){
    
     hc = event->GetHCofThisEvent()->GetHC(hitItter);
     for(G4int i = 0; i < hc->GetSize(); i++){
-      hit = (Hit*) hc->GetHit(i);
+      hit = (CaloHit*) hc->GetHit(i);
         // First interaction of the particle
         eDepMap[hit->GetChamberNumber()] += hit->GetEdep()/MeV;
       // Adding the energy deposition (in MeV)

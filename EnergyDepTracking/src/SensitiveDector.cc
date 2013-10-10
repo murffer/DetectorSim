@@ -1,5 +1,5 @@
 #include "SensitiveDetector.hh"
-#include "Hit.hh"
+#include "CaloHit.hh"
 #include "G4HCofThisEvent.hh"
 #include "G4Step.hh"
 #include "G4ThreeVector.hh"
@@ -40,23 +40,19 @@ G4bool SensitiveDetector::ProcessHits(G4Step* aStep,G4TouchableHistory*){
     G4double minEDep = 0.*eV;
     if ( edep <= minEDep || stepLength == 0.) return false;
 
-    // Getting the copy number
-    G4TouchableHistory* touchable = (G4TouchableHistory*)
-        (aStep->GetPreStepPoint()->GetTouchable());
 
-
-    Hit* newHit = new Hit();
-    newHit->SetTrackID	(aStep->GetTrack()->GetTrackID());
-    newHit->SetParentID    (aStep->GetTrack()->GetParentID());
-    newHit->SetEdep		(edep);
-    newHit->SetStepLength	(stepLength);
-    newHit->SetPosition	(aStep->GetPreStepPoint()->GetPosition());
-    newHit->SetMomentum	(aStep->GetPreStepPoint()->GetMomentum());
-    newHit->SetKineticEnergy (aStep->GetPreStepPoint()->GetKineticEnergy());
-    newHit->SetParticle   (aStep->GetTrack()->GetDefinition());
-    newHit->SetVolume		(aStep->GetTrack()->GetVolume());
-    newHit->SetChamberNb(aStep->GetPreStepPoint()->GetTouchableHandle()->GetCopyNumber());
-    hitCollection->insert( newHit );
+    CaloHit* newCaloHit = new CaloHit();
+    newCaloHit->SetTrackID	(aStep->GetTrack()->GetTrackID());
+    newCaloHit->SetParentID    (aStep->GetTrack()->GetParentID());
+    newCaloHit->SetEdep		(edep);
+    newCaloHit->SetStepLength	(stepLength);
+    newCaloHit->SetPosition	(aStep->GetPreStepPoint()->GetPosition());
+    newCaloHit->SetMomentum	(aStep->GetPreStepPoint()->GetMomentum());
+    newCaloHit->SetKineticEnergy (aStep->GetPreStepPoint()->GetKineticEnergy());
+    newCaloHit->SetParticle   (aStep->GetTrack()->GetDefinition());
+    newCaloHit->SetVolume		(aStep->GetTrack()->GetVolume());
+    newCaloHit->SetChamberNb(aStep->GetPreStepPoint()->GetTouchableHandle()->GetCopyNumber());
+    hitCollection->insert( newCaloHit );
 
     return true;
 }

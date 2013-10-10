@@ -6,7 +6,7 @@
 #include "G4VHitsCollection.hh"
 #include "G4String.hh"
 
-#include "Hit.hh"
+#include "CaloHit.hh"
 
 #include "globals.hh"
 

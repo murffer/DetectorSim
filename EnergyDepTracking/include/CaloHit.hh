@@ -1,5 +1,5 @@
-#ifndef Hit_h
-#define Hit_h 1
+#ifndef CaloHit_h
+#define CaloHit_h 1
 
 #include "G4VHit.hh"
 #include "G4ThreeVector.hh"
@@ -9,7 +9,7 @@
 #include "G4VPhysicalVolume.hh"
 
 /**
- * @brief - Hit: a snapshot of the physcial interaction of a track in the sensitive region of a detector
+ * @brief - CaloHit: a snapshot of the physcial interaction of a track in the sensitive region of a detector
  *
  * Contians:
  *  - Particle Information (type and rank (primary, secondary, tertiary ...))
@@ -18,10 +18,10 @@
  *  -  deposition in volume
  *  - geometric information
  */
-class Hit : public G4VHit {
+class CaloHit : public G4VHit {
 	public:
-		Hit();
-		~Hit();
+		CaloHit();
+		~CaloHit();
 
 
 		inline void* operator new(size_t);
@@ -69,18 +69,18 @@ class Hit : public G4VHit {
 		G4VPhysicalVolume* GetVolume()      {return volume;};
 };
 
-typedef G4THitsCollection<Hit> HitsCollection;
-extern G4Allocator<Hit> HitAllocator;
+typedef G4THitsCollection<CaloHit> HitsCollection;
+extern G4Allocator<CaloHit> HitAllocator;
 
-inline void* Hit::operator new(size_t){
+inline void* CaloHit::operator new(size_t){
 	void *aHit;
 	aHit = (void *) HitAllocator.MallocSingle();
 	return aHit;
 }
 
 
-inline void Hit::operator delete(void *aHit){
-	HitAllocator.FreeSingle((Hit*) aHit);
+inline void CaloHit::operator delete(void *aHit){
+	HitAllocator.FreeSingle((CaloHit*) aHit);
 }
 #endif
 
