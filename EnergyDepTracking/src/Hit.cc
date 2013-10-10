@@ -25,6 +25,7 @@ Hit::~Hit() {}
 void Hit::Print(){
 	G4cout << "  trackID: " << trackID <<" particle: "
          <<particle->GetParticleName()<<" rank: "<<particleRank
+         <<" chamber number: "<<chamberNum
 		     <<"\nvolume: "<<volume->GetName()
          <<" position[mm]: " << pos/mm
          <<"\n Momentum "<<momentum<<" Kinetic Energy[keV]"<<kEnergy/keV

@@ -55,6 +55,7 @@ G4bool SensitiveDetector::ProcessHits(G4Step* aStep,G4TouchableHistory*){
     newHit->SetKineticEnergy (aStep->GetPreStepPoint()->GetKineticEnergy());
     newHit->SetParticle   (aStep->GetTrack()->GetDefinition());
     newHit->SetVolume		(aStep->GetTrack()->GetVolume());
+    newHit->SetChamberNb(aStep->GetPreStepPoint()->GetTouchableHandle()->GetCopyNumber());
     hitCollection->insert( newHit );
 
     return true;

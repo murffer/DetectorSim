@@ -39,6 +39,7 @@ class Hit : public G4VHit {
 		G4int parentID;                     /* Parent ID */
     G4ParticleDefinition* particle;     /* Particle Definition */
 		G4int particleRank;                 /* Primary, Secondary, etc */
+    G4int chamberNumber;            /* Chamber number / copy number */
 		G4VPhysicalVolume* volume;			/* Physical Volume */
 
 	public:
@@ -53,6 +54,7 @@ class Hit : public G4VHit {
 		{particle = pdef;};
 		void SetParticleRank(G4int rank)            {particleRank = rank;};
 		void SetVolume(G4VPhysicalVolume* v)	    {volume = v;};
+    void SetChamberNb(G4int nb)           {chamberNumber = nb;};
 
 		G4int GetTrackID()					{return trackID;};
     G4int GetParentID()                 {return parentID;};
@@ -63,6 +65,7 @@ class Hit : public G4VHit {
 		G4double GetStepLength()			{return stepLength;};
 		G4ParticleDefinition* GetParticle() {return particle;};
 		G4int GetParticleRank()             {return particleRank;};
+    G4int GetChamberNumber()            {return chamberNumber;};
 		G4VPhysicalVolume* GetVolume()      {return volume;};
 };
 
