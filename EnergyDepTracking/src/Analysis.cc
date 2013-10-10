@@ -10,7 +10,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-
+#include <map>
 #include "G4HCofThisEvent.hh"
 #include "G4Event.hh"
 #include "G4ThreeVector.hh"
@@ -31,7 +31,6 @@ Analysis::Analysis(){ }
  * Nothing to do!
  */
 Analysis::~Analysis(){
-  G4cout<<"Deleting the analysis object"<<G4endl;
 }
 
 /**
@@ -63,12 +62,9 @@ void Analysis::PrepareNewEvent(const G4Event* anEvent){
 void Analysis::EndOfEvent(const G4Event* event){
 
   G4VHitsCollection *hc;
-  G4double xPos = 0.0; 
-  G4double yPos = 0.0;
-  G4double zPos = 0.0; 
-  bool isFirst = true;
+  G4int chamberNum;
   CaloHit *hit;
- 
+  std::map<int,G4double> eDepMap; 
   // Iterating through the hit collection to accumulate the energy deposition 
   G4int numHitColl = event->GetHCofThisEvent()->GetNumberOfCollections();
   for(G4int hitItter = 0; hitItter < numHitColl; hitItter++){
@@ -76,13 +72,9 @@ void Analysis::EndOfEvent(const G4Event* event){
    
     hc = event->GetHCofThisEvent()->GetHC(hitItter);
     for(G4int i = 0; i < hc->GetSize(); i++){
-      hit = (CaloHit*) hc->GetHit(i);
+      hit = (Hit*) hc->GetHit(i);
         // First interaction of the particle
-        isFirst = false;
-        xPos = hit->GetPosition().x();
-        yPos = hit->GetPosition().y();
-        zPos = hit->GetPosition().z();
-
+        eDepMap<hit->GetChamberNumber()> += hit->GetEdep()/MeV;
       // Adding the energy deposition (in MeV)
       eDepEvent += hit->GetEdep()/MeV;
     }
@@ -91,9 +83,12 @@ void Analysis::EndOfEvent(const G4Event* event){
   if (eDepEvent > 0.0){
       G4AnalysisManager* man = G4AnalysisManager::Instance();
       man->FillH1(1,eDepEvent);
-     man->FillNtupleDColumn(0, );
-     man->FillNtupleDColumn(1, fEnergyGap);
-     man->AddNtupleRow();
+      std::map<int,G4double>::iterator it;
+      for(it = eDepMap.begin(); it != eDepMap.end(); it++){
+        G4cout<<it->first << "=>" <<it->second<<G4endl;
+      }
+     //man->FillNtupleDColumn(1, fEnergyGap);
+     //man->AddNtupleRow();
   }
 }
 
