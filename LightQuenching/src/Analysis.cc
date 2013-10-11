@@ -8,8 +8,8 @@
 #include "G4LogicalVolume.hh"
 #include "G4Material.hh"
 #include "G4ParticleDefinition.hh"
-#include "TMath.h"
-#include "TAxis.h"
+
+#include "HistoManager.hh"
 
 #include <unistd.h>
 #include <stdio.h>
@@ -25,6 +25,7 @@
 #include "PhotonHit.hh"
 #include "AbsorberHit.hh"
 
+#include "HistoManager.hh"
 Analysis* Analysis::singleton = 0;
 
 /**
@@ -34,13 +35,11 @@ Analysis* Analysis::singleton = 0;
  */
 Analysis::Analysis(){
   incidentParticleName = "";
-  outfile = NULL;
-  eDepHist = opAbsHist = opPMTHist = NULL;
-
-  maxHistEnergy = 5*MeV;
+ fHistoManager = new HistoManager();
 }
 Analysis::~Analysis(){
   G4cout<<"Deleting the analysis object"<<G4endl;
+ delete fHistoManager;
 }
 
 /**
@@ -52,22 +51,12 @@ Analysis::~Analysis(){
  */
 void Analysis::PrepareNewRun(const G4Run* aRun){
 
-  // Getting the detector thickness
-  G4String detMat = GetDetectorMaterial();
-  G4int maxNumPhotons = 100000;
-
-  std::ostringstream oss;
-  oss <<incidentParticleName<<"_"<<detMat<<".root";
-  std::string fname = oss.str();
-  fname.erase(remove(fname.begin(), fname.end(),' '),fname.end());
-
-  // Creating ROOT analysis objects (histogram)
-  outfile = new TFile(fname.data(),"RECREATE");
-  
-  // Creating ROOT Analysis Objects
-  eDepHist = new TH1F("eDepHist","Total Energy Deposition",100,0*eV,maxHistEnergy);
-  opAbsHist = new TH1F("opAbsHist","Optical Photons Created",100,0,maxNumPhotons);
-  opPMTHist = new TH1F("opPMTHist","Optical Photons Created",100,0,maxNumPhotons);
+  //histograms
+  //
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  if ( analysisManager->IsActive() ) {
+    analysisManager->OpenFile();
+  }   
 
   G4cout<<"Prepared analysis for run "<<aRun->GetRunID()<<G4endl;
 }
@@ -76,21 +65,6 @@ void Analysis::PrepareNewRun(const G4Run* aRun){
  */
 void Analysis::SetNumOpticalPhotonsGenerated(G4int numPhotons){
   nOPAbsEvent = numPhotons;
-}
-/**
- * GetDetectorMaterial
- */
-G4String Analysis::GetDetectorMaterial(){
-  G4LogicalVolume* detLV
-    = G4LogicalVolumeStore::GetInstance()->GetVolume("Absorber");
-  G4Material* detMat = NULL;
-  if ( detLV) {
-    detMat = dynamic_cast< G4Material*>(detLV->GetMaterial()); 
-  } 
-  if (detMat)
-    return detMat->GetName();
-  else
-    return G4String("UNKOWN");
 }
 
 /**
@@ -153,29 +127,12 @@ void Analysis::EndOfEvent(const G4Event* event){
  */
 void Analysis::EndOfRun(const G4Run* ){
   // Print out some run statistics
-  G4cout<<"----> RUN SUMMARY"
-        <<"\n\tAverage Energy Depostion: "<<eDepHist->GetMean()<<" +/- "<<eDepHist->GetMeanError()
-        <<"\n\tAverage Number of Optical Photons Created: "<<opAbsHist->GetMean()<<" +/- "<<opAbsHist->GetMeanError()
-        <<"\n\tAverage Number of Optical Photons Detected: "<<opPMTHist->GetMean()<<" +/- "<<opPMTHist->GetMeanError()
-        <<"\n\tOptical Photon Collection Efficiency: "<<opPMTHist->GetMean()/opAbsHist->GetMean()<<" +/- "
-        <<sqrt((pow(opAbsHist->GetMeanError()/opAbsHist->GetMean(),2)+pow(opPMTHist->GetMeanError()/opPMTHist->GetMean(),2))*opPMTHist->GetMean()/opAbsHist->GetMean())
-        <<G4endl; 
-  outfile->Write();
-  outfile->Close();
-  delete outfile;
-}
-
-/**
- * SetIncidentParticleName
- *
- * Sets the incident particle name (for the messener / file name)
- */
-void Analysis::SetIncidentParticleName(G4String pName){
-  incidentParticleName = pName;
-
-  if (incidentParticleName == "neutron" )
-    neutron = true;
-  else
-    neutron = false;
+  
+  //save histograms      
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();  
+  if ( analysisManager->IsActive() ) {
+    analysisManager->Write();
+    analysisManager->CloseFile();
+  }    
 }
 
