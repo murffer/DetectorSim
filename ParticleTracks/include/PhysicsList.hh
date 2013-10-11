@@ -16,9 +16,6 @@ class PhysicsList: public G4VModularPhysicsList
 
     virtual void ConstructParticle();
     virtual void ConstructProcess();
-    
-    void AddDecay();
-    void AddRadioactiveDecay();
 
     virtual void SetCuts();
     void SetCutForGamma(G4double);

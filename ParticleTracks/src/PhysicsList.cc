@@ -6,13 +6,7 @@
 #include "PhysicsList.hh"
 #include "PhysicsListMessenger.hh"
  
-#include "G4EmStandardPhysics.hh"
-#include "G4EmStandardPhysics_option1.hh"
-#include "G4EmStandardPhysics_option2.hh"
-#include "G4EmStandardPhysics_option3.hh"
-#include "G4EmStandardPhysics_option4.hh"
 #include "G4EmLivermorePhysics.hh"
-#include "G4EmPenelopePhysics.hh"
 
 #include "DetectorConstruction.hh"
 
@@ -174,59 +168,7 @@ void PhysicsList::ConstructProcess()
   G4EmProcessOptions emOptions;
   emOptions.SetBuildCSDARange(true);
   emOptions.SetDEDXBinningForCSDARange(10*10);
-    
-  // Decay Process
-  //
-  //AddDecay();
-    
-  // Decay Process
-  //
-  //AddRadioactiveDecay();  
 
-}
-
-/**
- * Sets up the decay process
- */
-#include "G4ProcessManager.hh"
-#include "G4Decay.hh"
-void PhysicsList::AddDecay()
-{ 
-  // Decay Process
-  //
-  G4Decay* fDecayProcess = new G4Decay();
-
-  theParticleIterator->reset();
-  while( (*theParticleIterator)() ){
-    G4ParticleDefinition* particle = theParticleIterator->value();
-    G4ProcessManager* pmanager = particle->GetProcessManager();
-
-    if (fDecayProcess->IsApplicable(*particle)) { 
-
-      pmanager ->AddProcess(fDecayProcess);
-
-      // set ordering for PostStepDoIt and AtRestDoIt
-      pmanager ->SetProcessOrdering(fDecayProcess, idxPostStep);
-      pmanager ->SetProcessOrdering(fDecayProcess, idxAtRest);
-
-    }
-  }
-}
-
-/**
- * Sets up the radioactive decay
- */
-#include "G4PhysicsListHelper.hh"
-#include "G4RadioactiveDecay.hh"
-void PhysicsList::AddRadioactiveDecay()
-{  
-  G4RadioactiveDecay* radioactiveDecay = new G4RadioactiveDecay();
-  radioactiveDecay->SetHLThreshold(-1.*s);
-  radioactiveDecay->SetICM(true);                //Internal Conversion
-  radioactiveDecay->SetARM(true);                //Atomic Rearangement
-  
-  G4PhysicsListHelper* ph = G4PhysicsListHelper::GetPhysicsListHelper();  
-  ph->RegisterProcess(radioactiveDecay, G4GenericIon::GenericIon());
 }
 
 
