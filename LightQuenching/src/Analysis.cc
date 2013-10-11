@@ -34,12 +34,24 @@ Analysis* Analysis::singleton = 0;
  * Creates an Analysis object 
  */
 Analysis::Analysis(){
-  incidentParticleName = "";
- fHistoManager = new HistoManager();
+}
+/**
+ * Initilize the analysis manager
+ *
+ * Creates a new HistoManager
+ */
+void Analysis::Initilize(){
+  fHistoManager = new HistoManager();
+}
+/**
+ * Cleaning up the analysis manager
+ *
+ * Deleting the HistoManager
+ */
+void Analysis::CleanUp(){
+   delete fHistoManager;
 }
 Analysis::~Analysis(){
-  G4cout<<"Deleting the analysis object"<<G4endl;
- delete fHistoManager;
 }
 
 /**
@@ -50,21 +62,12 @@ Analysis::~Analysis(){
  * is fixed during a run.
  */
 void Analysis::PrepareNewRun(const G4Run* aRun){
-
   //histograms
   //
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   if ( analysisManager->IsActive() ) {
     analysisManager->OpenFile();
   }   
-
-  G4cout<<"Prepared analysis for run "<<aRun->GetRunID()<<G4endl;
-}
-/**
- * Sets the number of optical photons generated
- */
-void Analysis::SetNumOpticalPhotonsGenerated(G4int numPhotons){
-  nOPAbsEvent = numPhotons;
 }
 
 /**
@@ -113,10 +116,10 @@ void Analysis::EndOfEvent(const G4Event* event){
       eDepEvent += absHit->GetEdep()/MeV;
   }
   // Filling the histograms
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   if (eDepEvent > 0.0){
-    eDepHist->Fill(eDepEvent);
-    opAbsHist->Fill(nOPAbsEvent);
-    opPMTHist->Fill(nOPPMTEvent);
+    analysisManager->FillH1(1,nOPAbsEvent);
+    analysisManager->FillH1(2,nOPPMTEvent);
   }
 }
 
@@ -134,5 +137,11 @@ void Analysis::EndOfRun(const G4Run* ){
     analysisManager->Write();
     analysisManager->CloseFile();
   }    
+}
+/**
+ * Sets the number of optical photons generated
+ */
+void Analysis::SetNumOpticalPhotonsGenerated(G4int numPhotons){
+  nOPAbsEvent = numPhotons;
 }
 

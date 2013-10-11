@@ -21,13 +21,16 @@ class Analysis {
     }
 
     virtual ~Analysis();
+    void Initilize(); 
+    void CleanUp();
 
     // Accumulation Methods
     void PrepareNewEvent(const G4Event* anEvent);
     void PrepareNewRun(const G4Run* aRun);
     void EndOfEvent(const G4Event* anEvent);
     void EndOfRun(const G4Run* aRun);
-  
+    
+    void SetNumOpticalPhotonsGenerated(G4int numPhotons);
   private:
 
     // Singleton Analysis

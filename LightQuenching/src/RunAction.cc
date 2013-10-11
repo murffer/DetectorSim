@@ -23,4 +23,5 @@ void RunAction::BeginOfRunAction(const G4Run* run){
 
 void RunAction::EndOfRunAction(const G4Run* aRun){
     Analysis::GetInstance()->EndOfRun(aRun);
+	G4cout<<"Ending run: " << aRun->GetRunID()<< G4endl;
 }

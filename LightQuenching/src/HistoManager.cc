@@ -4,7 +4,7 @@
 /**
  * Creates a Histogram manger with the default name
  */
-HistoManager::HistoManager(): fFileName("rangeSim")
+HistoManager::HistoManager(): fFileName("lightQuenching")
 {
   Book();
 }
@@ -24,6 +24,7 @@ HistoManager::~HistoManager()
  */
 void HistoManager::Book()
 {
+  G4cout<<"Creating histograms"<<G4endl;
   // Create or get analysis manager
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   analysisManager->SetFileName(fFileName);
@@ -32,7 +33,7 @@ void HistoManager::Book()
   analysisManager->SetActivation(true);    // enable inactivation of histograms
   
   // Define histograms start values
-  const G4int kMaxHisto = 6;
+  const G4int kMaxHisto = 4;
   const G4String id[] = { "1", "2", "3" , "4"};
   const G4String title[] = 
                 { "Number of Optical Photons Created",
