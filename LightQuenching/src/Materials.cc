@@ -112,6 +112,8 @@ void Materials::CreateMaterials(){
     G4Material* B2O3 = nistMan->FindOrBuildMaterial("G4_BORON_OXIDE");
     G4Material* Na2O = nistMan->FindOrBuildMaterial("G4_SODIUM_MONOXIDE");
     G4Material* K2O = nistMan->FindOrBuildMaterial("G4_POTASSIUM_OXIDE");
+    G4Material* SiO2 = nistMan->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
+    G4Material* Al2O3 = nistMan->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
     
     elements.push_back("As");   natoms.push_back(2);
     elements.push_back("O");    natoms.push_back(3);
