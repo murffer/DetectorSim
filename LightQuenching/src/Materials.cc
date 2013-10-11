@@ -19,7 +19,7 @@ Materials::Materials(){
   G4cout<<"Materials - Creating the materials"<<G4endl;
   CreateMaterials();
   SetOpticalPropertiesTeflon();
-  SetOpticalPropertiesGS20();
+  SetOpticalPropertiesEJ200();
   SetOpticalPropertiesBK7();
   SetOpticalPropertiesSilicone();
   SetOpticalPropertiesAir();
@@ -28,7 +28,7 @@ Materials::Materials(){
 
 Materials::~Materials(){
   delete Teflon;      /* Teflon Tape    */
-  delete GS20;        /* GS20 Detector  */
+  delete EJ200;        /* EJ200 Detector  */
   delete BK7;         /* PMT Window Glass (Boroscilate) */
   delete Silicone;    /* Optical Grease */
   delete Air;         /* Air            */
@@ -92,38 +92,10 @@ void Materials::CreateMaterials(){
     
     
     //-----------------------------------------------------------------------
-    // GS20
-    // GS20 is (by mass fraction):
-    //  56% SiO2, 4% MgO,  18% Al2O3 18% Li2O, and 4% Ce2O3
+    // EJ200
+    // EJ200 was assumed to be PVT based
     //-----------------------------------------------------------------------
-    G4Isotope* Li6 = new G4Isotope("Li6",3,6,6.015*g/mole);
-    G4Isotope* Li7 = new G4Isotope("Li7",3,7,7.015*g/mole);
-    G4Element* enrichLi  = new G4Element("enriched Lithium","Li",2);
-    enrichLi->AddIsotope(Li6,0.95*perCent);
-    enrichLi->AddIsotope(Li7,0.05*perCent);
-
-    G4Material* LiOxide = new G4Material("6LiO2",density=2.013*g/cm3,2);
-    LiOxide->AddElement(enrichLi,2);
-    LiOxide->AddElement(nistMan->FindOrBuildElement("O"),1);
-
-    G4Material* SiO2 = nistMan->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
-    G4Material* MgO = nistMan->FindOrBuildMaterial("G4_MAGNESIUM_OXIDE");
-    G4Material* Al2O3 = nistMan->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
-    
-    elements.push_back("Ce");   natoms.push_back(2);
-    elements.push_back("O");    natoms.push_back(3);
-    density = 6.2*g/cm3;
-    G4Material* Ce2O3 = nistMan->ConstructNewMaterial("Ce2O3",elements,natoms,density);
-    elements.clear();           natoms.clear();
-
-    density = 2.5*g/cm3;
-    GS20 = new G4Material("GS20",density,5,kStateSolid);
-    GS20->AddMaterial(SiO2,56*perCent);
-    GS20->AddMaterial(MgO,4*perCent);
-    GS20->AddMaterial(Al2O3,18*perCent);
-    GS20->AddMaterial(LiOxide,18*perCent);
-    GS20->AddMaterial(Ce2O3,4*perCent);
-    
+    EJ200 = nistMan->FindOrBuildMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
     
     //----------------------------------------------------------------------
     // BK7 Glass (Boroscilicate glass) 
@@ -213,23 +185,18 @@ void Materials::SetOpticalPropertiesTeflon(){
 }
 
 /**
- * Sets the optical properties of GS20
+ * Sets the optical properties of EJ200
  *
  * Data Sources:
- *  Assumed that the index of reflection and absorbition length are similar to BK7
+ *
+ * EJ200 Data sheet
  */
-void Materials::SetOpticalPropertiesGS20(){
+void Materials::SetOpticalPropertiesEJ200(){
     
     // Index of Reflection (146 nm to 1570 nm)
-    const G4int nRINDEX = 13;
-    G4double photonEnergyRINDEX[nRINDEX] = 
-    {8.5506*eV,4.7232*eV,3.2627*eV,2.4921*eV,2.0160*eV,
-    1.6926*eV,1.4586*eV,1.2815*eV,1.1427*eV,1.0311*eV, 
-    0.9393*eV,0.8625*eV,0.7973*eV};
-    G4double RefractiveIndexGlass[nRINDEX]=
-    {1.6508,1.5266,1.4980,1.4872,1.4819,    
-    1.4790,1.4772,1.4760,1.4752,1.4746,    
-    1.4742,1.4738,1.4736};
+    const G4int nRINDEX = 2;
+    G4double photonEnergyRINDEX[nRINDEX] = {8.5506*eV,0.7973*eV};
+    G4double RefractiveIndexGlass[nRINDEX]= {1.58, 1.58};
 
     // Absorbition Length
     const G4int nABS=2;
@@ -238,20 +205,20 @@ void Materials::SetOpticalPropertiesGS20(){
     
     // Setting sctintillation to be the emission spectra
     const G4int nEM = 6;
-    G4double photonEnergyEM[nEM] = {3.8,3.5,3.1,2.8,2.5};
-    G4double emGS20[nEM]={0,0.19,0.37,0.32,0.10,0.02};
+    G4double photonEnergyEM[nEM] = {3.01, 2.92, 2.82, 2.70,2.58,2.49};
+    G4double emEJ200[nEM]={0,1.0,0.75,0.45,0.18,0.05};
 	
     // Creating the materials property table and adding entries into properties table
-    G4MaterialPropertiesTable* MPTGS20 = new G4MaterialPropertiesTable();
-    MPTGS20->AddProperty("RINDEX",photonEnergyRINDEX,RefractiveIndexGlass,nRINDEX);
-    MPTGS20->AddProperty("ABSLENGTH",photonEnergyABS,AbsLengthGlass,nABS);
+    G4MaterialPropertiesTable* MPTEJ200 = new G4MaterialPropertiesTable();
+    MPTEJ200->AddProperty("RINDEX",photonEnergyRINDEX,RefractiveIndexGlass,nRINDEX);
+    MPTEJ200->AddProperty("ABSLENGTH",photonEnergyABS,AbsLengthGlass,nABS);
     // Setting  Scintillation Properties
-	  MPTGS20->AddProperty("FASTCOMPONENT",photonEnergyEM,emGS20,nEM);
-    MPTGS20->AddConstProperty("FASTTIMECONSTANT",50*ns);      //
-    MPTGS20->AddConstProperty("SCINTILLATIONYIELD", 3600*MeV);
-    MPTGS20->AddConstProperty("YIELDRATIO", 1.0);
-    MPTGS20->AddConstProperty("RESOLUTIONSCALE", 1.0);
-    GS20->SetMaterialPropertiesTable(MPTGS20);
+	  MPTEJ200->AddProperty("FASTCOMPONENT",photonEnergyEM,emEJ200,nEM);
+    MPTEJ200->AddConstProperty("FASTTIMECONSTANT",2.5*ns);      //
+    MPTEJ200->AddConstProperty("SCINTILLATIONYIELD", 10200*MeV);
+    MPTEJ200->AddConstProperty("YIELDRATIO", 1.0);
+    MPTEJ200->AddConstProperty("RESOLUTIONSCALE", 1.0);
+    EJ200->SetMaterialPropertiesTable(MPTEJ200);
 }
 /**
  * Sets the optical properties of BK7
