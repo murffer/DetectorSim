@@ -1,0 +1,55 @@
+# Visulizaiton Creation
+# 
+# Can be run in batch, without graphic
+# or interactively: Idle> /control/execute run1.mac
+#
+# Default kinematics: 
+/run/initialize
+/control/execute vis.mac
+#
+/gun/particle e-
+/gun/energy 100 keV
+/run/beamOn 10
+
+# set print mode to pixmap
+/vis/scene/add/text -25 -40 0 um 12 0 0 100 keV Electron
+/vis/ogl/set/printMode pixmap
+/vis/ogl/set/printSize -1 -1
+/vis/ogl/set/printFilename electronTrack_100keV
+/vis/ogl/printEPS
+#
+# 10 keV Electron
+#
+/control/execute vis.mac
+/gun/particle e-
+/gun/energy 50 keV
+/run/beamOn 10
+/vis/scene/add/text -25 -40 0 um 12 0 0 50 keV Electron
+/vis/ogl/set/printMode pixmap
+/vis/ogl/set/printSize -1 -1
+/vis/ogl/set/printFilename electronTrack_50keV
+/vis/ogl/printEPS
+#
+# 2.05 MeV Alpha
+#
+/control/execute vis.mac
+/gun/particle alpha
+/gun/energy 2.05 MeV
+/run/beamOn 10
+/vis/scene/add/text -25 -40 0 um 12 0 0 2.05 MeV Alpha
+/vis/ogl/set/printMode pixmap
+/vis/ogl/set/printSize -1 -1
+/vis/ogl/set/printFilename alphaTrack 
+/vis/ogl/printEPS
+#
+# 2.75 MeV Triton 
+#
+/control/execute vis.mac
+/gun/particle triton
+/gun/energy 2.78 MeV
+/run/beamOn 10
+/vis/scene/add/text -25 -40 0 um 12 0 0 2.78 MeV Triton
+/vis/ogl/set/printMode pixmap
+/vis/ogl/set/printSize -1 -1
+/vis/ogl/set/printFilename tritonTrack 
+/vis/ogl/printEPS
