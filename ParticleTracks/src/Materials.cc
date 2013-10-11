@@ -21,10 +21,7 @@ Materials::Materials(){
 }
 
 Materials::~Materials(){
-  delete Teflon;      /* Teflon Tape    */
   delete GS20;        /* GS20 Detector  */
-  delete BK7;         /* PMT Window Glass (Boroscilate) */
-  delete Silicone;    /* Optical Grease */
   delete Air;         /* Air            */
   delete PMMA;        /* PMMA           */
   delete EJ426;       /* EJ426          */ 
@@ -82,12 +79,6 @@ void Materials::CreateMaterials(){
     // Material Definations
     
     //-----------------------------------------------------------------------
-    // Teflon Tape
-    //-----------------------------------------------------------------------
-    Teflon = nistMan->FindOrBuildMaterial("G4_TEFLON");
-    
-    
-    //-----------------------------------------------------------------------
     // GS20
     // GS20 is (by mass fraction):
     //  56% SiO2, 4% MgO,  18% Al2O3 18% Li2O, and 4% Ce2O3
@@ -130,51 +121,12 @@ void Materials::CreateMaterials(){
     EJ426->AddMaterial(nistMan->FindOrBuildMaterial("G4_S"),0.219);
     G4cout<<EJ426;
 
-    //----------------------------------------------------------------------
-    // BK7 Glass (Boroscilicate glass) 
-    // Compositon from www.zcq-quartz.com/gass-2.html
-    //
-    // SiO2=69.13% B2O3=10.75% BaO=3.07% Na2O=10.40% K2O=6.29% As2O3=0.36%
-    //----------------------------------------------------------------------
-    elements.push_back("Ba");   natoms.push_back(1);
-    elements.push_back("O");    natoms.push_back(1);
-    density = 5.27*g/cm3;
-    G4Material* BaO = nistMan->ConstructNewMaterial("BaO",elements,natoms,density);
-    elements.clear();           natoms.clear();
-    
-    G4Material* B2O3 = nistMan->FindOrBuildMaterial("G4_BORON_OXIDE");
-    G4Material* Na2O = nistMan->FindOrBuildMaterial("G4_SODIUM_MONOXIDE");
-    G4Material* K2O = nistMan->FindOrBuildMaterial("G4_POTASSIUM_OXIDE");
-    
-    elements.push_back("As");   natoms.push_back(2);
-    elements.push_back("O");    natoms.push_back(3);
-    density = 3.74*g/cm3;
-    G4Material* As2O3 = nistMan->ConstructNewMaterial("As2O3",elements,natoms,density);
-    elements.clear();           natoms.clear();
-
-    BK7 = new G4Material("BK7", 2.23*g/cm3,6, kStateSolid);
-    BK7->AddMaterial(SiO2,69.13*perCent);
-    BK7->AddMaterial(B2O3,10.75*perCent);
-    BK7->AddMaterial(BaO,3.07*perCent);
-    BK7->AddMaterial(Na2O,10.40*perCent);
-    BK7->AddMaterial(K2O,6.29*perCent);
-    BK7->AddMaterial(As2O3,0.36*perCent);
     
     //----------------------------------------------------------------------
     // AIR
     //----------------------------------------------------------------------
     Air = nistMan->FindOrBuildMaterial("G4_AIR");
     
-    //----------------------------------------------------------------------
-    // Silicone Optical Grease
-    // Composition from $G4EXAMPLES/extended/wls/src/WLSMaterials.cc
-    //----------------------------------------------------------------------
-    elements.push_back("C");   natoms.push_back(2);
-    elements.push_back("H");    natoms.push_back(6);
-    density = 1.060*g/cm3;
-    Silicone = nistMan->ConstructNewMaterial("Silicone",elements,natoms,density);
-    elements.clear();           natoms.clear();
-  
      
     //----------------------------------------------------------------------
     // Getting other materials
