@@ -6,7 +6,8 @@
 #
 #
 /run/initialize
-/analysis/h1/set 1 100 0  15000    # Number of optical photons created
+/analysis/setFileName electronOP_1MeV
+/analysis/h1/set 1 100 5000  15000    # Number of optical photons created
 #
 # Simulated Ranges
 /gun/particle e-
