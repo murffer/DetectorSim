@@ -71,6 +71,6 @@ int main(int argc,char** argv){
 #endif
     // Cleaning up
     Analysis::GetInstance()->CleanUp();
-//    delete runManager;
+    delete runManager;
     return 0;
 }
