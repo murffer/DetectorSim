@@ -13,16 +13,19 @@
 /run/beamOn 1000
 #
 /analysis/setFileName electronOP_500keV
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
 /gun/particle e-
 /gun/energy 500 keV
 /run/beamOn 1000
 #
 /gun/particle e-
 /analysis/setFileName electronOP_100keV
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
 /gun/energy 100 keV
 /run/beamOn 1000
 #
 /analysis/setFileName alphaOP_1MeV 
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
 /gun/particle alpha
 /gun/energy 1 MeV
 /run/beamOn 1000
