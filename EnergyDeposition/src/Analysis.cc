@@ -34,7 +34,6 @@ Analysis::Analysis(){
   // Empty Constructor, assingment done in constuctor list
   maxHistEnergy = 5*MeV;
   posHistBinWidth = 5*um;
-  incidentParticleName = "";
 }
 Analysis::~Analysis(){
   G4cout<<"Deleting the analysis object"<<G4endl;
@@ -49,15 +48,6 @@ Analysis::~Analysis(){
  */
 void Analysis::PrepareNewRun(const G4Run* aRun){
 
-  // Setting up the file name
-  G4double detThickness = GetDetectorThickness();
-  G4String detMat = GetDetectorMaterial();
-
-  std::ostringstream oss;
-  oss <<incidentParticleName<<"_"
-    <<detMat<<"_"<<G4BestUnit(detThickness,"Length")<<".root";
-  std::string fname = oss.str();
-  fname.erase(remove(fname.begin(), fname.end(),' '),fname.end());
   
   // Creating ROOT analysis objects (histogram)
   outfile = new TFile(fname.data(),"RECREATE");
@@ -71,67 +61,6 @@ void Analysis::PrepareNewRun(const G4Run* aRun){
 
   }
   G4cout<<"Prepared run "<<aRun->GetRunID()<<G4endl;
-}
-/**
- * GetDetectorMaterial
- */
-G4String Analysis::GetDetectorMaterial(){
-  G4LogicalVolume* detLV
-    = G4LogicalVolumeStore::GetInstance()->GetVolume("Absorber");
-  G4Material* detMat = NULL;
-  if ( detLV) {
-    detMat = dynamic_cast< G4Material*>(detLV->GetMaterial()); 
-  } 
-  if (detMat)
-    return detMat->GetName();
-  else
-    return G4String("UNKOWN");
-}
-/**
- * GetDetectorThickness
- * @return the thickness of the detector, from the G4LogicalVolumeStore
- */
-G4double Analysis::GetDetectorThickness(){
-  G4double detThickness = 0;
-  G4LogicalVolume* detLV
-    = G4LogicalVolumeStore::GetInstance()->GetVolume("Absorber");
-  G4Tubs* detTubs = 0;
-  if ( detLV) {
-    detTubs = dynamic_cast< G4Tubs*>(detLV->GetSolid()); 
-  } 
-  if ( detTubs ) {
-    detThickness = detTubs->GetZHalfLength()*2;  
-  }
-  else  {
-    G4cerr << "Detector Thickness not found." << G4endl;
-  } 
-  return detThickness;
-}
-/**
- * GetCalorimeterThickness
- * @return the thickness of the calorimeter
- */
-G4double Analysis::GetCalorimeterThickness(){
-  G4double caloThickness = 0;
-  G4LogicalVolume* detLV
-    = G4LogicalVolumeStore::GetInstance()->GetVolume("Absorber");
-  G4LogicalVolume* gapLV
-    = G4LogicalVolumeStore::GetInstance()->GetVolume("Gap");
-  G4Tubs* detTubs = 0;
-  G4Tubs* gapTubs = 0;
-  if ( detLV && gapLV) {
-    detTubs = dynamic_cast< G4Tubs*>(detLV->GetSolid()); 
-    gapTubs = dynamic_cast< G4Tubs*>(gapLV->GetSolid()); 
-  } 
-  if ( detTubs && gapTubs) {
-    caloThickness = detTubs->GetZHalfLength()*2;  
-    caloThickness += gapTubs->GetZHalfLength()*1;  
-  }
-  else  {
-    G4cerr << "Calorimeter Thickness not found." << G4endl;
-  } 
-  return caloThickness;
-
 }
 
 /**
@@ -210,38 +139,4 @@ void Analysis::EndOfRun(const G4Run* aRun){
   outfile->Write();
   outfile->Close();
   delete outfile;
-}
-/**
- * SetIncidentParticleName
- *
- * Sets the incident particle name (for the messener / file name)
- */
-void Analysis::SetIncidentParticleName(G4String pName){
-  incidentParticleName = pName;
-}
-
-/**
- * SetHistEMax
- *
- * Sets the maximum energy of the Analysis histogram 
- */
-void Analysis::SetHistEMax(G4double emax){
-  maxHistEnergy = emax;
-}
-/**
- * SetBinWidth
- *
- * Sets the width of the position 
- */
-void Analysis::SetBinWidth(G4double binWidth){
-  posHistBinWidth = binWidth;
-}
-
-/**
- * SetEDepPosAnalysis
- *
- * Sets a boolean flag to positional energy depencance
- */
-void Analysis::SetEDepPosAnalysis(G4bool value){
-  EDepPosAnalysis = value;
 }

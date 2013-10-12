@@ -32,22 +32,11 @@ class Analysis {
         void EndOfEvent(const G4Event* anEvent);
         void EndOfRun(const G4Run* aRun);
   
-        void SetIncidentParticleName(G4String pName);
-        void SetHistEMax(G4double emax);
-        void SetBinWidth(G4double binWidth);
-        void SetEDepPosAnalysis(G4bool value);
    private:
 
         // Singleton Analysis
         Analysis();
         static Analysis *singleton;
-        G4double GetDetectorThickness();
-        G4double GetCalorimeterThickness();
-        G4String GetDetectorMaterial();
-        G4String incidentParticleName;
-        G4double maxHistEnergy;
-        G4double posHistBinWidth;
-        G4bool EDepPosAnalysis = false;
 
         // ROOT Output variables
         TFile* outfile;
