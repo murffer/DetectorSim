@@ -23,7 +23,6 @@
 #include "G4ThreeVector.hh"
 
 #include "PhotonHit.hh"
-#include "AbsorberHit.hh"
 
 #include "HistoManager.hh"
 Analysis* Analysis::singleton = 0;
@@ -96,11 +95,9 @@ void Analysis::EndOfEvent(const G4Event* event){
    * absorber SD has two hit collections assciated with it.
    */
   G4SDManager* fSDM = G4SDManager::GetSDMpointer();
-  G4int pmtHCID = fSDM->GetCollectionID("PMTHitCollection");
-  G4int absHCID = fSDM->GetCollectionID("AbsHitCollection");
+  G4int pmtHCID = fSDM->GetCollectionID("DetectorSD");
   G4HCofThisEvent* HCofEvent = event->GetHCofThisEvent();
  
-  AbsHitsCollection* absHC = (AbsHitsCollection*) (HCofEvent->GetHC(absHCID));
   PhotonHitsCollection* pmtHC = (PhotonHitsCollection*) (HCofEvent->GetHC(pmtHCID));
 
   // The Number of Optical Photons Detected on the PMT
@@ -109,12 +106,6 @@ void Analysis::EndOfEvent(const G4Event* event){
   else
     G4cout<<"WARNING: Absorber::EndOfEvent - pmtHC is NULL"<<G4endl;
   
-  // Average Energy Deposition and Optical Photons Generated
-  AbsorberHit *absHit;
-  for (unsigned int i = 0; i < absHC->GetSize(); i++){
-    absHit =  (AbsorberHit*) absHC->GetHit(i);
-      eDepEvent += absHit->GetEdep()/MeV;
-  }
   // Filling the histograms
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   if (eDepEvent > 0.0){
