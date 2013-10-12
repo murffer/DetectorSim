@@ -82,13 +82,13 @@ int main(){
 
   TObjArray *hist = new TObjArray();
   hist->Add(fA->Get("1"));
-  hist->Add(fT->Get("2"));
+  hist->Add(fT->Get("1"));
   hist->Add(fE->Get("1"));
   TObjArray *names = new TObjArray();
   names->Add(new TObjString("Alpha"));
   names->Add(new TObjString("Triton"));
   names->Add(new TObjString("Electron"));
-  PlotHistogram(hist,names,0,100,"Energy of Charged Particles at Creation","Energy [keV]","AlphaTritonChargedParticleEnergy.png",0,false,true);
+  PlotHistogram(hist,names,0,100,"Energy of Charged Particles at Creation","Energy [keV]","LightQuenchExample.png",0,false,false);
   
   ExportHistogram(fA,"1","AlphaOPDist.csv");
   ExportHistogram(fT,"1","TritonOPDist.csv");
