@@ -1,0 +1,26 @@
+#
+# Electron, alpha and triton primary paritlces
+#  100 keV  2.05 MeV   2.73 MeV
+#
+/control/verbose 0
+/run/verbose 0
+#
+#
+/run/initialize
+/analysis/h1/set 1 1000 0  5000    # Number of optical photons created
+/analysis/setFileName electronOP
+/gun/particle e-
+/gun/energy 0.1 MeV
+/run/beamOn 100000
+#
+/analysis/h1/set 1 1000 0  5000    # Number of optical photons created
+/analysis/setFileName alphaOP
+/gun/particle alpha
+/gun/energy 2.05 MeV
+/run/beamOn 100000
+#
+/analysis/setFileName tritonOP
+/analysis/h1/set 1 1000 0  5000    # Number of optical photons created
+/gun/particle triton
+/gun/energy 2.73 MeV
+/run/beamOn 100000
