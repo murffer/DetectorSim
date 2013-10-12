@@ -47,6 +47,7 @@ eRun.mac
 alphaRun.mac
 tritonRun.mac
 demoRun.mac
+LightQuench.C
 )
 
 foreach(_script ${PEDEP_SCRIPTS})
