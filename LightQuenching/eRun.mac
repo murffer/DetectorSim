@@ -7,9 +7,6 @@
 #
 /run/initialize
 /analysis/h1/set 1 100 0  15000    # Number of optical photons created
-/analysis/h1/set 2 100 0  15000    # Number of optical photons detected
-/analysis/h1/set 3 200 0  5 eV     # Energy of created Optical Photons
-/analysis/h1/set 4 100 0  5 eV     # Energy of Detectected Optical Photons
 #
 # Simulated Ranges
 /gun/particle e-

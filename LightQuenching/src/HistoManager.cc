@@ -33,13 +33,10 @@ void HistoManager::Book()
   analysisManager->SetActivation(true);    // enable inactivation of histograms
   
   // Define histograms start values
-  const G4int kMaxHisto = 4;
-  const G4String id[] = { "1", "2", "3" , "4"};
+  const G4int kMaxHisto = 1;
+  const G4String id[] = { "1"};
   const G4String title[] = 
-                { "Number of Optical Photons Created",
-                  "Number of Optical Photons Detected",
-                  "Energy of Created Optical Photons",
-                  "Energy of Detected Optical Photons"
+                { "Number of Optical Photons Created"
                  };
   // Default values (to be reset via /analysis/h1/set command)               
   G4int nbins = 100;
