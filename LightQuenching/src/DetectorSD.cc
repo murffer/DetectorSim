@@ -1,4 +1,4 @@
-#include "PMTSD.hh"
+#include "DetectorSD.hh"
 #include "PhotonHit.hh"
 #include "G4HCofThisEvent.hh"
 #include "G4Step.hh"
@@ -10,16 +10,16 @@
 #include "G4ParticleDefinition.hh"
 #include "G4ParticleTypes.hh"
 
-PMTSD::PMTSD(const G4String& name, const G4String& HCname) :
+DetectorSD::DetectorSD(const G4String& name, const G4String& HCname) :
     G4VSensitiveDetector(name),hitCollection(NULL) {
         collectionName.insert(HCname);
     }
 
 
-PMTSD::~PMTSD(){ }
+DetectorSD::~DetectorSD(){ }
 
 
-void PMTSD::Initialize(G4HCofThisEvent* HCE){
+void DetectorSD::Initialize(G4HCofThisEvent* HCE){
 
     // Create Hits Collection
     hitCollection = new PhotonHitsCollection(SensitiveDetectorName,collectionName[0]); 
@@ -32,7 +32,7 @@ void PMTSD::Initialize(G4HCofThisEvent* HCE){
  *
  * Adds a hit to the sensitive detector, depending on the step
  */
-G4bool PMTSD::ProcessHits(G4Step* aStep,G4TouchableHistory*){
+G4bool DetectorSD::ProcessHits(G4Step* aStep,G4TouchableHistory*){
     // Making sure step exits
     if (aStep == NULL) return false;
 
@@ -50,7 +50,7 @@ G4bool PMTSD::ProcessHits(G4Step* aStep,G4TouchableHistory*){
 }
 
 
-void PMTSD::EndOfEvent(G4HCofThisEvent*)
+void DetectorSD::EndOfEvent(G4HCofThisEvent*)
 {
     if (verboseLevel > 1){
         G4int nOfHits = hitCollection->entries();

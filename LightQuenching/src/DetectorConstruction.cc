@@ -11,6 +11,7 @@
 #include "G4PhysicalVolumeStore.hh"
 #include "G4LogicalVolumeStore.hh"
 #include "G4SolidStore.hh"
+#include "G4RegionStore.hh"
 
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
@@ -73,7 +74,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   fPBox = new G4PVPlacement(0,G4ThreeVector(),fLBox,fMaterial->GetName(),0,false,false);
 
     // Setting the Senstive Detector
-     detSD = new WLSPhotonDetSD("LYQuench/PhotonDe");
+      detSD = new DetectorSD("Detector/DetSD","DetectorSD");
       fLBox->SetSensitiveDetector(detSD);
 
      G4SDManager* SDman = G4SDManager::GetSDMpointer();
@@ -115,7 +116,7 @@ void DetectorConstruction::SetMaterial(G4String materialChoice)
 void DetectorConstruction::UpdateGeometry()
 {
   if (!fPBox) return;
-  G4RunManager::GetRunManager()->DefineWorldVolume(ConstructDetector());
+  G4RunManager::GetRunManager()->DefineWorldVolume(ConstructVolumes());
   G4RunManager::GetRunManager()->GeometryHasBeenModified();
   G4RunManager::GetRunManager()->PhysicsHasBeenModified();
   G4RegionStore::GetInstance()->UpdateMaterialList(fPBox);
