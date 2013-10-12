@@ -9,7 +9,6 @@
 
 #include "PhysicsList.hh"
 #include "Randomize.hh"
-#include "Analysis.hh"
 
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
@@ -34,8 +33,6 @@ int main(int argc,char** argv){
     runManager->SetUserAction(new StackingAction());
     runManager->Initialize();
 
-    // Setting up the analysis
-    Analysis::GetInstance()->Initilize();
 #ifdef G4VIS_USE
     // Initialize visualization
     G4VisManager* visManager = new G4VisExecutive;
@@ -70,7 +67,6 @@ int main(int argc,char** argv){
     delete visManager;
 #endif
     // Cleaning up
-    Analysis::GetInstance()->CleanUp();
     delete runManager;
     return 0;
 }

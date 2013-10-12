@@ -3,7 +3,7 @@
 #include "G4Track.hh"
 #include "G4ParticleDefinition.hh"
 #include "G4ParticleTypes.hh"
-#include "Analysis.hh"
+#include "HistoManager.hh"
 
 StackingAction::StackingAction(){
    optPhotonCounter = 0;
@@ -20,7 +20,8 @@ StackingAction::~StackingAction()
 void StackingAction::NewStage(){
 
   // Updating Analysis
-  Analysis::GetInstance()->SetNumOpticalPhotonsGenerated(optPhotonCounter);
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  analysisManager->FillH1(1,optPhotonCounter);
 }
 /**
  * PrepareNewEvent

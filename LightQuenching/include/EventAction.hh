@@ -11,7 +11,6 @@
 
 #include "G4UserEventAction.hh"
 #include "globals.hh"
-#include "Analysis.hh"
 
 class G4Event;
 

@@ -1,5 +1,4 @@
 #include "EventAction.hh"
-#include "Analysis.hh"
 
 #include "G4RunManager.hh"
 #include "G4Event.hh"
@@ -16,7 +15,6 @@ EventAction::EventAction() : G4UserEventAction(){ }
  * Called before the begining of each event
  */
 void EventAction::BeginOfEventAction(const G4Event* event){
-    Analysis::GetInstance()->PrepareNewEvent(event);
 }
 
 /**
@@ -28,5 +26,4 @@ void EventAction::BeginOfEventAction(const G4Event* event){
  * this event, and record the useful information.
  */
 void EventAction::EndOfEventAction(const G4Event* event){  
-    Analysis::GetInstance()->EndOfEvent(event);
 }
