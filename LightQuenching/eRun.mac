@@ -12,7 +12,6 @@
 /analysis/h1/set 4 100 0  5 eV     # Energy of Detectected Optical Photons
 #
 # Simulated Ranges
-/gps/particle e-
-/control/execute beamSource.mac
-/gps/ene/mono 1 keV
-/run/beamOn 10000
+/gun/particle e-
+/gun/energy 1 MeV
+/run/beamOn 1000

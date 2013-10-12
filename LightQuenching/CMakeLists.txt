@@ -43,10 +43,7 @@ target_link_libraries(lightYield ${Geant4_LIBRARIES})
 #
 set(PEDEP_SCRIPTS
 vis.mac
-macros/co60Source.mac
-macros/beamSource.mac
-macros/electronRun.mac
-macros/gRun.mac
+eRun.mac
 )
 
 foreach(_script ${PEDEP_SCRIPTS})
