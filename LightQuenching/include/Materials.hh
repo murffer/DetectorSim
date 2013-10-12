@@ -21,21 +21,14 @@ class Materials{
     // Methods
     Materials();
     void CreateMaterials();
-    void SetOpticalPropertiesTeflon();
+    void SetOpticalPropertiesPS();
     void SetOpticalPropertiesEJ200();
-    void SetOpticalPropertiesBK7();
-    void SetOpticalPropertiesSilicone();
-    void SetOpticalPropertiesAir();
     
     // Fields
     static Materials* instance;   /* Materials Instance        */
     G4NistManager* nistMan;  /* NIST Material Manager          */
-    G4Material* Teflon;      /* Teflon Tape                    */
     G4Material* EJ200;        /* EJ200 Detector                  */
-    G4Material* BK7;         /* PMT Window Glass (Boroscilate) */
-    G4Material* Silicone;    /* Optical Grease */
-    G4Material* Air;         /* Air            */
-    G4Material* BlackTape;   /* Black tape     */
+    G4Material* Polystyrene;         /* PMT Window Glass (Boroscilate) */
 };
 
 #endif

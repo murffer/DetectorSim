@@ -18,21 +18,14 @@ Materials::Materials(){
   // Creating my custom materials
   G4cout<<"Materials - Creating the materials"<<G4endl;
   CreateMaterials();
-  SetOpticalPropertiesTeflon();
+  SetOpticalPropertiesPS();
   SetOpticalPropertiesEJ200();
-  SetOpticalPropertiesBK7();
-  SetOpticalPropertiesSilicone();
-  SetOpticalPropertiesAir();
   G4cout<<"Materials - Created all of the materials"<<G4endl;
 }
 
 Materials::~Materials(){
-  delete Teflon;      /* Teflon Tape    */
-  delete EJ200;        /* EJ200 Detector  */
-  delete BK7;         /* PMT Window Glass (Boroscilate) */
-  delete Silicone;    /* Optical Grease */
-  delete Air;         /* Air            */
-  delete BlackTape;   /* Black tape     */
+  delete EJ200;       
+  delete Polystyrene;
 }
 /**
  * Setting the Singleton Class
@@ -78,18 +71,11 @@ G4Material* Materials::GetMaterial(const G4String material){
  * Creates the optical materials
  */
 void Materials::CreateMaterials(){
+  G4int ncomponents;
     G4double density;
     std::vector<G4int> natoms;
     std::vector<G4double> fractionMass;
     std::vector<G4String> elements;
-
-    // Material Definations
-    
-    //-----------------------------------------------------------------------
-    // Teflon Tape
-    //-----------------------------------------------------------------------
-    Teflon = nistMan->FindOrBuildMaterial("G4_TEFLON");
-    
     
     //-----------------------------------------------------------------------
     // EJ200
@@ -97,93 +83,58 @@ void Materials::CreateMaterials(){
     //-----------------------------------------------------------------------
     EJ200 = nistMan->FindOrBuildMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
     
-    //----------------------------------------------------------------------
-    // BK7 Glass (Boroscilicate glass) 
-    // Compositon from www.zcq-quartz.com/gass-2.html
-    //
-    // SiO2=69.13% B2O3=10.75% BaO=3.07% Na2O=10.40% K2O=6.29% As2O3=0.36%
-    //----------------------------------------------------------------------
-    elements.push_back("Ba");   natoms.push_back(1);
-    elements.push_back("O");    natoms.push_back(1);
-    density = 5.27*g/cm3;
-    G4Material* BaO = nistMan->ConstructNewMaterial("BaO",elements,natoms,density);
-    elements.clear();           natoms.clear();
-    
-    G4Material* B2O3 = nistMan->FindOrBuildMaterial("G4_BORON_OXIDE");
-    G4Material* Na2O = nistMan->FindOrBuildMaterial("G4_SODIUM_MONOXIDE");
-    G4Material* K2O = nistMan->FindOrBuildMaterial("G4_POTASSIUM_OXIDE");
-    G4Material* SiO2 = nistMan->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
-    G4Material* Al2O3 = nistMan->FindOrBuildMaterial("G4_ALUMINUM_OXIDE");
-    
-    elements.push_back("As");   natoms.push_back(2);
-    elements.push_back("O");    natoms.push_back(3);
-    density = 3.74*g/cm3;
-    G4Material* As2O3 = nistMan->ConstructNewMaterial("As2O3",elements,natoms,density);
-    elements.clear();           natoms.clear();
 
-    BK7 = new G4Material("BK7", 2.23*g/cm3,6, kStateSolid);
-    BK7->AddMaterial(SiO2,69.13*perCent);
-    BK7->AddMaterial(B2O3,10.75*perCent);
-    BK7->AddMaterial(BaO,3.07*perCent);
-    BK7->AddMaterial(Na2O,10.40*perCent);
-    BK7->AddMaterial(K2O,6.29*perCent);
-    BK7->AddMaterial(As2O3,0.36*perCent);
-    
-    //----------------------------------------------------------------------
-    // AIR
-    //----------------------------------------------------------------------
-    Air = nistMan->FindOrBuildMaterial("G4_AIR");
-    
-    //----------------------------------------------------------------------
-    // Silicone Optical Grease
-    // Composition from $G4EXAMPLES/extended/wls/src/WLSMaterials.cc
-    //----------------------------------------------------------------------
-    elements.push_back("C");   natoms.push_back(2);
-    elements.push_back("H");    natoms.push_back(6);
-    density = 1.060*g/cm3;
-    Silicone = nistMan->ConstructNewMaterial("Silicone",elements,natoms,density);
-    elements.clear();           natoms.clear();
+  //--------------------------------------------------
+  // Polystyrene
+  //--------------------------------------------------
+  elements.push_back("C");     natoms.push_back(8);
+  elements.push_back("H");     natoms.push_back(8);
+  density = 1.050*g/cm3;
+  Polystyrene = nistMan->ConstructNewMaterial("Polystyrene", elements, natoms, density);
+  elements.clear();
+  natoms.clear();
   
-     
-    //----------------------------------------------------------------------
-    // Getting other materials
-    //----------------------------------------------------------------------
-    nistMan->FindOrBuildMaterial("G4_PLEXIGLASS");
-    nistMan->FindOrBuildMaterial("G4_POLYVINYL_CHLORIDE");
-    nistMan->FindOrBuildMaterial("G4_POLYSTYRENE");
-    nistMan->FindOrBuildMaterial("G4_Galactic");
 }
-
 /**
- * Sets the optical properties of Teflon
+ * Sets the Optical Properties for Polystyrene
  *
- * Teflon is also Polytetrafluoroethylene, which could be flurinated polyethene
- * Sources of the Teflon data:
- *  Index of Reflection: DOI 10.1117/1.2965541
- *  Absorbition length: GEANT4 lXe example
  */
-void Materials::SetOpticalPropertiesTeflon(){
-    // Index of Reflection (146 nm to 1570 nm)
-    const G4int nRINDEX = 13;
-    G4double photonEnergyRINDEX[nRINDEX] = 
-    {8.5506*eV,4.7232*eV,3.2627*eV,2.4921*eV,2.0160*eV,
-    1.6926*eV,1.4586*eV,1.2815*eV,1.1427*eV,1.0311*eV, 
-    0.9393*eV,0.8625*eV,0.7973*eV};
-    G4double RefractiveIndexTeflon[nRINDEX]=
-    {1.4300,1.3300,1.3150,1.3100,1.3050,    
-    1.3050,1.3000,1.2900,1.2975,1.2970,
-    1.2960,1.2950,1.2950};
+void Materials::SetOpticalPropertiesPS(){
+  //--------------------------------------------------
+  //  Polystyrene
+  //--------------------------------------------------
 
-    // Absorbition length (619 to 357 nm)
-    const G4int nABS = 4;
-    G4double photonEnergyABS[nABS] = {2.00*eV,2.87*eV,2.90*eV,3.47*eV};
-    G4double AbsLengthTeflon[nABS]={9.00*m,9.00*m,0.1*mm,0.1*mm};
+  G4double RefractiveIndexPS[nEntries] =
+  { 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50,
+    1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50,
+    1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50,
+    1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50,
+    1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50};
+
+  G4double AbsPS[nEntries] =
+  {2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,
+   2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,
+   2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,
+   2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,
+   2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm};
+
+  G4double ScintilFast[nEntries] =
+  {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+   0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+   1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+   1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
   
-    // Add entries into properties table
-    G4MaterialPropertiesTable* MPTTeflon = new G4MaterialPropertiesTable();
-    MPTTeflon->AddProperty("RINDEX",photonEnergyRINDEX,RefractiveIndexTeflon,nRINDEX);
-    MPTTeflon->AddProperty("ABSLENGTH",photonEnergyABS,AbsLengthTeflon,nABS);
-    Teflon->SetMaterialPropertiesTable(MPTTeflon);
+  // Add entries into properties table
+  G4MaterialPropertiesTable* MPTPolystyrene = new G4MaterialPropertiesTable();
+  MPTPolystyrene->AddProperty("RINDEX",PhotonEnergy,RefractiveIndexPS,nEntries);
+  MPTPolystyrene->AddProperty("ABSLENGTH",PhotonEnergy,AbsPS,nEntries);
+  MPTPolystyrene->AddProperty("FASTCOMPONENT",PhotonEnergy, ScintilFast,nEntries);
+  MPTPolystyrene->AddConstProperty("SCINTILLATIONYIELD",10./keV);
+  MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE",1.0);
+  MPTPolystyrene->AddConstProperty("FASTTIMECONSTANT", 10.*ns);
+  Polystyrene->SetMaterialPropertiesTable(MPTPolystyrene);
+  Polystyrene->GetIonisation()->SetBirksConstant(0.126*mm/MeV);
 }
 
 /**
@@ -221,106 +172,4 @@ void Materials::SetOpticalPropertiesEJ200(){
     MPTEJ200->AddConstProperty("YIELDRATIO", 1.0);
     MPTEJ200->AddConstProperty("RESOLUTIONSCALE", 1.0);
     EJ200->SetMaterialPropertiesTable(MPTEJ200);
-}
-/**
- * Sets the optical properties of BK7
- *
- * Data sources:
- *  Index of Reflection n(lambda) = 1.472+3760/(lambda)^2 - doi:10.1016/j.nima.2010.09.027 
- *  Absorbition Length: const 70 cm (See pg. 139 of MJU's lab notebook)
- */
-void Materials:: SetOpticalPropertiesBK7(){
-    // Index of Reflection (146 nm to 1570 nm)
-    const G4int nRINDEX = 13;
-    G4double photonEnergyRINDEX[nRINDEX] = 
-    {8.5506*eV,4.7232*eV,3.2627*eV,2.4921*eV,2.0160*eV,
-    1.6926*eV,1.4586*eV,1.2815*eV,1.1427*eV,1.0311*eV, 
-    0.9393*eV,0.8625*eV,0.7973*eV};
-    G4double RefractiveIndexGlass[nRINDEX]=
-    {1.6508,1.5266,1.4980,1.4872,1.4819,    
-    1.4790,1.4772,1.4760,1.4752,1.4746,    
-    1.4742,1.4738,1.4736};
-    
-    // Absorbition Length
-    const G4int nABS=2;
-    G4double photonEnergyABS[nABS] = {3.5*eV,1.75*eV};
-    G4double AbsLengthGlass[nABS] = {70*cm, 70*cm};
-
-    // Add entries into properties table
-    G4MaterialPropertiesTable* MPTBK7 = new G4MaterialPropertiesTable();
-    MPTBK7->AddProperty("RINDEX",photonEnergyRINDEX,RefractiveIndexGlass,nRINDEX);
-    MPTBK7->AddProperty("ABSLENGTH",photonEnergyABS,AbsLengthGlass,nABS);
-    BK7->SetMaterialPropertiesTable(MPTBK7);
- }
-  
-/**
- * Sets the optical properties of Silicone
- *
- * These values are from the GEANT4 WLS Example
- */
-void Materials::SetOpticalPropertiesSilicone(){
-  const G4int nEntries = 50;
-
-  G4double PhotonEnergy[nEntries] =
-  {2.00*eV,2.03*eV,2.06*eV,2.09*eV,2.12*eV,
-   2.15*eV,2.18*eV,2.21*eV,2.24*eV,2.27*eV,
-   2.30*eV,2.33*eV,2.36*eV,2.39*eV,2.42*eV,
-   2.45*eV,2.48*eV,2.51*eV,2.54*eV,2.57*eV,
-   2.60*eV,2.63*eV,2.66*eV,2.69*eV,2.72*eV,
-   2.75*eV,2.78*eV,2.81*eV,2.84*eV,2.87*eV,
-   2.90*eV,2.93*eV,2.96*eV,2.99*eV,3.02*eV,
-   3.05*eV,3.08*eV,3.11*eV,3.14*eV,3.17*eV,
-   3.20*eV,3.23*eV,3.26*eV,3.29*eV,3.32*eV,
-   3.35*eV,3.38*eV,3.41*eV,3.44*eV,3.47*eV};
-  G4double AbsClad[nEntries] =
-  {20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,
-   20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,
-   20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,
-   20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,
-   20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m,20.0*m};
-
-   G4double RefractiveIndexSilicone[nEntries] =
-   { 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46,
-     1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46,
-     1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46,
-     1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46,
-     1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46, 1.46};
-
-  // Add entries into properties table
-  G4MaterialPropertiesTable* MPTSilicone = new G4MaterialPropertiesTable();
-  MPTSilicone->AddProperty("RINDEX",PhotonEnergy,RefractiveIndexSilicone,nEntries);
-  MPTSilicone->AddProperty("ABSLENGTH",PhotonEnergy,AbsClad,nEntries);
-  Silicone->SetMaterialPropertiesTable(MPTSilicone);
-  
-}
-/**
- * Sets the optical properties of Air
- *
- * These values are from the GEANT4 WLS example
- */
-void Materials:: SetOpticalPropertiesAir(){
-  const G4int nEntries = 50;
-
-  G4double PhotonEnergy[nEntries] =
-  {2.00*eV,2.03*eV,2.06*eV,2.09*eV,2.12*eV,
-   2.15*eV,2.18*eV,2.21*eV,2.24*eV,2.27*eV,
-   2.30*eV,2.33*eV,2.36*eV,2.39*eV,2.42*eV,
-   2.45*eV,2.48*eV,2.51*eV,2.54*eV,2.57*eV,
-   2.60*eV,2.63*eV,2.66*eV,2.69*eV,2.72*eV,
-   2.75*eV,2.78*eV,2.81*eV,2.84*eV,2.87*eV,
-   2.90*eV,2.93*eV,2.96*eV,2.99*eV,3.02*eV,
-   3.05*eV,3.08*eV,3.11*eV,3.14*eV,3.17*eV,
-   3.20*eV,3.23*eV,3.26*eV,3.29*eV,3.32*eV,
-   3.35*eV,3.38*eV,3.41*eV,3.44*eV,3.47*eV};
-
-  G4double RefractiveIndex[nEntries] =
-  { 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-    1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-    1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-    1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00,
-    1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00, 1.00};
-
-  G4MaterialPropertiesTable* MPT = new G4MaterialPropertiesTable();
-  MPT->AddProperty("RINDEX", PhotonEnergy, RefractiveIndex, nEntries);
-  Air->SetMaterialPropertiesTable(MPT);
 }
