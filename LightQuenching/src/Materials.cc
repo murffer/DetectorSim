@@ -71,7 +71,6 @@ G4Material* Materials::GetMaterial(const G4String material){
  * Creates the optical materials
  */
 void Materials::CreateMaterials(){
-  G4int ncomponents;
   G4double density;
   std::vector<G4int> natoms;
   std::vector<G4double> fractionMass;

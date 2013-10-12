@@ -47,7 +47,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     G4double              fBoxSize;       /** Length of side of a box  */
     G4Material*           fMaterial;      /** Material of the detector */
 
-    G4double              fMaxStep;       /** Maximum Step Size  */
     Materials* materials;                 
 
   private:
