@@ -1,25 +1,18 @@
-# Setting up verbosity
-/tracking/verbose 0
+#
+# Electron Primary Particles 
+#
+/control/verbose 0
 /run/verbose 0
 #
-# Setting up the analysis
 #
 /run/initialize
-# 
-# Running an electron beam source
-#
-/control/execute macros/beamSource.mac
-/gps/particle e-
-/gps/ene/type Mono
-/gps/ene/mono 1 MeV
 /analysis/h1/set 1 100 0  15000    # Number of optical photons created
 /analysis/h1/set 2 100 0  15000    # Number of optical photons detected
 /analysis/h1/set 3 200 0  5 eV     # Energy of created Optical Photons
 /analysis/h1/set 4 100 0  5 eV     # Energy of Detectected Optical Photons
 #
-# Setting up the detector
-#
-#
-# Running through absorber thickness
-/run/beamOn 1000
-#
+# Simulated Ranges
+/gps/particle e-
+/control/execute beamSource.mac
+/gps/ene/mono 1 keV
+/run/beamOn 10000
