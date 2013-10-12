@@ -57,6 +57,7 @@ DetectorConstruction::~DetectorConstruction(){
   // Deleting the messenger and materials if they exist
   if (detectorMessenger) delete detectorMessenger;
   if (materials)         delete materials;
+  G4cout<<"Cleaned up detector construction"<<G4endl;
 }
 
 /**
@@ -135,7 +136,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
   mountThickness = 100*um;
   refThickness = 3.33*mm;
   capThickness = 2*mm;                       /* Thickness of the cap     */
-  absMaterial = FindMaterial("GS20");
+  absMaterial = FindMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
   pmtMaterial = FindMaterial("BK7");
   refMaterial = FindMaterial("G4_TEFLON");
   mountMaterial = FindMaterial("Silicone");
