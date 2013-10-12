@@ -4,11 +4,15 @@
 #
 # Setting up the analysis
 #
-/Analysis/setParticleName Co60
+/run/initialize
 # 
 # Running the co60 beam source
 #
 /control/execute macros/co60Source.mac
+/analysis/h1/set 1 100 5000 15000  # Number of optical photons created
+/analysis/h1/set 2 100 0  15000    # Number of optical photons detected
+/analysis/h1/set 3 200 0  5 eV     # Energy of created Optical Photons
+/analysis/h1/set 4 100 0  5 eV     # Energy of Detectected Optical Photons
 #
 # Setting up the detector
 #
