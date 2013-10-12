@@ -7,7 +7,6 @@
 class G4LogicalVolume;
 class G4Material;
 class Materials;
-class DetectorSD;
 
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
@@ -43,7 +42,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
     G4VPhysicalVolume*    fPBox;          /** Physical Volume  */
     G4LogicalVolume*      fLBox;          /** Logical Volume   */
-    DetectorSD*           detSD;          /** Sensitive Detector */
     G4double              fBoxSize;       /** Length of side of a box  */
     G4Material*           fMaterial;      /** Material of the detector */
 

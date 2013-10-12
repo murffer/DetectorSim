@@ -15,11 +15,7 @@
 
 #include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
-#include "G4VisAttributes.hh"
-#include "G4Colour.hh"
 
-#include "DetectorSD.hh"
-#include "G4SDManager.hh"
 /**
  * Constructs the semi-infinite box 
  *
@@ -73,12 +69,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   fLBox = new G4LogicalVolume(sBox,fMaterial,"World");
   fPBox = new G4PVPlacement(0,G4ThreeVector(),fLBox,fMaterial->GetName(),0,false,false);
 
-    // Setting the Senstive Detector
-      detSD = new DetectorSD("Detector/DetSD","DetectorSD");
-      fLBox->SetSensitiveDetector(detSD);
-
-     G4SDManager* SDman = G4SDManager::GetSDMpointer();
-     SDman->AddNewDetector(detSD);
   
   PrintParameters();
   

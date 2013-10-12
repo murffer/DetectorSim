@@ -7,9 +7,7 @@
 #include "G4VHitsCollection.hh"
 #include "G4String.hh"
 
-class PMTHit;
 class HistoManager;
-class AbsorberHit;
 class Analysis {
 
   public:
@@ -38,9 +36,7 @@ class Analysis {
     static Analysis *singleton;
     
     // Data Collections Varaibles
-    G4double eDepEvent;          /* Energy deposition in the absoerber */
     G4int nOPAbsEvent;           /* Number optical photons created     */
-    G4int nOPPMTEvent;           /* Number optical photons detected    */
     HistoManager* fHistoManager; /* Histogram Manager */
 };
 #endif
