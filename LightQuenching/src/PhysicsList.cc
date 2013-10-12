@@ -41,5 +41,5 @@ PhysicsList::~PhysicsList(){
  * Sets the physic list cuts
  */
 void PhysicsList::SetCuts(){
-    SetDefaultCutValue(1*um);
+    SetDefaultCutValue(10*um);
 }

@@ -63,9 +63,7 @@ void Analysis::PrepareNewRun(const G4Run* aRun){
  * zero, as well as the number of optical photons that are created and detected
  */
 void Analysis::PrepareNewEvent(const G4Event*){
-  eDepEvent = 0.0;
   nOPAbsEvent = 0;
-  nOPPMTEvent = 0;
 }
 
 
@@ -76,12 +74,6 @@ void Analysis::PrepareNewEvent(const G4Event*){
  */
 void Analysis::EndOfEvent(const G4Event* event){
 
-  /**
-   * Getting the hit collections. 
-   */
- 
-
-  
   // Filling the histograms
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   analysisManager->FillH1(1,nOPAbsEvent);
@@ -95,8 +87,13 @@ void Analysis::EndOfEvent(const G4Event* event){
 void Analysis::EndOfRun(const G4Run* ){
   // Print out some run statistics
   
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();  
+    G4cout << "Average Number of Optical Photons: " 
+      << analysisManager->GetH1(1)->mean() 
+      << " +/- " << analysisManager->GetH1(1)->rms()
+      << G4endl;
+  
   //save histograms      
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();  
   if ( analysisManager->IsActive() ) {
     analysisManager->Write();
     analysisManager->CloseFile();

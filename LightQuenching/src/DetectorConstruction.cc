@@ -30,7 +30,8 @@ DetectorConstruction::DetectorConstruction() :fPBox(0), fLBox(0), fMaterial(0)
   fBoxSize = 10*cm;
   // Creating Detector Materials
   materials = Materials::GetInstance();
-  SetMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
+  //SetMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
+  SetMaterial("Polystyrene");
 }
 
 /**
