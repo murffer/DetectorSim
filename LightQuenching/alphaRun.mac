@@ -1,10 +1,10 @@
 #
-# Electron Primary Particles (1 MeV to 10 keV)
+# Alpha Primary Particles (1 MeV to 10 keV)
 #
 /control/verbose 0
 /run/verbose 0
 #
-/gun/particle e-
+/gun/particle alpha
 #
 /run/initialize
 /analysis/h1/set 1 100 5000  12000    # Number of optical photons created
