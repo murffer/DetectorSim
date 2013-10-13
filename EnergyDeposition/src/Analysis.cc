@@ -8,35 +8,37 @@
 #include "G4Tubs.hh"
 #include "G4Material.hh"
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <string>
-#include <sstream>
 
 #include "G4HCofThisEvent.hh"
 #include "G4Event.hh"
 #include "G4ThreeVector.hh"
 
-#ifdef G4MPIUSE
-#include "G4MPImanager.hh"
-#endif
-
+#include "HistoManager.hh"
 Analysis* Analysis::singleton = 0;
-
 /**
  * Analysis
  *
- * Creates an Analysis object 
+ * Creates an Analysis object
  */
 Analysis::Analysis(){
-  // Empty Constructor, assingment done in constuctor list
-  maxHistEnergy = 5*MeV;
-  posHistBinWidth = 5*um;
+}
+/**
+ * Initilize the analysis manager
+ *
+ * Creates a new HistoManager
+ */
+void Analysis::Initilize(){
+  fHistoManager = new HistoManager();
+}
+/**
+ * Cleaning up the analysis manager
+ *
+ * Deleting the HistoManager
+ */
+void Analysis::CleanUp(){
+  delete fHistoManager;
 }
 Analysis::~Analysis(){
-  G4cout<<"Deleting the analysis object"<<G4endl;
 }
 
 /**
@@ -46,21 +48,7 @@ Analysis::~Analysis(){
  * There is no need to update the geometry because the geometry
  * is fixed during a run.
  */
-void Analysis::PrepareNewRun(const G4Run* aRun){
-
-  
-  // Creating ROOT analysis objects (histogram)
-  outfile = new TFile(fname.data(),"RECREATE");
-  eDepHist = new TH1F("eDepHist","Total Energy Deposition",100,0*eV,maxHistEnergy);
-  eDepHist->GetXaxis()->SetTitle("Deposited Energy (MeV)");
-  if (EDepPosAnalysis){
-    posEDepTuple = new TNtuple("posEDepTuple","Initial Position and Energy Deposition","x:y:z:EnergyDep");
-    posEDepHist = new TH2F("eDepPosHist","Positional Energy Dependance",25,0*eV,maxHistEnergy,25,0,detThickness/um);
-    posEDepHist->GetXaxis()->SetTitle("Deposited Energy (MeV)");
-    posEDepHist->GetYaxis()->SetTitle("First Interaction Position (um)");
-
-  }
-  G4cout<<"Prepared run "<<aRun->GetRunID()<<G4endl;
+void Analysis::PrepareNewRun(const G4Run* ){
 }
 
 /**
@@ -69,7 +57,7 @@ void Analysis::PrepareNewRun(const G4Run* aRun){
  * @brief - Called before each event
  * The energy deposition per slice is initialzed per event
  */
-void Analysis::PrepareNewEvent(const G4Event* anEvent){
+void Analysis::PrepareNewEvent(const G4Event* ){
   // Initialize energy deposition to zero
   eDepEvent = 0.0;
 }
@@ -82,18 +70,22 @@ void Analysis::PrepareNewEvent(const G4Event* anEvent){
  */
 void Analysis::EndOfEvent(const G4Event* event){
 
+
   G4VHitsCollection *hc;
   G4double xPos = 0.0; 
   G4double yPos = 0.0;
   G4double zPos = 0.0; 
   bool isFirst = true;
   CaloHit *hit;
- 
+
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+
+
   // Iterating through the hit collection to accumulate the energy deposition 
   G4int numHitColl = event->GetHCofThisEvent()->GetNumberOfCollections();
   for(G4int hitItter = 0; hitItter < numHitColl; hitItter++){
     // Itterating through the hit collection
-   
+
     hc = event->GetHCofThisEvent()->GetHC(hitItter);
     for(G4int i = 0; i < hc->GetSize(); i++){
       hit = (CaloHit*) hc->GetHit(i);
@@ -112,11 +104,8 @@ void Analysis::EndOfEvent(const G4Event* event){
   }
   // Adding to the run accumulation only events with deposit energy
   if (eDepEvent > 0.0){
-    eDepHist->Fill(eDepEvent);
-    if (EDepPosAnalysis){
-      posEDepTuple->Fill(xPos,yPos,zPos,eDepEvent);
-      posEDepHist->Fill(eDepEvent,zPos/um);    
-    }
+    analysisManager->FillH1(1,eDepEvent);
+    analysisManager->FillH2(1,eDepEvent,zPos/um);
   }
 }
 
@@ -125,18 +114,38 @@ void Analysis::EndOfEvent(const G4Event* event){
  *
  * Called at the end of a run, which summerizes the run
  */
-void Analysis::EndOfRun(const G4Run* aRun){
+void Analysis::EndOfRun(const G4Run* ){
 
-  // Lets get the number of events simulated
-  G4int numEvents = aRun->GetNumberOfEventToBeProcessed();
-  G4double detThickness = GetDetectorThickness();
-  
-  G4cout<<"End Of Run "<<aRun->GetRunID()
-        <<"\n\tRan "<<numEvents<<" events"
-        <<"\n\tThickness [mm]: "<<detThickness/mm
-        <<"\n\tAverage Energy Deposition per event (MeV): "<<eDepHist->GetMean()
-        <<" +/- "<<eDepHist->GetMeanError()<<G4endl;
-  outfile->Write();
-  outfile->Close();
-  delete outfile;
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  //save histograms
+  if ( analysisManager->IsActive() ) {
+    analysisManager->Write();
+    analysisManager->CloseFile();
+  }
+}
+/**
+ * GetCalorimeterThickness
+ * @return the thickness of the calorimeter
+ */
+G4double Analysis::GetCalorimeterThickness(){
+  G4double caloThickness = 0;
+  G4LogicalVolume* detLV
+    = G4LogicalVolumeStore::GetInstance()->GetVolume("Absorber");
+  G4LogicalVolume* gapLV
+    = G4LogicalVolumeStore::GetInstance()->GetVolume("Gap");
+  G4Tubs* detTubs = 0;
+  G4Tubs* gapTubs = 0;
+  if ( detLV && gapLV) {
+    detTubs = dynamic_cast< G4Tubs*>(detLV->GetSolid());
+    gapTubs = dynamic_cast< G4Tubs*>(gapLV->GetSolid());
+  }
+  if ( detTubs && gapTubs) {
+    caloThickness = detTubs->GetZHalfLength()*2;
+    caloThickness += gapTubs->GetZHalfLength()*1;
+  }
+  else  {
+    G4cerr << "Calorimeter Thickness not found." << G4endl;
+  } 
+  return caloThickness;
+
 }

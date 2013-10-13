@@ -36,6 +36,6 @@ void HistoManager::Book()
   // Create all histograms as inactivated 
     G4int ih = aMan->CreateH1(1,"Total Energy Depostion",100,0,100);
     aMan->SetActivation(G4VAnalysisManager::kH1, ih, false);
-    ih = aMan->CreateH2(2,"Positional Energy Deposition",100,0,100,100,0,100);
+    ih = aMan->CreateH2(1,"Positional Energy Deposition",100,0,100,100,0,100);
     aMan->SetActivation(G4VAnalysisManager::kH2, ih, false);
 }
