@@ -3,9 +3,6 @@
 #include "globals.hh"
 
 #include "G4RunManager.hh"
-#include "G4LogicalVolumeStore.hh"
-#include "G4LogicalVolume.hh"
-#include "G4Tubs.hh"
 #include "G4Material.hh"
 
 
@@ -74,31 +71,16 @@ void Analysis::PrepareNewEvent(const G4Event* ){
  */
 void Analysis::EndOfEvent(const G4Event* event){
   G4VHitsCollection *hc;
-  G4double xPos = 0.0; 
-  G4double yPos = 0.0;
-  G4double zPos = 0.0; 
-  bool isFirst = true;
   CaloHit *hit;
 
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-
-
   // Iterating through the hit collection to accumulate the energy deposition 
   G4int numHitColl = event->GetHCofThisEvent()->GetNumberOfCollections();
   for(G4int hitItter = 0; hitItter < numHitColl; hitItter++){
     // Itterating through the hit collection
-
     hc = event->GetHCofThisEvent()->GetHC(hitItter);
     for(G4int i = 0; i < hc->GetSize(); i++){
       hit = (CaloHit*) hc->GetHit(i);
-      if (hit->GetTrackID() == 2 && hit->GetParentID() == 1 && isFirst){
-        // First interaction of the particle
-        isFirst = false;
-        zPos = GetCalorimeterThickness(); // Subtracting the thickness
-        xPos = hit->GetPosition().x();
-        yPos = hit->GetPosition().y();
-        zPos -= hit->GetPosition().z();
-      }
 
       // Adding the energy deposition (in MeV)
       eDepEvent += hit->GetEdep();
@@ -107,7 +89,6 @@ void Analysis::EndOfEvent(const G4Event* event){
   // Adding to the run accumulation only events with deposit energy
   if (eDepEvent > 0.0){
     analysisManager->FillH1(1,eDepEvent);
-    analysisManager->FillH2(1,eDepEvent,zPos);
   }
 }
 
@@ -125,35 +106,8 @@ void Analysis::EndOfRun(const G4Run* ){
   }
 }
 /**
- * GetCalorimeterThickness
- * @return the thickness of the calorimeter
- */
-G4double Analysis::GetCalorimeterThickness(){
-  G4double caloThickness = 0;
-  G4LogicalVolume* detLV
-    = G4LogicalVolumeStore::GetInstance()->GetVolume("Absorber");
-  G4LogicalVolume* gapLV
-    = G4LogicalVolumeStore::GetInstance()->GetVolume("Gap");
-  G4Tubs* detTubs = 0;
-  G4Tubs* gapTubs = 0;
-  if ( detLV && gapLV) {
-    detTubs = dynamic_cast< G4Tubs*>(detLV->GetSolid());
-    gapTubs = dynamic_cast< G4Tubs*>(gapLV->GetSolid());
-  }
-  if ( detTubs && gapTubs) {
-    caloThickness = detTubs->GetZHalfLength()*2;
-    caloThickness += gapTubs->GetZHalfLength()*1;
-  }
-  else  {
-    G4cerr << "Calorimeter Thickness not found." << G4endl;
-  } 
-  return caloThickness;
-
-}
-
-/**
  * Sets the number of optical photons generated
  */
 void Analysis::SetNumOpticalPhotonsGenerated(G4int numPhotons){
-    nOPAbsEvent = numPhotons;
+  nOPAbsEvent = numPhotons;
 }

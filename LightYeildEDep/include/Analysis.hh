@@ -10,35 +10,32 @@
 #include "globals.hh"
 class HistoManager;
 class Analysis {
-    
-public:
+
+  public:
     // Singleton Class
     static Analysis* GetInstance(){
-        if(Analysis::singleton == NULL)
-            Analysis::singleton = new Analysis();
-        return Analysis::singleton;
+      if(Analysis::singleton == NULL)
+        Analysis::singleton = new Analysis();
+      return Analysis::singleton;
     }
-    
+
     virtual ~Analysis();
     void Initilize();
     void CleanUp();
-    
+
     // Accumulation Methods
     void PrepareNewEvent(const G4Event* anEvent);
     void PrepareNewRun(const G4Run* aRun);
     void EndOfEvent(const G4Event* anEvent);
     void EndOfRun(const G4Run* aRun);
     void SetNumOpticalPhotonsGenerated(G4int numPhotons);
-    
-private:
-    
+
+  private:
+
     // Singleton Analysis
     Analysis();
     static Analysis *singleton;
-    
-    G4double GetCalorimeterThickness();
-    
-    
+
     // Accumulation Variables
     G4double eDepEvent;
     HistoManager* fHistoManager; /* Histogram Manager */
