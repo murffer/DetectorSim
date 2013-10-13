@@ -30,7 +30,7 @@ PhysicsList::PhysicsList()
 {
   G4LossTableManager::Instance();
   
-  fCurrentDefaultCut   = 1.0*mm;              /* The default range cut  */
+  fCurrentDefaultCut   = 10*um;              /* The default range cut  */
   fCutForGamma         = fCurrentDefaultCut;  /* Default gamma cut      */
   fCutForElectron      = fCurrentDefaultCut;  /* Default electron cut   */
   fCutForPositron      = fCurrentDefaultCut;  /* Default positron cut   */
