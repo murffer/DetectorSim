@@ -38,6 +38,7 @@ class Analysis {
 
     // Accumulation Variables
     G4double eDepEvent;
+    G4double nOPAbsEvent;
     HistoManager* fHistoManager; /* Histogram Manager */
 };
 #endif

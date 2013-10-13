@@ -20,8 +20,8 @@ Materials::Materials(){
     CreateMaterials();
     SetOpticalPropertiesPS();
     SetOpticalPropertiesEJ200();
-      SetOpticalPropertiesGS20();
-      SetOpticalPropertiesEJ426();
+    SetOpticalPropertiesGS20();
+    SetOpticalPropertiesEJ426();
     G4cout<<"Materials - Created all of the materials"<<G4endl;
 }
 
@@ -102,7 +102,7 @@ void Materials::CreateMaterials(){
     //--------------------------------------------------
     // LiF Polystyrene
     //--------------------------------------------------
-    G4Material* ps = nistMan->FindOrBuildMaterial("G4_POLYSTYRENE")
+    G4Material* ps = nistMan->FindOrBuildMaterial("G4_POLYSTYRENE");
     psDet = new G4Material("PSLiF",1.1*g/cm3,2,kStateSolid);
     psDet->AddMaterial(ps,90*perCent);
     psDet->AddMaterial(LiF,10*perCent);

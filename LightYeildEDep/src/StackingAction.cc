@@ -4,6 +4,7 @@
 #include "G4ParticleDefinition.hh"
 #include "G4ParticleTypes.hh"
 #include "HistoManager.hh"
+#include "Analysis.hh"
 
 StackingAction::StackingAction(){
    optPhotonCounter = 0;

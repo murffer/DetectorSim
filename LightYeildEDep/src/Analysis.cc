@@ -61,6 +61,7 @@ void Analysis::PrepareNewRun(const G4Run* ){
 void Analysis::PrepareNewEvent(const G4Event* ){
   // Initialize energy deposition to zero
   eDepEvent = 0.0;
+  nOPAbsEvent = 0.0;
 }
 
 
@@ -89,6 +90,7 @@ void Analysis::EndOfEvent(const G4Event* event){
   // Adding to the run accumulation only events with deposit energy
   if (eDepEvent > 0.0){
     analysisManager->FillH1(1,eDepEvent);
+  analysisManager->FillH1(2,nOPAbsEvent);
   }
 }
 
