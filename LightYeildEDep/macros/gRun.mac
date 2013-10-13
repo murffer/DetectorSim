@@ -8,7 +8,7 @@
 #
 # Setting up the detector
 #
-/PolymerTransport/det/setAbsMat PS_Detector
+/PolymerTransport/det/setAbsMat PSLiF
 /PolymerTransport/det/setGapMat G4_PLEXIGLASS
 /PolymerTransport/det/setGapThick 1 cm
 /PolymerTransport/det/setRadius 10 cm

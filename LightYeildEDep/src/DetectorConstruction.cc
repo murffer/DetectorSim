@@ -59,7 +59,7 @@ DetectorConstruction::DetectorConstruction() : G4VUserDetectorConstruction(),
     materials = Materials::GetInstance();
     SetAbsorberMaterial("PSLiF");
     SetGapMaterial("G4_PLEXIGLASS");
-    defaultMaterial = G4Material::GetMaterial("Galactic");
+    defaultMaterial = materials->GetMaterial("G4_Galactic");
 
     // Create commands for interactive defiantions of the calorimeter
     detectorMessenger = new DetectorMessenger(this);
@@ -107,7 +107,7 @@ void DetectorConstruction::PrintCaloParameters(){
 
   // print parameters
   G4cout << "\n------------ Calorimeter Parameters ---------------------"
-    <<"\n--> The carlorimeter is a single layer of: \n\t[ "
+    <<"\n--> The detector is a single layer of: \n\t[ "
     << G4BestUnit(absThickness,"Length")<< " of " << absMaterial->GetName() 
     << " + "
     << G4BestUnit(gapThickness,"Length") << " of " << gapMaterial->GetName() << " ]"
