@@ -12,7 +12,7 @@ class G4VPhysicalVolume;
 class G4LogicalVolume;
 class G4Material;
 class DetectorMessenger;
-
+class MaterialManager;
 class DetectorConstruction : public G4VUserDetectorConstruction{
 
 	public:

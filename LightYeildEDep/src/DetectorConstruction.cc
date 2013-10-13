@@ -4,6 +4,7 @@
 #include "globals.hh"
 #include "G4Material.hh"
 #include "G4NistManager.hh"
+#include "Materials.hh"
 #include "G4UnitsTable.hh"
 
 #include "G4Box.hh"
@@ -55,16 +56,16 @@ DetectorConstruction::DetectorConstruction() : G4VUserDetectorConstruction(),
         ComputeParameters();
 
         // Define materials 
-        DefineMaterials();
-        SetAbsorberMaterial("EJ426HD2");
+        SetAbsorberMaterial("PSLiF");
         SetGapMaterial("G4_PLEXIGLASS");
+          defaultMaterial = G4Material::GetMaterial("Galactic");
 
         // Create commands for interactive defiantions of the calorimeter
         detectorMessenger = new DetectorMessenger(this);
     }
 
 DetectorConstruction::~DetectorConstruction(){
-
+delete fDetectorMessenger;
 }
 
 /**
@@ -83,118 +84,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     // Assign Sensitve Detectors
     SetSensitiveDetectors();
     return calo;
-}
-
-
-void DetectorConstruction::DefineMaterials()
-{
-    G4String name, symbol;             // a=mass of a mole;
-    G4double a, z, density;            // z=mean number of protons;  
-    G4int iz, n;                       // iz=nb of protons  in an isotope; 
-    // n=nb of nucleons in an isotope;
-    G4int nAtoms;
-    G4int nComponents;
-
-    // NIST Material Manager
-    G4NistManager* nistManager = G4NistManager::Instance();
-    G4bool fromIsotopes = true;
-
-    // Getting Elements
-    G4Element* eH = nistManager->FindOrBuildElement("H",fromIsotopes);
-    G4Element* eB = nistManager->FindOrBuildElement("B",fromIsotopes);
-    G4Element* eC = nistManager->FindOrBuildElement("C",fromIsotopes);
-    G4Element* eO = nistManager->FindOrBuildElement("O",fromIsotopes);
-    G4Element* eN = nistManager->FindOrBuildElement("N",fromIsotopes);
-    G4Element* eF = nistManager->FindOrBuildElement("F",fromIsotopes);
-    G4Element* eS = nistManager->FindOrBuildElement("S",fromIsotopes);
-    G4Element* eZn = nistManager->FindOrBuildElement("Zn",fromIsotopes);
-
-    // defining enriched Lithium 6
-    G4double a6Li = 6.015*g/mole;	// Molar Masses (Wolfram Alpha)
-    G4double a7Li = 7.016*g/mole;
-    G4double enrichement = 110.815*perCent;
-    G4double abundance6Li = enrichement*a6Li/a7Li;		// Relative Abudadance
-    G4double abundance7Li = 1-abundance6Li;
-
-    G4Isotope* Li6 = new G4Isotope(name="Li6", iz=3, n=6, a6Li);
-    G4Isotope* Li7 = new G4Isotope(name="Li7", iz=3, n=7, a7Li);
-    G4Element* enrichLi  = new G4Element(name="enriched Lithium", symbol="Li", nComponents=2);
-    enrichLi->AddIsotope(Li6, abundance6Li);
-    enrichLi->AddIsotope(Li7, abundance7Li);
-
-    // Defining 6LiF Absorber
-    G4Material* LiAbsorber = new G4Material("6LiF",density=1.0*g/cm3,nComponents=2);
-    LiAbsorber->AddElement(enrichLi,nAtoms=1);
-    LiAbsorber->AddElement(eF,nAtoms=1);
-
-    // PPO C15H11NO
-    G4Material* PPO = new G4Material("PPO",density=1.1*g/cm3,nComponents=4,kStateSolid);
-    PPO->AddElement(eC,nAtoms=15);
-    PPO->AddElement(eH,nAtoms=11);
-    PPO->AddElement(eO,nAtoms=1);
-    PPO->AddElement(eN,nAtoms=1);
-
-    // POPOP C24H15N2O2
-    G4Material* POPOP = new G4Material("POPOP",density=1.1*g/cm3,nComponents=4,kStateSolid);
-    POPOP->AddElement(eC,nAtoms=24);
-    POPOP->AddElement(eH,nAtoms=15);
-    POPOP->AddElement(eO,nAtoms=2);
-    POPOP->AddElement(eN,nAtoms=2);
-
-    // Scintillant
-    G4double fractionPPO = 46./(46.+1.36);		// Scintillant is in the ratio of 46 g PPO to 1.36 g POPOP
-    G4Material* scintillant = new G4Material("PPO/POPOP",density=1.1*g/cm3,nComponents=2,kStateSolid);
-    scintillant->AddMaterial(PPO,fractionPPO);
-    scintillant->AddMaterial(POPOP,1-fractionPPO);
-
-    // Polymer PS Based Detector
-    G4double fractionPolymer = 0.85;
-    G4double fractionScintillant = 0.05;
-    G4double fractionAbsorber = 0.10;
-    G4Material* psDetector = new G4Material("PS_Detector",density=1.1*g/cm3,nComponents=3,kStateSolid);
-    psDetector->AddMaterial(nistManager->FindOrBuildMaterial("G4_POLYSTYRENE",fromIsotopes),fractionPolymer);
-    psDetector->AddMaterial(scintillant,fractionScintillant);
-    psDetector->AddMaterial(LiAbsorber,fractionAbsorber);
-    
-    // Defining EJ426 HD2
-    G4double massFraction;
-    G4Material* EJ426HD2 = new G4Material("EJ426HD2",density=4.1*g/cm3,nComponents=4);
-    EJ426HD2->AddElement(enrichLi,massFraction=0.081);
-    EJ426HD2->AddElement(eF,massFraction=0.253);
-    EJ426HD2->AddElement(eZn,massFraction=0.447);
-    EJ426HD2->AddElement(eS,massFraction=0.219);
-
-  // Defining Boron Loaded Plastic
-  G4Material* BoronScint;
-  G4Material* pvt = nistManager->FindOrBuildMaterial("G4_PLASTIC_SC_VINYLTOLUENE",fromIsotopes);
-  G4Material* carborane = new G4Material("Carborane",density=1.0*g/cm3,nComponents=3,kStateSolid);
-  carborane->AddElement(eC,nAtoms=2);
-  carborane->AddElement(eB,nAtoms=10);
-  carborane->AddElement(eH,nAtoms=12);
-  G4double massFracCarborane = 0.00;
-  for (int i = 0; i < 7; i++){
-    std::ostringstream oss;
-    oss << "MS"<<i;
-    BoronScint = new G4Material(oss.str(),density=1.1*g/cm3,nComponents=2,kStateSolid);
-    BoronScint->AddMaterial(pvt,1.00-massFracCarborane);
-    BoronScint->AddMaterial(carborane,massFracCarborane);
-    massFracCarborane += 0.01;
-  }
-
-
-    // Vacuum
-    new G4Material("Galactic", z=1., a=1.01*g/mole,density= universe_mean_density,kStateGas, 2.73*kelvin, 3.e-18*pascal);
-
-    nistManager->FindOrBuildMaterial("G4_PLEXIGLASS",fromIsotopes);
-    nistManager->FindOrBuildMaterial("G4_POLYSTYRENE",fromIsotopes);
-    nistManager->FindOrBuildMaterial("G4_AIR",fromIsotopes);
-    nistManager->FindOrBuildMaterial("G4_WATER",fromIsotopes);
-   
-   // Print materials
-    G4cout << *(G4Material::GetMaterialTable()) << G4endl;
-
-    // Default Material
-    defaultMaterial = G4Material::GetMaterial("Galactic");
 }
 
 
@@ -330,7 +219,8 @@ void DetectorConstruction::SetVisAttributes(){
  * Set's the absorber material, which contains the neutron absorber
  */
 void DetectorConstruction::SetAbsorberMaterial(G4String materialChoice){
-    G4Material* pttoMaterial = G4Material::GetMaterial(materialChoice);     
+    // search the material by its name
+    G4Material* pttoMaterial = materials->GetMaterial(materialChoice);
     if (pttoMaterial) absMaterial = pttoMaterial;
 }
 /**
@@ -339,7 +229,8 @@ void DetectorConstruction::SetAbsorberMaterial(G4String materialChoice){
  * Set's the gap material.
  */
 void DetectorConstruction::SetGapMaterial(G4String materialChoice){
-    G4Material* pttoMaterial = G4Material::GetMaterial(materialChoice);
+    // search the material by its name
+    G4Material* pttoMaterial = materials->GetMaterial(materialChoice);
     if (pttoMaterial) gapMaterial = pttoMaterial;
 }
 
