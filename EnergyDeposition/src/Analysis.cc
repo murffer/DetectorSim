@@ -69,8 +69,6 @@ void Analysis::PrepareNewEvent(const G4Event* ){
  * @param G4Event* event
  */
 void Analysis::EndOfEvent(const G4Event* event){
-
-
   G4VHitsCollection *hc;
   G4double xPos = 0.0; 
   G4double yPos = 0.0;
@@ -104,8 +102,8 @@ void Analysis::EndOfEvent(const G4Event* event){
   }
   // Adding to the run accumulation only events with deposit energy
   if (eDepEvent > 0.0){
-    analysisManager->FillH1(1,eDepEvent);
-    analysisManager->FillH2(1,eDepEvent,zPos/um);
+//    analysisManager->FillH1(1,eDepEvent);
+//    analysisManager->FillH2(1,eDepEvent,zPos);
   }
 }
 
@@ -115,13 +113,16 @@ void Analysis::EndOfEvent(const G4Event* event){
  * Called at the end of a run, which summerizes the run
  */
 void Analysis::EndOfRun(const G4Run* ){
-
+  G4cout<<"Saving histograms!"<<G4endl;
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   //save histograms
   if ( analysisManager->IsActive() ) {
+    G4cout<<"Analysis manager is active!"<<G4endl;
     analysisManager->Write();
+    G4cout<<"Wrote root file!"<<G4endl;
     analysisManager->CloseFile();
   }
+  G4cout<<"Finished saving the world"<<G4endl;
 }
 /**
  * GetCalorimeterThickness

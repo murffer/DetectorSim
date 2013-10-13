@@ -4,16 +4,11 @@
 #include "G4Event.hh"
 #include "G4Run.hh"
 #include "G4VHitsCollection.hh"
-#include "TH1F.h"
-#include "TH2F.h"
-#include "TNtuple.h"
-#include "TFile.h"
-#include "G4String.hh"
 
 #include "CaloHit.hh"
 
 #include "globals.hh"
-
+class HistoManager;
 class Analysis {
 
     public:
@@ -25,7 +20,9 @@ class Analysis {
         }
 
         virtual ~Analysis();
-        
+    void Initilize();
+    void CleanUp();
+    
         // Accumulation Methods
         void PrepareNewEvent(const G4Event* anEvent);
         void PrepareNewRun(const G4Run* aRun);
@@ -37,16 +34,12 @@ class Analysis {
         // Singleton Analysis
         Analysis();
         static Analysis *singleton;
-
-        // ROOT Output variables
-        TFile* outfile;
-        TH1F* eDepHist;
-        TH2F* posEDepHist;
-        TNtuple* posEDepTuple;
+    
+            G4double GetCalorimeterThickness();
 
 
         // Accumulation Variables
         G4double eDepEvent;
-
+    HistoManager* fHistoManager; /* Histogram Manager */
 };
 #endif
