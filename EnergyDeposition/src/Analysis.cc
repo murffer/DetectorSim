@@ -101,7 +101,7 @@ void Analysis::EndOfEvent(const G4Event* event){
       }
 
       // Adding the energy deposition (in MeV)
-      eDepEvent += hit->GetEdep()/MeV;
+      eDepEvent += hit->GetEdep();
     }
   }
   // Adding to the run accumulation only events with deposit energy
