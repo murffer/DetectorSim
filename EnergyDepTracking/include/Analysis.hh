@@ -4,6 +4,7 @@
 #include "G4Event.hh"
 #include "G4Run.hh"
 #include "G4VHitsCollection.hh"
+#include "G4String.hh"
 
 #include "CaloHit.hh"
 
@@ -20,26 +21,25 @@ class Analysis {
         }
 
         virtual ~Analysis();
-    void Initilize();
-    void CleanUp();
-    
+        
         // Accumulation Methods
         void PrepareNewEvent(const G4Event* anEvent);
         void PrepareNewRun(const G4Run* aRun);
         void EndOfEvent(const G4Event* anEvent);
         void EndOfRun(const G4Run* aRun);
-  
+        
+        void SetNumberVoxels(const G4int nV){numVoxels  = nV;};
    private:
 
         // Singleton Analysis
         Analysis();
         static Analysis *singleton;
-    
-            G4double GetCalorimeterThickness();
-
 
         // Accumulation Variables
-        G4double eDepEvent;
-    HistoManager* fHistoManager; /* Histogram Manager */
+        HistoManager* fHistoManager;
+        G4int numVoxels;
+        G4double *eDepEvent;
+        G4double *eDepEvent2;
+        G4double eDepEventTotal;
 };
 #endif
