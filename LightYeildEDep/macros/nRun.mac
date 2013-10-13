@@ -1,6 +1,7 @@
 # Setting up verbosity
 /tracking/verbose 0
 /run/verbose 0
+/analysis/versbose 0
 #
 # Setting up the analysis
 #

@@ -1,6 +1,7 @@
 # Setting up verbosity
 /tracking/verbose 0
 /run/verbose 0
+/analysis/verbose 0
 # 
 # Running the co60 beam source
 #
