@@ -27,7 +27,7 @@ void HistoManager::Book()
   // Create or get analysis manager
   G4AnalysisManager* aMan = G4AnalysisManager::Instance();
   aMan->SetFileName(fFileName);
-  aMan->SetVerboseLevel(1);
+  aMan->SetVerboseLevel(0);
   aMan->SetFirstHistoId(1);     // start histogram numbering from 1
   aMan->SetActivation(true);    // enable inactivation of histograms
 
