@@ -101,6 +101,15 @@ void Analysis::EndOfEvent(const G4Event* event){
  */
 void Analysis::EndOfRun(const G4Run* ){
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  // Print some output
+    G4cout<<"\tAverage Energy Deposited: " 
+      << G4BestUnit(analysisManager->GetH1(1)->mean(),"Energy")
+      << " +/- " << G4BestUnit(analysisManager->GetH1(1)->rms(),"Energy")
+      << "\n\tAverage Number of Optical Photons: " 
+      << analysisManager->GetH1(2)->mean() 
+      << " +/- " << analysisManager->GetH1(2)->rms()
+      << G4endl;
+  
   //save histograms
   if ( analysisManager->IsActive() ) {
     analysisManager->Write();
