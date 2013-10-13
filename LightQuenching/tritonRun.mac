@@ -1,0 +1,40 @@
+#
+# Triton Primary Particles (1 MeV to 10 keV)
+#
+/control/verbose 0
+/run/verbose 0
+#
+/gun/particle triton
+#
+/run/initialize
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
+/gun/energy 2.15 MeV
+/run/beamOn 1000
+#
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
+/gun/energy 1 MeV
+/run/beamOn 1000
+#
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
+/gun/energy 464 keV
+/run/beamOn 1000
+#
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
+/gun/energy 215 keV
+/run/beamOn 1000
+#
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
+/gun/energy 100 keV
+/run/beamOn 1000
+#
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
+/gun/energy 46.4 keV
+/run/beamOn 1000
+#
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
+/gun/energy 21.5 keV
+/run/beamOn 1000
+#
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
+/gun/energy 10 keV
+/run/beamOn 1000
