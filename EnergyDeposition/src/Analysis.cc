@@ -102,7 +102,7 @@ void Analysis::EndOfEvent(const G4Event* event){
   }
   // Adding to the run accumulation only events with deposit energy
   if (eDepEvent > 0.0){
-//    analysisManager->FillH1(1,eDepEvent);
+    analysisManager->FillH1(1,eDepEvent);
 //    analysisManager->FillH2(1,eDepEvent,zPos);
   }
 }

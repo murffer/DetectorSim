@@ -30,12 +30,14 @@ void HistoManager::Book()
   aMan->SetFileName(fFileName);
   aMan->SetVerboseLevel(1);
   aMan->SetFirstHistoId(1);     // start histogram numbering from 1
-  aMan->SetActivation(true);    // enable inactivation of histograms
+//  aMan->SetActivation(true);    // enable inactivation of histograms
   
 
   // Create all histograms as inactivated 
-    G4int ih = aMan->CreateH1(1,"Total Energy Depostion",100,0,100);
-    aMan->SetActivation(G4VAnalysisManager::kH1, ih, false);
-    ih = aMan->CreateH2(1,"Positional Energy Deposition",100,0,100,100,0,100);
-    aMan->SetActivation(G4VAnalysisManager::kH2, ih, false);
+    G4int ih = 0;
+    ih = aMan->CreateH1("eDep","Total Energy Depostion",100,0,100);
+  //  aMan->SetActivation(G4VAnalysisManager::kH1, ih, false);
+ //   ih = aMan->CreateH2("posEDep","Positional Energy Deposition",100,0,100,100,0,100);
+    G4cout<<"Histogram id is "<<ih<<G4endl;
+  //  aMan->SetActivation(G4VAnalysisManager::kH2, ih, false);
 }
