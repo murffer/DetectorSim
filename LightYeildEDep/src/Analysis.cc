@@ -150,3 +150,10 @@ G4double Analysis::GetCalorimeterThickness(){
   return caloThickness;
 
 }
+
+/**
+ * Sets the number of optical photons generated
+ */
+void Analysis::SetNumOpticalPhotonsGenerated(G4int numPhotons){
+    nOPAbsEvent = numPhotons;
+}

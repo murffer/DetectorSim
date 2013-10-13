@@ -19,9 +19,8 @@ StackingAction::~StackingAction()
  */
 void StackingAction::NewStage(){
 
-  // Updating Analysis
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  analysisManager->FillH1(1,optPhotonCounter);
+    // Updating Analysis
+    Analysis::GetInstance()->SetNumOpticalPhotonsGenerated(optPhotonCounter);
 }
 /**
  * PrepareNewEvent
