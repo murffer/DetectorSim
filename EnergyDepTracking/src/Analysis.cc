@@ -10,7 +10,6 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <map>
 #include "G4HCofThisEvent.hh"
 #include "G4Event.hh"
 #include "G4ThreeVector.hh"
@@ -47,6 +46,14 @@ void Analysis::PrepareNewRun(const G4Run* aRun){
     man->OpenFile();
   }
   G4cout<<"Prepared run "<<aRun->GetRunID()<<G4endl;
+  // Initialize energy deposition to zero
+  eDepEvent = new G4double [numVoxels];
+  eDepEvent2 = new G4double [numVoxels];
+  for (G4int i = 0; i < numVoxels; i++){
+    eDepEvent[i] = 0;
+    eDepEvent2[i] = 0;
+  }
+  eDepEventTotal = 0;
 }
 
 /**
@@ -56,8 +63,6 @@ void Analysis::PrepareNewRun(const G4Run* aRun){
  * The energy deposition per slice is initialzed per event
  */
 void Analysis::PrepareNewEvent(const G4Event* anEvent){
-  // Initialize energy deposition to zero
-  eDepEvent = 0.0;
 }
 
 
@@ -68,35 +73,31 @@ void Analysis::PrepareNewEvent(const G4Event* anEvent){
  */
 void Analysis::EndOfEvent(const G4Event* event){
 
+  G4double eDep;
+  G4int copyNum;
   G4VHitsCollection *hc;
   G4int chamberNum;
   CaloHit *hit;
-  std::map<int,G4double> eDepMap; 
-  // Iterating through the hit collection to accumulate the energy deposition 
+  
+  // Iterating through the hit collection 
   G4int numHitColl = event->GetHCofThisEvent()->GetNumberOfCollections();
   for(G4int hitItter = 0; hitItter < numHitColl; hitItter++){
-    // Itterating through the hit collection
    
     hc = event->GetHCofThisEvent()->GetHC(hitItter);
     for(G4int i = 0; i < hc->GetSize(); i++){
       hit = (CaloHit*) hc->GetHit(i);
-        // First interaction of the particle
-        eDepMap[hit->GetChamberNumber()] += hit->GetEdep()/MeV;
+      eDep = hit->GetEdep()/MeV;
+      copyNum = hit->GetChamberNumber();
+      eDepEvent[copyNum] += eDep;
+      eDepEvent2[copyNum] += eDep*eDep;
+
       // Adding the energy deposition (in MeV)
-      eDepEvent += hit->GetEdep()/MeV;
+      eDepEventTotal += hit->GetEdep()/MeV;
     }
   }
-  // Adding to the run accumulation only events with deposit energy
-  if (eDepEvent > 0.0){
-      G4AnalysisManager* man = G4AnalysisManager::Instance();
-      man->FillH1(1,eDepEvent);
-      std::map<int,G4double>::iterator it;
-      for(it = eDepMap.begin(); it != eDepMap.end(); it++){
-        G4cout<<it->first << "=>" <<it->second<<G4endl;
-      }
-     //man->FillNtupleDColumn(1, fEnergyGap);
-     //man->AddNtupleRow();
-  }
+  // Adding to the run accumulation 
+  G4AnalysisManager* man = G4AnalysisManager::Instance();
+  man->FillH1(1,eDepEventTotal);
 }
 
 /**
@@ -105,6 +106,22 @@ void Analysis::EndOfEvent(const G4Event* event){
  * Called at the end of a run, which summerizes the run
  */
 void Analysis::EndOfRun(const G4Run* aRun){
+  
+  G4int NbOfEvents = aRun->GetNumberOfEvent();
+  G4double n = double(NbOfEvents);
+
+  // Outputing the data
+  for(G4int i = 0; i < numVoxels; i++){
+    // Computing the mean and rms
+    G4double mean = eDepEvent[i]/n;
+    G4double mean2 = eDepEvent2[i]/n;
+    G4double rms = mean2 - mean*mean;
+    if (rms > 0. ) rms = std::sqrt(rms); else rms = 0.;
+    G4cout<<i<<"\t"
+      <<G4BestUnit(mean,"Energy")<<" +/- "<<G4BestUnit(rms,"Energy")
+      <<G4endl;
+  }
+  
   // Save Histograms
   G4AnalysisManager* man = G4AnalysisManager::Instance();
   if (man->IsActive()){

@@ -75,7 +75,6 @@
 /analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
 /analysis/h2/set 2 100 0 1.5 MeV none 100 0 1.5 um none # Position Histogram 
 /PolymerTransport/det/setAbsThick 25 um
-/Analysis/setEDepPosAnalysis 1
 /PolymerTransport/det/update
 /run/beamOn 1000000
 #
