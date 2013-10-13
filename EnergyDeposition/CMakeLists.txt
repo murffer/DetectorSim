@@ -47,7 +47,6 @@ set(energyDep_SCRIPTS
   macros/nRun.mac
   macros/neutronSource.mac
   vis.mac
-  test.mac
   gui.mac
   )
 
