@@ -1,3 +1,6 @@
+# GEANT4 files
+*.root
+
 # Compiled Object files
 *.slo
 *.lo
