@@ -67,8 +67,10 @@ def WriteHistograms(files,histKey='eDepPosHist',ext='.eps',tParse=GetThickness):
   for fname in files:
     f = TFile(fname,'r')
     hist = f.Get(histKey)
-    #hist.GetYaxis().SetTileOffset(1.2)
-    #hist.GetXaxis().SetTileOffset(1.2)
+    hist.GetYaxis().SetTitle("Interaction Position (mm)")
+    hist.GetXaxis().SetTitle("Energy Deposited (MeV)")
+    hist.GetYaxis().SetTitleOffset(2)
+    hist.GetXaxis().SetTitleOffset(2)
     hist.Draw("lego2 0")
     #hist.Draw("contz")
     outName = fname.rsplit('_',1)[0]
@@ -112,6 +114,13 @@ def PlotEDepSummary(gFiles,nFiles,figureName='EDepSummary.png',tParse=GetThickne
   plt.yscale("log")
   plt.grid(True)
   plt.savefig(figureName)
+  # Print
+  print "Neutron Energy Deposition"
+  for i in range(0,len(nT)):
+    print "{} {} {}".format(nT[i],nDep[i],nDepError[i])
+  print "Gamma Energy Deposition"
+  for i in range(0,len(gT)):
+    print "{} {} {}".format(gT[i],gDep[i],gDepError[i])
 
 def main():
   print "Getting Files"

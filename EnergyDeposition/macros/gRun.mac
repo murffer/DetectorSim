@@ -16,71 +16,71 @@
 # Running through absorber thickness
 #
 /analysis/setFileName Co60_32mm
-/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
-/analysis/h2/set 1 50 0.0 5.0 none none 50 0.0 32 none none # Position Histogram 
+/analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
+/analysis/h2/set 1 10 0.0 1.5 none none 10 0.0 32 none none # Position Histogram 
 /PolymerTransport/det/setAbsThick 3.2 cm
 /PolymerTransport/det/update
-/run/beamOn 100000
+/run/beamOn 1000000
 #
 /analysis/setFileName Co60_10mm
-/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
-/analysis/h2/set 1 50 0.0 5.0 none none 50 0.0 10 none none # Position Histogram 
+/analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
+/analysis/h2/set 1 10 0.0 1.5 none none 10 0.0 10 none none # Position Histogram 
 /PolymerTransport/det/setAbsThick 1.0 cm
 /PolymerTransport/det/update
-/run/beamOn 100000
+/run/beamOn 1000000
 #
-/analysis/setFileName Co60_mm
-/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
-/analysis/h2/set 1 50 0.0 5.0 none none 50 0.0 0.32 none none # Position Histogram 
+/analysis/setFileName Co60_3200um
+/analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
+/analysis/h2/set 1 10 0.0 1.5 none none 10 0.0 3.2 none none # Position Histogram 
 /PolymerTransport/det/setAbsThick 3.2 mm
 /PolymerTransport/det/update
-/run/beamOn 100000
+/run/beamOn 1000000
 #
 /analysis/setFileName Co60_1mm
-/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
-/analysis/h2/set 1 50 0.0 5.0 none none 50 0.0 1 none none # Position Histogram 
+/analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
+/analysis/h2/set 1 10 0.0 1.5 none none 10 0.0 1 none none # Position Histogram 
 /PolymerTransport/det/setAbsThick 1.0 mm
 /PolymerTransport/det/update
-/run/beamOn 100000
+/run/beamOn 1000000
 #
 /analysis/setFileName Co60_460um
-/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
-/analysis/h2/set 1 50 0.0 5.0 none none 50 0.0 0.46 none none # Position Histogram 
+/analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
+/analysis/h2/set 1 10 0.0 1.5 none none 10 0.0 0.46 none none # Position Histogram 
 /PolymerTransport/det/setAbsThick 0.46 mm
 /PolymerTransport/det/update
-/run/beamOn 100000
+/run/beamOn 1000000
 #
 /analysis/setFileName Co60_220um
-/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
-/analysis/h2/set 1 50 0.0 5.0 none none 50 0.0 0.22 none none # Position Histogram 
+/analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
+/analysis/h2/set 1 10 0.0 1.5 none none 10 0.0 0.22 none none # Position Histogram 
 /PolymerTransport/det/setAbsThick 0.22 mm
 /PolymerTransport/det/update
-/run/beamOn 100000
+/run/beamOn 1000000
 #
 /analysis/setFileName Co60_100um
-/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
-/analysis/h2/set 1 50 0.0 5.0 none none 50 0.0 0.1 none none # Position Histogram 
+/analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
+/analysis/h2/set 1 10 0.0 1.5 none none 10 0.0 0.1 none none # Position Histogram 
 /PolymerTransport/det/setAbsThick 0.1 mm
 /PolymerTransport/det/update
-/run/beamOn 100000
+/run/beamOn 1000000
 #
 /analysis/setFileName Co60_50um
-/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
+/analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
 /PolymerTransport/det/setAbsThick 50 um
-/analysis/h2/set 1 50 0.0 5.0 none none 50 0.0 0.05 none none # Position Histogram 
+/analysis/h2/set 1 10 0.0 1.5 none none 10 0.0 0.05 none none # Position Histogram 
 /PolymerTransport/det/update
-/run/beamOn 100000
+/run/beamOn 1000000
 #
 /analysis/setFileName Co60_25um
-/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
-/analysis/h2/set 1 50 0.0 5.0 none none 50 0.0 0.025 none none # Position Histogram 
+/analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
+/analysis/h2/set 1 10 0.0 1.5 none none 10 0.0 0.025 none none # Position Histogram 
 /PolymerTransport/det/setAbsThick 25 um
 /PolymerTransport/det/update
-/run/beamOn 100000
+/run/beamOn 1000000
 #
 /analysis/setFileName Co60_10um
-/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
-/analysis/h2/set 1 50 0.0 5.0 none none 50 0.0 0.010 none none # Position Histogram 
+/analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
+/analysis/h2/set 1 10 0.0 1.5 none none 10 0.0 0.010 none none # Position Histogram 
 /PolymerTransport/det/setAbsThick 10 um
 /PolymerTransport/det/update
-/run/beamOn 100000
+/run/beamOn 1000000
