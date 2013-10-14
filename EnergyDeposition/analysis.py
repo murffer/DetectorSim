@@ -78,7 +78,7 @@ def WriteHistograms(files,histKey='eDepPosHist',ext='.eps',tParse=GetThickness):
 
 
 def PlotEDepSummary(gFiles,nFiles,figureName='EDepSummary.png',tParse=GetThickness,
-  histKey='eDepHist'):
+  histKey='eDep'):
   """ PlotEDepSummary
   Plotss the energy deposition summary
   """
@@ -120,8 +120,8 @@ def main():
   print "Neutron Files: ",str(n)
   print "Starting Data Analysis"
   PlotEDepSummary(g,n)
-  WriteHistograms(g,histKey='eDepPosHist',ext='.png',tParse=GetThickness)
-  WriteHistograms(n,histKey='eDepPosHist',ext='.png',tParse=GetThickness)
+  WriteHistograms(g,histKey='posEDep',ext='.png',tParse=GetThickness)
+  WriteHistograms(n,histKey='posEDep',ext='.png',tParse=GetThickness)
 
 if __name__ == "__main__":
   main()
