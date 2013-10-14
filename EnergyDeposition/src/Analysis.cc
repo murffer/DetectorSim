@@ -74,8 +74,6 @@ void Analysis::PrepareNewEvent(const G4Event* ){
  */
 void Analysis::EndOfEvent(const G4Event* event){
   G4VHitsCollection *hc;
-  G4double xPos = 0.0; 
-  G4double yPos = 0.0;
   G4double zPos = 0.0; 
   bool isFirst = true;
   CaloHit *hit;
@@ -95,8 +93,6 @@ void Analysis::EndOfEvent(const G4Event* event){
         // First interaction of the particle
         isFirst = false;
         zPos = GetCalorimeterThickness(); // Subtracting the thickness
-        xPos = hit->GetPosition().x();
-        yPos = hit->GetPosition().y();
         zPos -= hit->GetPosition().z();
       }
 
@@ -107,7 +103,7 @@ void Analysis::EndOfEvent(const G4Event* event){
   // Adding to the run accumulation only events with deposit energy
   if (eDepEvent > 0.0){
     analysisManager->FillH1(1,eDepEvent);
-    analysisManager->FillH2(1,eDepEvent,zPos);
+    analysisManager->FillH2(1,eDepEvent/MeV,zPos/mm);
   }
 }
 
