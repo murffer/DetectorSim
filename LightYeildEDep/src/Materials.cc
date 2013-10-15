@@ -282,7 +282,7 @@ void Materials::SetOpticalPropertiesPS(){
     MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE",1.0);
     MPTPolystyrene->AddConstProperty("FASTTIMECONSTANT", 10.*ns);
     psDet->SetMaterialPropertiesTable(MPTPolystyrene);
-    psDet->GetIonisation()->SetBirksConstant(0.009*mm/MeV);
+    psDet->GetIonisation()->SetBirksConstant(0.09*mm/MeV);
 }
 
 /**
