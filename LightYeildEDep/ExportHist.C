@@ -6,7 +6,7 @@ void ExportHistogram(TFile* f,const char* histKey,const char* outputfile){
   // Root Setup
   TH1F* h = (TH1F*) f->Get(histKey);
 	h->Sumw2();
-	h->Scale(1.0/h->GetEntries())
+	h->Scale(1.0/h->GetEntries());
   // File Setup
   ofstream out;
   out.open(outputfile);
