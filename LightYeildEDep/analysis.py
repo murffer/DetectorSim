@@ -51,67 +51,40 @@ def GetThickness(filename):
     print tokens[2]," is not a reconized prefix"
     raise Exception()
 
-def WriteHistograms(files,histKey='eDepPosHist',ext='.eps',tParse=GetThickness):
-  """
-  Write Histograms - Writes the histogram specified by histKey out to a file
+def WriteHisto(gFiles,nFiles):
+    pass
 
-  Keywords:
-  files - list of files in which the histogram is in
-  histKey - root key string of the histogram
-  ext - file extension of the output image
-  tParse - thickness parser for filename string
-  """
-  gStyle.SetOptStat(0)
-  gStyle.SetPalette(1)
-  c = TCanvas()
-  for fname in files:
-    f = TFile(fname,'r')
-    hist = f.Get(histKey)
-    #hist.GetYaxis().SetTileOffset(1.2)
-    #hist.GetXaxis().SetTileOffset(1.2)
-    hist.Draw("lego2 0")
-    #hist.Draw("contz")
-    outName = fname.rsplit('_',1)[0]
-    outName = outName.rsplit('/',1)[-1]+'{}'.format(tParse(fname))+ext
-    c.SetLogz(1)
-    c.SaveAs(histKey+outName)
-
-
-def PlotEDepSummary(gFiles,nFiles,figureName='EDepSummary.png',tParse=GetThickness,
-  histKey='eDepHist'):
+def Summary(gFiles,nFiles,tParse=GetThickness,
+  histKey='eDep'):
   """ PlotEDepSummary
   Plotss the energy deposition summary
   """
   # Extrating the average values
   gT = list()
-  gDep = list()
-  gDepError = list()
+  g = list()
   nT = list()
-  nDep = list()
-  nDepError = list()
+  n = list()
   for fname in gFiles:
     f = TFile(fname,'r')
-    hist = f.Get(histKey)
     gT.append(GetThickness(fname))
-    gDep.append(hist.GetMean())
-    gDepError.append(hist.GetMeanError())
+    opHist = f.Get('numPhoton')
+    eDepHist = f.Get('eDep')
+    data = (opHist.GetMean(),opHist.GetMeanError(),eDepHist.GetMean(),eDepHist.GetMeanError())
+    g.append(data)
   for fname in nFiles:
     f = TFile(fname,'r')
-    hist = f.Get(histKey)
-    nT.append(GetThickness(fname))
-    nDep.append(hist.GetMean())
-    nDepError.append(hist.GetMeanError())
-  # Plotting
-  plt.errorbar(gT,gDep,yerr=gDepError,fmt='r+')
-  plt.hold(True)
-  plt.errorbar(nT,nDep,yerr=nDepError,fmt='go')
-  plt.xlabel("Thickness (mm)")
-  plt.ylabel("Average Energy Deposition (MeV)")
-  plt.legend(["Co-60","Cf-252"])
-  plt.xscale("log")
-  plt.yscale("log")
-  plt.grid(True)
-  plt.savefig(figureName)
+    opHist = f.Get('numPhoton')
+    eDepHist = f.Get('eDep')
+    data = (opHist.GetMean(),opHist.GetMeanError(),eDepHist.GetMean(),eDepHist.GetMeanError())
+    n.append(data)
+  
+  # Print
+  print "Neutron Energy Deposition"
+  for i in range(0,len(nT)):
+    print "{} {} {} {} {}".format(nT[i],n[i][0],n[i][1],n[i][2],n[i][3])
+  print "Gamma Energy Deposition"
+  for i in range(0,len(gT)):
+    print "{} {} {} {} {}".format(gT[i],g[i][0],g[i][1],g[i][2],g[i][3])
 
 def main():
   print "Getting Files"
@@ -120,8 +93,8 @@ def main():
   print "Neutron Files: ",str(n)
   print "Starting Data Analysis"
   PlotEDepSummary(g,n)
-  WriteHistograms(g,histKey='eDepPosHist',ext='.png',tParse=GetThickness)
-  WriteHistograms(n,histKey='eDepPosHist',ext='.png',tParse=GetThickness)
+  WriteHistograms(g,histKey='posEDep',ext='.png',tParse=GetThickness)
+  WriteHistograms(n,histKey='posEDep',ext='.png',tParse=GetThickness)
 
 if __name__ == "__main__":
   main()
