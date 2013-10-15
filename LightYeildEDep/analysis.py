@@ -1,9 +1,8 @@
 # coding: utf-8
 #!/usr/bin/env python
-from ROOT import TFile, TH1F, gStyle, TCanvas, TNtuple,TH2F, TAxis
+from ROOT import TFile, TH1F
 import os
 import re
-import matplotlib.pyplot as plt
 import numpy as np
 
 def GetRootFiles(path=os.getcwd(),gammaKey='Co60',neutronKey='neutron'):
@@ -51,11 +50,7 @@ def GetThickness(filename):
     print tokens[2]," is not a reconized prefix"
     raise Exception()
 
-def WriteHisto(gFiles,nFiles):
-    pass
-
-def Summary(gFiles,nFiles,tParse=GetThickness,
-  histKey='eDep'):
+def Summary(gFiles,nFiles,tParse=GetThickness):
   """ PlotEDepSummary
   Plotss the energy deposition summary
   """
@@ -67,17 +62,19 @@ def Summary(gFiles,nFiles,tParse=GetThickness,
   for fname in gFiles:
     f = TFile(fname,'r')
     gT.append(GetThickness(fname))
-    opHist = f.Get('numPhoton')
+    opHist = f.Get('numPhotons')
     eDepHist = f.Get('eDep')
     data = (opHist.GetMean(),opHist.GetMeanError(),eDepHist.GetMean(),eDepHist.GetMeanError())
     g.append(data)
+
   for fname in nFiles:
     f = TFile(fname,'r')
-    opHist = f.Get('numPhoton')
+    nT.append(GetThickness(fname))
+    opHist = f.Get('numPhotons')
     eDepHist = f.Get('eDep')
     data = (opHist.GetMean(),opHist.GetMeanError(),eDepHist.GetMean(),eDepHist.GetMeanError())
     n.append(data)
-  
+
   # Print
   print "Neutron Energy Deposition"
   for i in range(0,len(nT)):
@@ -89,12 +86,8 @@ def Summary(gFiles,nFiles,tParse=GetThickness,
 def main():
   print "Getting Files"
   [g,n] = GetRootFiles()
-  print "Gamma Files: ",str(g)
-  print "Neutron Files: ",str(n)
   print "Starting Data Analysis"
-  PlotEDepSummary(g,n)
-  WriteHistograms(g,histKey='posEDep',ext='.png',tParse=GetThickness)
-  WriteHistograms(n,histKey='posEDep',ext='.png',tParse=GetThickness)
+  Summary(g,n)
 
 if __name__ == "__main__":
   main()
