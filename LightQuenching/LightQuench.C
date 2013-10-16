@@ -88,7 +88,7 @@ int main(){
   names->Add(new TObjString("Alpha"));
   names->Add(new TObjString("Triton"));
   names->Add(new TObjString("Electron"));
-  PlotHistogram(hist,names,0,1000,"Energy of Charged Particles at Creation","Energy [keV]","LightQuenchExample.png",0,false,false);
+  PlotHistogram(hist,names,0,1000,"Number of Optical Photons","Number Generated","LightQuenchExample.png",0,false,false);
   
   ExportHistogram(fA,"1","AlphaOPDist.csv");
   ExportHistogram(fT,"1","TritonOPDist.csv");
