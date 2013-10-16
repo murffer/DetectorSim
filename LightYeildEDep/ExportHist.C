@@ -23,18 +23,22 @@ void ExportHistogram(TFile* f,const char* histKey,const char* outputfile){
  *  root[#] main()
  */
 int main(){
+	TFile* fN0 = new TFile("neutron_10mm.root","r");
 	TFile* fN1 = new TFile("neutron_50um.root","r");
 	TFile* fN2 = new TFile("neutron_25um.root","r");
 	TFile* fN3 = new TFile("neutron_10um.root","r");
 
+	TFile* fG0 = new TFile("Co60_10mm.root","r");
 	TFile* fG1 = new TFile("Co60_1mm.root","r");
 	TFile* fG2 = new TFile("Co60_100um.root","r");
 	TFile* fG3 = new TFile("Co60_10um.root","r");
 
+	ExportHistogram(fN0,"numPhotons","neutron_10mm.csv");
 	ExportHistogram(fN1,"numPhotons","neutron_50um.csv");
 	ExportHistogram(fN2,"numPhotons","neutron_25um.csv");
 	ExportHistogram(fN3,"numPhotons","neutron_10um.csv");
 	
+	ExportHistogram(fG0,"numPhotons","Co60_10mm.csv");
 	ExportHistogram(fG1,"numPhotons","Co60_1mm.csv");
 	ExportHistogram(fG2,"numPhotons","Co60_100um.csv");
 	ExportHistogram(fG3,"numPhotons","Co60_10um.csv");
