@@ -24,3 +24,25 @@
 /gun/particle triton
 /gun/energy 2.73 MeV
 /run/beamOn 100000
+
+/analysis/setFileName none
+/analysis/h1/set 1 1000 0  1000    # Number of optical photons created
+/gun/particle alpha
+/gun/energy 1.78 MeV
+/run/beamOn 100000
+
+/analysis/h1/set 1 1000 0  10000    # Number of optical photons created
+/gun/particle e-
+/gun/energy 4.78 MeV
+/run/beamOn 100000
+
+/analysis/h1/set 1 1000 0  10000    # Number of optical photons created
+/gun/particle e-
+/gun/energy 2.78 MeV
+/run/beamOn 100000
+
+/gun/particle ion
+/gun/ion 3 7
+/analysis/h1/set 1 100 0  12000    # Number of optical photons created
+/gun/energy 1.02 MeV
+/run/beamOn 10000
