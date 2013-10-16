@@ -10,5 +10,7 @@ Several runs are provided for the user. They are:
   + tritonRun.mac - Tritons from 10 keV to 2.15 MeV
   + demoRun.mac - A representation of a gamma and neutron
 
+In addition, for convience a script has been written, `jobSub.sh`, which allows for the submission of all of the runs to the cluster system.
+
 The analysis is completed without the use of the Singleton analysis class. This mgiht be recovered by using a previous commit.
 A root script is provided, `LightQuench.C` which may be invoked by root that compares distrubtion of number of photons created for the particles in demoRun.mac.  This script also generates .csv files which can then be plotted in ones favorite package.
