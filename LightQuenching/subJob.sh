@@ -40,7 +40,7 @@ function run7Li()
   JobSetup
   echo "exec $G4WORKDIR/build/lightYield $G4WORKDIR/7LiRun.mac > 7LiOutput.txt" >> job
   mv job 7LiSub.qsub
-  qsub 7LISub.qsub
+  qsub 7LiSub.qsub
 }
 function runDemo()
 {
