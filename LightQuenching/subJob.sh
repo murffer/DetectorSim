@@ -35,6 +35,13 @@ function runAlpha()
   mv job aSub.qsub
   qsub aSub.qsub
 }
+function run7Li()
+{
+  JobSetup
+  echo "exec $G4WORKDIR/build/lightYield $G4WORKDIR/7LiRun.mac > 7LiOutput.txt" >> job
+  mv job 7LiSub.qsub
+  qsub 7LISub.qsub
+}
 function runDemo()
 {
   JobSetup
@@ -47,9 +54,11 @@ function runDemo()
 runElectron
 runTriton
 runAlpha
+run7Li
 runDemo
 # Cleaning up
 rm eSub.qsub
 rm aSub.qsub
 rm tSub.qsub
 rm dSub.qsub
+rm 7LiSub.qsub

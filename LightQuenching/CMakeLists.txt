@@ -47,6 +47,7 @@ eRun.mac
 alphaRun.mac
 tritonRun.mac
 demoRun.mac
+7LiRun.mac
 LightQuench.C
 )
 
