@@ -252,6 +252,7 @@ void Materials::SetOpticalPropertiesGS20(){
     MPTGS20->AddConstProperty("YIELDRATIO", 1.0);
     MPTGS20->AddConstProperty("RESOLUTIONSCALE", 1.0);
     GS20->SetMaterialPropertiesTable(MPTGS20);
+    GS20->GetIonisation()->SetBirksConstant(0.0052*mm/MeV);
 }
 /**
  * Sets the optical properties of BK7
