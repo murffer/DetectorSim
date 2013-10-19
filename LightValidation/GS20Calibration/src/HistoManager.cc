@@ -4,7 +4,7 @@
 /**
  * Creates a Histogram manger with the default name
  */
-HistoManager::HistoManager(): fFileName("energyDep")
+HistoManager::HistoManager(): fFileName("GS20Calibration")
 {
     Book();
 }
@@ -48,7 +48,7 @@ void HistoManager::Book()
     
     // Create all histograms as inactivated
     for (G4int k=0; k<kMaxHisto; k++) {
-        G4int ih = analysisManager->CreateH1(id[k], title[k], nbins, vmin, vmax);
-        analysisManager->SetActivation(G4VAnalysisManager::kH1, ih, false);
+        G4int ih = aMan->CreateH1(id[k], title[k], nbins, vmin, vmax);
+        aMan->SetActivation(G4VAnalysisManager::kH1, ih, false);
     }
 }

@@ -7,7 +7,7 @@
 #include "G4RunManager.hh"
 #include "G4UImanager.hh"
 
-#include "AnalysisMessenger.hh"
+#include "Analysis.hh"
 #include "PhysicsList.hh"
 #include "Randomize.hh"
 
@@ -34,7 +34,8 @@ int main(int argc,char** argv){
     runManager->SetUserAction(new StackingAction());
     runManager->Initialize();
 
-    AnalysisMessenger* aMessenger = new AnalysisMessenger();
+    // Setting up the analysis
+    Analysis::GetInstance()->Initilize();
 
 #ifdef G4VIS_USE
     // Initialize visualization
@@ -69,6 +70,7 @@ int main(int argc,char** argv){
 #ifdef G4VIS_USE
     delete visManager;
 #endif
+      Analysis::GetInstance()->CleanUp();
     delete runManager;
     return 0;
 }

@@ -5,13 +5,11 @@
 #include "G4Event.hh"
 #include "G4Run.hh"
 #include "G4VHitsCollection.hh"
-#include "TH1F.h"
-#include "TNtuple.h"
-#include "TFile.h"
 #include "G4String.hh"
 
 class PMTHit;
 class AbsorberHit;
+class HistoManager;
 class Analysis {
 
   public:
@@ -21,16 +19,17 @@ class Analysis {
         Analysis::singleton = new Analysis();
       return Analysis::singleton;
     }
-
+    
+    // Class Utility Methods
     virtual ~Analysis();
+    void Initilize();
+    void CleanUp();
 
     // Accumulation Methods
     void PrepareNewEvent(const G4Event* anEvent);
     void PrepareNewRun(const G4Run* aRun);
     void EndOfEvent(const G4Event* anEvent);
     void EndOfRun(const G4Run* aRun);
-    
-    void SetIncidentParticleName(G4String pName);
     void SetNumOpticalPhotonsGenerated(G4int numPhotons);
   
   private:
@@ -40,17 +39,7 @@ class Analysis {
     static Analysis *singleton;
 
     // Class interanls
-    G4String GetDetectorMaterial();   /* Gets the detector material */
-    G4String incidentParticleName;    /* Gets the incident particle */
-    bool neutron;                     /* True for a neutron incident*/
-
-    // ROOT Output variables
-    TFile* outfile;             /* ROOT output file handle          */
-    TH1F* eDepHist;             /* Event Energy Deposition Histogram*/
-    TH1F* opAbsHist;            /* Event Optical Photon (op) Absorber (created) histogram   */
-    TH1F* opPMTHist;            /* Event Optical Photon (op) PMT (created) histogram        */
-    G4double maxHistEnergy;     /* Maximum Energy that can be deposited in an event         */
-    G4int maxNumPhotons;        /* Maxium number of photons that can be created in an event */
+    HistoManager* fHistoManager;/* Histogram manager */
     
     // Data Collections Varaibles
     G4double eDepEvent;         /* Energy deposition in the absoerber */
