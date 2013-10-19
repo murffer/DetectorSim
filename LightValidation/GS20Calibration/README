@@ -1,0 +1,6 @@
+Simulation of gammas and neutrons and the subsquent energy depsotion and 
+optical photons in GS20.
+
+Naming Conventions:
+  Abosrber - the GS20 Scintillator
+  PMT - the pmt

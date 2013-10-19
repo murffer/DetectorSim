@@ -1,0 +1,18 @@
+# Setting up verbosity
+/tracking/verbose 0
+/run/verbose 0
+#
+# Setting up the analysis
+#
+/Analysis/setParticleName Co60
+# 
+# Running the co60 beam source
+#
+/control/execute macros/co60Source.mac
+#
+# Setting up the detector
+#
+#
+# Running through absorber thickness
+/run/beamOn 1000000
+#

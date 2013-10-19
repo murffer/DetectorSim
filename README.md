@@ -15,3 +15,8 @@ The following simulations are intended to expore more complex interaction sof th
 
   + LightYieldEDep - The light yield as a function of energy deposition and film thickness
 
+# LightValidation
+
+Simulations for the light validation of differnet detector designs. The simulations included are:
+
+	+ GS20Calibration
