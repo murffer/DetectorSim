@@ -59,12 +59,5 @@ G4bool AbsorberSD::ProcessHits(G4Step* aStep,G4TouchableHistory*){
  * EndOfEvent - called for the hit at the end of the event
  *
  */
-void AbsorberSD::EndOfEvent(G4HCofThisEvent*){
-  if (verboseLevel > 1){
-    G4int nOfAbsHits = hitCollection->entries();
-    G4cout<<"\n-----> Hits Collection:"
-      <<"\n\tNumber of absorber hits: "<<nOfAbsHits
-      <<G4endl;
-  }
-}
+void AbsorberSD::EndOfEvent(G4HCofThisEvent*){}
 

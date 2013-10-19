@@ -50,13 +50,5 @@ G4bool PMTSD::ProcessHits(G4Step* aStep,G4TouchableHistory*){
 }
 
 
-void PMTSD::EndOfEvent(G4HCofThisEvent*)
-{
-    if (verboseLevel > 1){
-        G4int nOfHits = hitCollection->entries();
-        G4cout<<"\n-----> Hits Collection: in this event they are "<<
-            nOfHits<<" hits:"<<G4endl;
-        for (G4int i=0; i<nOfHits; i++) (*hitCollection)[i]->Print();
-    }
-}
+void PMTSD::EndOfEvent(G4HCofThisEvent*){}
 

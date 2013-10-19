@@ -1,5 +1,5 @@
 # Setting up verbosity
-/tracking/verbose 1
+/tracking/verbose 0
 /run/verbose 0
 #
 # Setting up the source
