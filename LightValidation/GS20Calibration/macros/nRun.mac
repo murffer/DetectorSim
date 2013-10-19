@@ -2,17 +2,16 @@
 /tracking/verbose 1
 /run/verbose 0
 #
-# Setting up the analysis
-#
-/Analysis/setParticleName neutron
-#
 # Setting up the source
 #
 /control/execute macros/neutronSource.mac
 #
-# Setting up the detector
+# Setting up the analysis
 #
-#
+/analysis/setFileName GS0_Neutron 
+/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
+/analysis/h1/set 2 100 0  3000 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  3000 none    # Number of Optical Photons
 # Running through absorber thickness
 /run/beamOn 10000
 #

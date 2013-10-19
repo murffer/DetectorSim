@@ -43,12 +43,10 @@ target_link_libraries(GS20LightYieldCal ${Geant4_LIBRARIES})
 #
 set(GS20CAL_SCRIPTS
 vis.mac
-eRun.mac
-alphaRun.mac
-tritonRun.mac
-demoRun.mac
-7LiRun.mac
-LightQuench.C
+macros/co60Source.mac
+macros/gRun.mac
+macros/nRun.mac
+macros/neutronSource.mac
 )
 
 foreach(_script ${GS20CAL_SCRIPTS})
