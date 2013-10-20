@@ -1,12 +1,10 @@
 #include "Analysis.hh"
 #include "G4UnitsTable.hh"
 #include "globals.hh"
-#include "G4RunManager.hh"
 #include "G4SDManager.hh"
 #include "G4HCofThisEvent.hh"
 
 #include "G4Event.hh"
-#include "G4ThreeVector.hh"
 
 #include "PhotonHit.hh"
 #include "AbsorberHit.hh"
