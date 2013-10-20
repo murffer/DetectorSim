@@ -4,6 +4,12 @@ cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(GS20Cal)
 
 #----------------------------------------------------------------------------
+# check MPI package...
+find_package(MPI REQUIRED)
+# modify these var. if needed
+set(CMAKE_CXX_COMPILER mpicxx)
+
+#----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
 # You can set WITH_GEANT4_UIVIS to OFF via the command line or ccmake/cmake-gui
 # to build a batch mode only executable
