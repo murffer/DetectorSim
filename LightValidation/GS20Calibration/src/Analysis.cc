@@ -13,6 +13,9 @@
 
 #include "HistoManager.hh"
 
+#include "G4MPImanager.hh"
+#include <stdio.h>
+
 Analysis* Analysis::singleton = 0;
 
 /**
@@ -44,12 +47,21 @@ void Analysis::CleanUp(){
  * @brief - called before each run.
  * There is no need to update the geometry because the geometry
  * is fixed during a run.
+ *
+ * The files are named according to their rank for MPI Runs
  */
 void Analysis::PrepareNewRun(const G4Run*){
 
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
     if ( analysisManager->IsActive() ) {
-        analysisManager->OpenFile();
+				// Creating a filename based on the rank
+				G4int rank = G4MPImanager::GetManager()-> GetRank();
+				char str[64];
+				sprintf(str, "-%03d", rank);
+				// Setting the new filename
+				G4String fname = analysisManager->GetFileName() + G4String(str);
+        analysisManager->OpenFile(fname);
+				G4cout<<"Hopefully saving as: "<<fname<<G4endl;
     }
 }
 /**
