@@ -8,7 +8,7 @@ function JobSetup()
   echo "#!/bin/bash" > job
   echo "#PBS -q gen1" >> job
   echo "#PBS -V" >> job
-  echo "#PBS -l nodes=1:ppn=2" >> job
+  echo "#PBS -l nodes=2:ppn=2" >> job
   echo "export PBS_O_WORKDIR=$G4WORKDIR" >> job
   echo 'cd $PBS_O_WORKDIR' >> job
 }
@@ -16,14 +16,14 @@ function JobSetup()
 function runGamma()
 {
   JobSetup
-  echo "exec $G4WORKDIR/build/GS20LightYieldCal $G4WORKDIR/macros/gRun.mac > GammaOutput.txt" >> job
+  echo "mpirun $G4WORKDIR/build/GS20LightYieldCal $G4WORKDIR/macros/gRun.mac > GammaOutput.txt" >> job
   mv job gSub.qsub
   qsub gSub.qsub
 }
 function runNeutron()
 {
   JobSetup
-  echo "exec $G4WORKDIR/build/GS20LightYieldCal $G4WORKDIR/macros/nRun.mac > NeutronOutput.txt" >> job
+  echo "mpirun $G4WORKDIR/build/GS20LightYieldCal $G4WORKDIR/macros/nRun.mac > NeutronOutput.txt" >> job
   mv job nSub.qsub
   qsub nSub.qsub
 }
