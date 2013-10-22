@@ -32,27 +32,10 @@ class DetectorMessenger : public G4UImessenger
 
     G4UIcmdWithoutParameter*   UpdateCmd;
 
-    G4UIcmdWithAString*        SetPhotonDetGeometryCmd;
-    G4UIcmdWithAnInteger*      SetNumOfCladLayersCmd;
-    G4UIcmdWithADoubleAndUnit* SetLengthCmd;
-    G4UIcmdWithADoubleAndUnit* SetRadiusCmd;
-    G4UIcmdWithADoubleAndUnit* SetClad1RadiusCmd;
-    G4UIcmdWithADoubleAndUnit* SetClad2RadiusCmd;
-    G4UIcmdWithADoubleAndUnit* SetPhotonDetHalfLengthCmd;
-    G4UIcmdWithADoubleAndUnit* SetGapCmd;
-    G4UIcmdWithADoubleAndUnit* SetPhotonDetAlignmentCmd;
-    G4UIcmdWithADouble*        SetXYRatioCmd;
     G4UIcmdWithADouble*        SetSurfaceRoughnessCmd;
-    G4UIcmdWithADouble*        SetMirrorPolishCmd;
-    G4UIcmdWithADouble*        SetMirrorReflectivityCmd;
     G4UIcmdWithADouble*        SetPhotonDetPolishCmd;
     G4UIcmdWithADouble*        SetPhotonDetReflectivityCmd;
-    G4UIcmdWithABool*          SetMirrorCmd;
-    G4UIcmdWithADoubleAndUnit* SetBarLengthCmd;
-    G4UIcmdWithADoubleAndUnit* SetBarBaseCmd;
-    G4UIcmdWithADoubleAndUnit* SetHoleRadiusCmd;
-    G4UIcmdWithADoubleAndUnit* SetCoatingThicknessCmd;
-    G4UIcmdWithADoubleAndUnit* SetCoatingRadiusCmd;
+
 
 };
 
