@@ -19,10 +19,7 @@
 /gps/ene/type Mono
 /gps/ene/mono 3.94 eV
 #
-/gps/pos/type Plane
-/gps/pos/shape Rectangle
+/gps/pos/type Point
 /gps/ang/type iso
 /gps/pos/centre 0.0 0.0 0.0 cm
-/gps/pos/halfx 15 cm
-/gps/pos/halfy 50 um
 #
