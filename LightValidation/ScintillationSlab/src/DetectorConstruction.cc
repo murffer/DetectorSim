@@ -42,7 +42,7 @@ DetectorConstruction::DetectorConstruction()
     detectorMessenger = new DetectorMessenger(this);
     materials = NULL;
     
-    pmtPolish = 1.;
+    pmtPolish = 0.;
     pmtReflectivity = 0.;
     
     scintX = 30*cm;
@@ -50,8 +50,7 @@ DetectorConstruction::DetectorConstruction()
     scintZ = 100*cm;
     
     pmtLength = 5*cm;
-    
-    
+
     UpdateGeometryParameters();
 }
 
@@ -94,7 +93,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     // Physical Construction
     G4double zOrig = (scintZ+pmtLength)/2;
     G4VSolid* solidPhotonDet = new G4Box("PhotonDet",scintX/2,scintY/2,pmtLength/2);
-    G4LogicalVolume*   logicPhotonDet = new G4LogicalVolume(solidPhotonDet, FindMaterial("G4_Pyrex_Glass"), "PhotonDet");
+    G4LogicalVolume*   logicPhotonDet = new G4LogicalVolume(solidPhotonDet, FindMaterial("BK7"), "PhotonDet");
     new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDet, "PhotonDet", logicWorld, false, 0, fCheckOverlap);
     
     // PhotonDet Surface Properties
@@ -111,6 +110,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     PhotonDetSurface -> SetMaterialPropertiesTable(PhotonDetSurfaceProperty);
     new G4LogicalSkinSurface("PhotonDetSurface",logicPhotonDet,PhotonDetSurface);
     if (!pmtSD) {
+        G4cout<<"Adding the Sensitived Detector"<<G4endl;
         G4String pmtSDName = "/PhotonDet";
         pmtSD = new PhotonDetSD(pmtSDName);
         
@@ -124,6 +124,18 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     return physiWorld;
 }
 
+/**
+ * Sets the material of the scintillating slab
+*/
+void DetectorConstruction::SetScintMaterial(G4String matName){
+    detMaterial = FindMaterial(matName);
+}
+/**
+ * Sets the material of the PMT
+ */
+void DetectorConstruction::SetPMTMaterial(G4String matName){
+    pmtMaterial = FindMaterial(matName);
+}
 
 void DetectorConstruction::UpdateGeometry()
 {
@@ -155,6 +167,9 @@ void DetectorConstruction::UpdateGeometryParameters()
     worldSizeY = scintY + 1*cm;
     worldSizeZ = scintZ + 2*pmtLength+5*cm;
     
+}
+void DetectorConstruction::SetScintThickness(G4double val){
+    scintX = val;
 }
 
 /**

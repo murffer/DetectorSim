@@ -534,7 +534,7 @@ void Materials::SetOpticalPropertiesEJ200(){
 	// Absorbition Length
 	const G4int nABS=2;
 	G4double photonEnergyABS[nABS] = {3.5*eV,1.75*eV};
-	G4double AbsLengthGlass[nABS] = {70*cm, 70*cm};
+	G4double AbsLengthGlass[nABS] = {200*cm, 200*cm};
 
 	// Setting sctintillation to be the emission spectra
 	const G4int nEM = 6;

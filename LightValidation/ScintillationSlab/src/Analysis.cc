@@ -107,9 +107,15 @@ void Analysis::EndOfRun(const G4Run* ){
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
     // Print some output
     G4cout
-    << "\n\tAverage Number of Optical Photons: "
+    << "\n\tAverage Number of Optical Photons Created: "
     << analysisManager->GetH1(2)->mean()
     << " +/- " << analysisManager->GetH1(2)->rms()
+    << "\n\tAverage Number of Optical Photons Detected: "
+    << analysisManager->GetH1(3)->mean()
+    << " +/- " << analysisManager->GetH1(3)->rms()
+    << "\n\tAverage Time: "
+    << analysisManager->GetH1(1)->mean()
+    << " +/- " << analysisManager->GetH1(1)->rms()
     << G4endl;
     
     //save histograms

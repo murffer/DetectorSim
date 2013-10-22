@@ -36,19 +36,21 @@ public:
     
     // Set Material Commands for World and Scintillator
     void SetWorldMaterial         (G4String);
-    void SetScintMaterial      (G4String);
     void SetCoupleMaterial        (G4String);
-    
+    void SetScintMaterial         (G4String);
+    void SetPMTMaterial           (G4String);
     
     void SetPhotonDetPolish     (G4double);
     void SetPhotonDetReflectivity (G4double);
-    
+    void SetScintThickness      (G4double);
     
     G4Material* FindMaterial(G4String);
     
 private:
     
     Materials* materials;
+    G4Material* detMaterial;
+    G4Material* pmtMaterial;
     
     G4LogicalVolume* logicWorld;
     

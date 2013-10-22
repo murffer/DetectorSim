@@ -1,5 +1,5 @@
 #
-# Macro file for the initialization phase of wls
+# Macro file for the initialization phase of the slab 
 #
 #/run/verbose 1
 #/control/verbose 1
@@ -12,8 +12,8 @@
 #
 /analysis/setFileName ScintSlab
 /analysis/h1/set 1 100 0  5 ms        # Resolution 
-/analysis/h1/set 2 100 0  10000 none    # Number of Optical Photons
-/analysis/h1/set 3 100 0  10000 none    # Number of Optical Photons
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
 #
 /gps/particle opticalphoton
 /gps/ene/type Mono
@@ -26,8 +26,4 @@
 /gps/ang/mintheta 180.0 deg
 /gps/ang/maxtheta  90.0 deg
 /gps/pos/centre 0.0 0.0 0.0 cm
-#
-/control/execute vis.mac
-#
-/run/beamOn 1000
 #

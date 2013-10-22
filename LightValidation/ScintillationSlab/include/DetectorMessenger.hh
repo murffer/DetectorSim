@@ -34,7 +34,9 @@ class DetectorMessenger : public G4UImessenger
 
     G4UIcmdWithADouble*        SetPhotonDetPolishCmd;
     G4UIcmdWithADouble*        SetPhotonDetReflectivityCmd;
-
+    G4UIcmdWithADouble*        SetScintThicknessCmd;
+    G4UIcmdWithAString*        SetPMTMaterialCmd;
+    G4UIcmdWithAString*        SetScintMaterialCmd;
 
 };
 
