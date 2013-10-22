@@ -31,6 +31,7 @@
 
 #include "G4UserLimits.hh"
 #include "G4PhysicalConstants.hh"
+#include "G4UnitsTable.hh"
 #include "G4SystemOfUnits.hh"
 
 PhotonDetSD* DetectorConstruction::pmtSD = NULL;
@@ -42,15 +43,12 @@ DetectorConstruction::DetectorConstruction()
     detectorMessenger = new DetectorMessenger(this);
     materials = NULL;
     
-    pmtPolish = 0.;
-    pmtReflectivity = 0.;
-    
-    scintX = 30*cm;
-    scintY = 10*cm;
+    scintX = 10*cm;
+    scintY = 30*cm;
     scintZ = 200*cm;
     
     pmtLength = 0.5*cm;
-
+    
     UpdateGeometryParameters();
 }
 
@@ -63,6 +61,8 @@ DetectorConstruction::~DetectorConstruction()
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
     materials = Materials::GetInstance();
+    detMaterial = FindMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
+    pmtMaterial = FindMaterial("BK7");
     
     return ConstructDetector();
 }
@@ -82,7 +82,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     // Scintillator
     //--------------------------------------------------
     G4VSolid* solidScintillator = new G4Box("Scintillator",scintX/2,scintY/2,scintZ/2);
-    G4LogicalVolume* logicScintillator = new G4LogicalVolume(solidScintillator,FindMaterial("G4_PLASTIC_SC_VINYLTOLUENE"),"Scintillator");
+    G4LogicalVolume* logicScintillator = new G4LogicalVolume(solidScintillator,detMaterial,"Scintillator");
     new G4PVPlacement(0, G4ThreeVector(), logicScintillator, "Scintillator", logicWorld, false,0, fCheckOverlap);
     
     
@@ -93,42 +93,36 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     // Physical Construction
     G4double zOrig = (scintZ+pmtLength)/2;
     G4VSolid* solidPhotonDet = new G4Box("PhotonDet",scintX/2,scintY/2,pmtLength/2);
-    G4LogicalVolume*   logicPhotonDet = new G4LogicalVolume(solidPhotonDet, FindMaterial("BK7"), "PhotonDet");
+    G4LogicalVolume*   logicPhotonDet = new G4LogicalVolume(solidPhotonDet,pmtMaterial, "PhotonDet");
     new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDet, "PhotonDet", logicWorld, false, 0, fCheckOverlap);
     
-    // PhotonDet Surface Properties
-    /*
-    G4OpticalSurface* PhotonDetSurface = new G4OpticalSurface("PhotonDetSurface", glisur, ground,dielectric_metal,pmtPolish);
-    G4MaterialPropertiesTable* PhotonDetSurfaceProperty =new G4MaterialPropertiesTable();
-    
-    G4double p_pmt[2] = {2.00*eV, 3.47*eV};
-    G4double refl_pmt[2] = {pmtReflectivity,pmtReflectivity};
-    G4double effi_pmt[2] = {1, 1};
-    
-    PhotonDetSurfaceProperty -> AddProperty("REFLECTIVITY",p_pmt,refl_pmt,2);
-    PhotonDetSurfaceProperty -> AddProperty("EFFICIENCY",p_pmt,effi_pmt,2);
-    
-    PhotonDetSurface -> SetMaterialPropertiesTable(PhotonDetSurfaceProperty);
-    new G4LogicalSkinSurface("PhotonDetSurface",logicPhotonDet,PhotonDetSurface);
-    */
     if (!pmtSD) {
-        G4cout<<"Trying to add the Sensitived Detector"<<G4endl;
         G4String pmtSDName = "/PhotonDet";
         pmtSD = new PhotonDetSD(pmtSDName);
-        G4cout<<"Adding the Sensitived Detector"<<G4endl;
         G4SDManager* SDman = G4SDManager::GetSDMpointer();
         SDman->AddNewDetector(pmtSD);
     }
     
     // Setting the detector to be sensitive
     logicPhotonDet->SetSensitiveDetector(pmtSD);
-    
+    PrintParameters();
     return physiWorld;
 }
-
+void DetectorConstruction::PrintParameters(){
+    G4cout<<"Scintillator Slab:"
+    <<"\n\t Thickness: "<<G4BestUnit(scintX,"Length")
+    <<"\n\t Length: "<<G4BestUnit(scintZ,"Length")
+    <<"\n\t Width: "<<G4BestUnit(scintY,"Length")
+    <<"\n\t Material:"<<detMaterial->GetName()
+    <<"PMT:"
+    <<"\n\t Length: "<<G4BestUnit(pmtLength,"Length")
+    <<"\n\t Material:"<<pmtMaterial->GetName()
+    <<G4endl;
+    
+}
 /**
  * Sets the material of the scintillating slab
-*/
+ */
 void DetectorConstruction::SetScintMaterial(G4String matName){
     detMaterial = FindMaterial(matName);
 }
@@ -156,10 +150,8 @@ void DetectorConstruction::UpdateGeometry()
     UpdateGeometryParameters();
     
     G4RunManager::GetRunManager()->DefineWorldVolume(ConstructDetector());
-    
     G4RunManager::GetRunManager()->GeometryHasBeenModified();
     G4RunManager::GetRunManager()->PhysicsHasBeenModified();
-    
     G4RegionStore::GetInstance()->UpdateMaterialList(physiWorld);
 }
 
@@ -198,7 +190,7 @@ void DetectorConstruction::SetPhotonDetReflectivity(G4double reflectivity)
  * @return a pointer to the material, or NULL if not found
  */
 G4Material* DetectorConstruction::FindMaterial(G4String name) {
-  
-  G4Material* pttoMaterial = materials->GetMaterial(name);
-  return pttoMaterial;
+    
+    G4Material* pttoMaterial = materials->GetMaterial(name);
+    return pttoMaterial;
 }

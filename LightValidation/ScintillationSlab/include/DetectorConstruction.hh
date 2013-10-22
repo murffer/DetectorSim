@@ -33,6 +33,7 @@ public:
     G4VPhysicalVolume* ConstructDetector();
     
     void UpdateGeometry();
+    void PrintParameters();
     
     // Set Material Commands for World and Scintillator
     void SetWorldMaterial         (G4String);
@@ -43,6 +44,7 @@ public:
     void SetPhotonDetPolish     (G4double);
     void SetPhotonDetReflectivity (G4double);
     void SetScintThickness      (G4double);
+
     
     G4Material* FindMaterial(G4String);
     

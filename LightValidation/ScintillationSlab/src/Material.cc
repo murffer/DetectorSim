@@ -151,7 +151,6 @@ void Materials::CreateMaterials(){
 	EJ426->AddMaterial(nistMan->FindOrBuildMaterial("G4_F"),0.253);
 	EJ426->AddMaterial(nistMan->FindOrBuildMaterial("G4_Zn"),0.447);
 	EJ426->AddMaterial(nistMan->FindOrBuildMaterial("G4_S"),0.219);
-	G4cout<<EJ426;
 
 	//--------------------------------------------------
 	// LiF Polystyrene

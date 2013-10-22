@@ -32,8 +32,8 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
   SetPhotonDetReflectivityCmd->SetRange("reflectivity>=0 && reflectivity<=1");
   SetPhotonDetReflectivityCmd->AvailableForStates(G4State_PreInit);
     
-    SetScintThicknessCmd = new G4UIcmdWithADouble("/det/setPhotonDetReflectivity", this);
-    SetScintThicknessCmd->SetGuidance("Set the reflectivity of the mirror");
+    SetScintThicknessCmd = new G4UIcmdWithADouble("/det/setScintThickness", this);
+    SetScintThicknessCmd->SetGuidance("Set the thickness of the slab scintillator");
     SetScintThicknessCmd->SetParameterName("thickness",false);
     SetScintThicknessCmd->SetRange("thickness>=0");
     SetScintThicknessCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
@@ -57,7 +57,7 @@ DetectorMessenger::~DetectorMessenger()
     delete SetPhotonDetReflectivityCmd;
     delete SetPMTMaterialCmd;
     delete SetScintMaterialCmd;
-
+    delete SetScintThicknessCmd;
 }
 
 void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String val)

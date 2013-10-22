@@ -1,33 +1,66 @@
 #
-# Macro file for the initialization phase of wls
+# Macro file 
 #
-#/run/verbose 1
-#/control/verbose 1
-#/event/verbose 1
-#/tracking/verbose 1
+/run/verbose 0
+/control/verbose 0
+/event/verbose 0
+/tracking/verbose 0
 #
 /run/initialize
 #
-# Setting up the manager
-#
-/analysis/setFileName ScintSlab
-/analysis/h1/set 1 100 0  5 ms        # Resolution 
-/analysis/h1/set 2 100 0  10000 none    # Number of Optical Photons
-/analysis/h1/set 3 100 0  10000 none    # Number of Optical Photons
-#
 /gps/particle opticalphoton
 /gps/ene/type Mono
-/gps/ene/mono 2.10 eV
+/gps/ene/mono 3.94 eV
 #
 /gps/pos/type Plane
-/gps/pos/shape Circle
-/gps/pos/radius 0.5 mm
+/gps/pos/shape Rectangle
 /gps/ang/type iso
-/gps/ang/mintheta 180.0 deg
-/gps/ang/maxtheta  90.0 deg
 /gps/pos/centre 0.0 0.0 0.0 cm
+/gps/pos/halfy 50 um
 #
-/control/execute vis.mac
+#/control/execute vis.mac
 #
+# Setting up 1000 um
+#
+/analysis/setFileName ScintSlab_100um
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/gps/pos/halfx 100 um
+/det/setScintThickness 100 um
+/det/Update
+/run/beamOn 1000
+#
+# Setting up 1 mm
+#
+/analysis/setFileName ScintSlab_1mm
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/gps/pos/halfx 1 mm
+/det/setScintThickness 1 mm
+/det/Update
+/run/beamOn 1000
+#
+# Setting up 1 cm
+#
+/analysis/setFileName ScintSlab_10mm
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/gps/pos/halfx 10 mm
+/det/setScintThickness 10 mm
+/det/Update
+/run/beamOn 1000
+#
+# Setting up 10 cm
+#
+/analysis/setFileName ScintSlab_10cm
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/gps/pos/halfx 10 cm
+/det/setScintThickness 10 cm
+/det/Update
 /run/beamOn 1000
 #
