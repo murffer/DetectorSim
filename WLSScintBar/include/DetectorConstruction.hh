@@ -53,6 +53,7 @@ private:
     Materials* materials;
     G4Material* detMaterial;
     G4Material* pmtMaterial;
+    G4Material* wlsMaterial;
     
     G4Box*              solidWorld;
     G4LogicalVolume*    logicWorld;
@@ -66,6 +67,10 @@ private:
     G4LogicalVolume*    logicPhotonDet;
     G4VPhysicalVolume*  physiPhotonDet;
     
+    G4Box*              solidWLS;
+    G4LogicalVolume*    logicWLS;
+    G4VPhysicalVolume*  physiWLS;
+    
     G4double           worldSizeX;
     G4double           worldSizeY;
     G4double           worldSizeZ;
@@ -74,6 +79,7 @@ private:
     G4double           scintY;
     G4double           scintZ;
     
+    G4double            wlsThickness;
     G4double            pmtLength;
     
     G4double pmtPolish;

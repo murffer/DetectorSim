@@ -43,10 +43,11 @@ DetectorConstruction::DetectorConstruction()
     detectorMessenger = new DetectorMessenger(this);
     materials = NULL;
     
-    scintX = 10*cm;
+    scintX = 100*um;
     scintY = 30*cm;
     scintZ = 200*cm;
     
+    wlsThickness = 0.5*cm;
     pmtLength = 0.5*cm;
     
     UpdateGeometryParameters();
@@ -63,6 +64,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     materials = Materials::GetInstance();
     detMaterial = FindMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
     pmtMaterial = FindMaterial("BK7");
+    wlsMaterial = FindMaterial("PMMA_WLS");
     
     return ConstructDetector();
 }
@@ -87,11 +89,18 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     physiWorld = new G4PVPlacement(0,G4ThreeVector(), logicWorld, "World", 0, false, fCheckOverlap);
     
     //--------------------------------------------------
+    // WLS Fibers
+    //--------------------------------------------------
+    solidWLS = new G4Box("WLS",(scintX+wlsThickness)/2,scintY/2,scintZ/2);
+    logicWLS = new G4LogicalVolume(solidWLS,wlsMaterial,"WLS");
+    physiWLS = new G4PVPlacement(0, G4ThreeVector(), logicWLS, "WLS", logicWorld, 0, false,fCheckOverlap);
+    
+    //--------------------------------------------------
     // Scintillator
     //--------------------------------------------------
     solidScintillator = new G4Box("Scintillator",scintX/2,scintY/2,scintZ/2);
     logicScintillator = new G4LogicalVolume(solidScintillator,detMaterial,"Scintillator");
-    physiScintillator = new G4PVPlacement(0, G4ThreeVector(), logicScintillator, "Scintillator", logicWorld, false,0, fCheckOverlap);
+    physiScintillator = new G4PVPlacement(0, G4ThreeVector(), logicScintillator, "Scintillator", logicWLS, false,0, fCheckOverlap);
     
     
     //--------------------------------------------------
@@ -100,7 +109,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     
     // Physical Construction
     G4double zOrig = (scintZ+pmtLength)/2;
-    solidPhotonDet = new G4Box("PhotonDet",scintX/2,scintY/2,pmtLength/2);
+    solidPhotonDet = new G4Box("PhotonDet",(scintX+wlsThickness)/2,scintY/2,pmtLength/2);
     logicPhotonDet = new G4LogicalVolume(solidPhotonDet,pmtMaterial, "PhotonDet");
     physiPhotonDet = new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDet, "PhotonDet", logicWorld, false, 0, fCheckOverlap);
     
@@ -166,7 +175,7 @@ void DetectorConstruction::UpdateGeometry()
 
 void DetectorConstruction::UpdateGeometryParameters()
 {
-    worldSizeX = scintX + 1*cm;
+    worldSizeX = scintX + 2*wlsThickness+1*cm;
     worldSizeY = scintY + 1*cm;
     worldSizeZ = scintZ + 2*pmtLength+5*cm;
     
