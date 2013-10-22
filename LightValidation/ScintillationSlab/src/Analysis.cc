@@ -11,7 +11,7 @@
 #include "G4ThreeVector.hh"
 
 #include "HistoManager.hh"
-#include "PhotonDetHit.cc"
+#include "PhotonDetHit.hh"
 Analysis* Analysis::singleton = 0;
 /**
  * Analysis
