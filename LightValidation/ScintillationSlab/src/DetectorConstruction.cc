@@ -36,57 +36,54 @@
 PhotonDetSD* DetectorConstruction::pmtSD = NULL;
 
 DetectorConstruction::DetectorConstruction()
- : physiWorld(NULL)
+: physiWorld(NULL)
 {
-
-  detectorMessenger = new DetectorMessenger(this);
-  materials = NULL;
-
-  surfaceRoughness = 1;
- 
-
-  pmtPolish = 1.;
-  pmtReflectivity = 0.;
+    
+    detectorMessenger = new DetectorMessenger(this);
+    materials = NULL;
+    
+    pmtPolish = 1.;
+    pmtReflectivity = 0.;
     
     scintX = 30*cm;
     scintY = 100*um;
     scintZ = 100*cm;
-
+    
     pmtLength = 1*cm;
- 
-
-  UpdateGeometryParameters();
+    
+    
+    UpdateGeometryParameters();
 }
 
 DetectorConstruction::~DetectorConstruction()
 {
-  if (detectorMessenger) delete detectorMessenger;
-  if (materials)         delete materials;
+    if (detectorMessenger) delete detectorMessenger;
+    if (materials)         delete materials;
 }
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
-  materials = Materials::GetInstance();
-
-  return ConstructDetector();
+    materials = Materials::GetInstance();
+    
+    return ConstructDetector();
 }
 
 G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
 {
-  //--------------------------------------------------
-  // World
-  //--------------------------------------------------
-
-  G4VSolid* solidWorld = new G4Box("World", worldSizeX, worldSizeY, worldSizeZ);
-  logicWorld = new G4LogicalVolume(solidWorld,FindMaterial("G4_AIR"),"World");
-  physiWorld = new G4PVPlacement(0,G4ThreeVector(), logicWorld, "World", 0, false, 0);
-
-  //--------------------------------------------------
-  // Scintillator
-  //--------------------------------------------------
+    //--------------------------------------------------
+    // World
+    //--------------------------------------------------
+    
+    G4VSolid* solidWorld = new G4Box("World", worldSizeX, worldSizeY, worldSizeZ);
+    logicWorld = new G4LogicalVolume(solidWorld,FindMaterial("G4_AIR"),"World");
+    physiWorld = new G4PVPlacement(0,G4ThreeVector(), logicWorld, "World", 0, false, 0);
+    
+    //--------------------------------------------------
+    // Scintillator
+    //--------------------------------------------------
     G4VSolid* solidScintillator = new G4Box("Scintillator",scintX/2,scintY/2,scintZ/2);
-  G4LogicalVolume* logicScintillator = new G4LogicalVolume(solidScintillator,FindMaterial("Polystyrene"),"Scintillator");
-  new G4PVPlacement(0, G4ThreeVector(), logicScintillator, "Scintillator", logicWorld, false, 0);
+    G4LogicalVolume* logicScintillator = new G4LogicalVolume(solidScintillator,FindMaterial("Polystyrene"),"Scintillator");
+    new G4PVPlacement(0, G4ThreeVector(), logicScintillator, "Scintillator", logicWorld, false, 0);
     
     
     //--------------------------------------------------
@@ -123,64 +120,58 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     // Setting the detector to be sensitive
     logicPhotonDet->SetSensitiveDetector(pmtSD);
     
-  return physiWorld;
+    return physiWorld;
 }
 
 
 void DetectorConstruction::UpdateGeometry()
 {
-  if (!physiWorld) return;
-
-  // clean-up previous geometry
-  G4GeometryManager::GetInstance()->OpenGeometry();
-
-  G4PhysicalVolumeStore::GetInstance()->Clean();
-  G4LogicalVolumeStore::GetInstance()->Clean();
-  G4SolidStore::GetInstance()->Clean();
-  G4LogicalSkinSurface::CleanSurfaceTable();
-  G4LogicalBorderSurface::CleanSurfaceTable();
-
-  //define new one
-  UpdateGeometryParameters();
- 
-  G4RunManager::GetRunManager()->DefineWorldVolume(ConstructDetector());
-
-  G4RunManager::GetRunManager()->GeometryHasBeenModified();
-  G4RunManager::GetRunManager()->PhysicsHasBeenModified();
-
-  G4RegionStore::GetInstance()->UpdateMaterialList(physiWorld);
+    if (!physiWorld) return;
+    
+    // clean-up previous geometry
+    G4GeometryManager::GetInstance()->OpenGeometry();
+    
+    G4PhysicalVolumeStore::GetInstance()->Clean();
+    G4LogicalVolumeStore::GetInstance()->Clean();
+    G4SolidStore::GetInstance()->Clean();
+    G4LogicalSkinSurface::CleanSurfaceTable();
+    G4LogicalBorderSurface::CleanSurfaceTable();
+    
+    //define new one
+    UpdateGeometryParameters();
+    
+    G4RunManager::GetRunManager()->DefineWorldVolume(ConstructDetector());
+    
+    G4RunManager::GetRunManager()->GeometryHasBeenModified();
+    G4RunManager::GetRunManager()->PhysicsHasBeenModified();
+    
+    G4RegionStore::GetInstance()->UpdateMaterialList(physiWorld);
 }
 
 void DetectorConstruction::UpdateGeometryParameters()
 {
-
-
-  worldSizeX = scintX + pmtLength + 1.*cm;
-  worldSizeY = scintY+ pmtLength + 1.*cm;
-  worldSizeZ = scintZ+ pmtLength + 1.*cm;
-
+    worldSizeX = scintX + pmtLength + 1.*cm;
+    worldSizeY = scintY+ pmtLength + 1.*cm;
+    worldSizeZ = scintZ+ pmtLength + 1.*cm;
+    
 }
 
-// Set the Surface Roughness between Cladding 1 and WLS fiber
-// Pre: 0 < roughness <= 1
-void DetectorConstruction::SetSurfaceRoughness(G4double roughness)
-{
-    surfaceRoughness = roughness;
-}
-
-
-// Set the Polish of the PhotonDet, polish of 1 is a perfect mirror surface
-// Pre: 0 < polish <= 1
+/**
+ Sets the polish of the photon detector
+ @param polish (0 < polish <= 1) a polish of 1.0 is a perfect mirror surface
+ */
 void DetectorConstruction::SetPhotonDetPolish(G4double polish)
 {
-  pmtPolish = polish;
+    pmtPolish = polish;
 }
 
-// Set the Reflectivity of the PhotonDet, reflectivity of 1 is a perfect mirror
-// Pre: 0 < reflectivity <= 1
+/**
+ Sets the reflectivity of the photon dector
+ @param reflectivity (0 < refelctivity <= 1) - a reflectivtiy of 1 is a perfect mirror
+ */
 void DetectorConstruction::SetPhotonDetReflectivity(G4double reflectivity)
 {
-  pmtReflectivity = reflectivity;
+    pmtReflectivity = reflectivity;
 }
 
 

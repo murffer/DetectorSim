@@ -32,7 +32,6 @@ class DetectorMessenger : public G4UImessenger
 
     G4UIcmdWithoutParameter*   UpdateCmd;
 
-    G4UIcmdWithADouble*        SetSurfaceRoughnessCmd;
     G4UIcmdWithADouble*        SetPhotonDetPolishCmd;
     G4UIcmdWithADouble*        SetPhotonDetReflectivityCmd;
 

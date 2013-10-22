@@ -11,13 +11,13 @@ class G4UIcmdWithADoubleAndUnit;
 
 class AnalysisMessenger: public G4UImessenger
 {
-  public:
+public:
     AnalysisMessenger();
-   ~AnalysisMessenger();
+    ~AnalysisMessenger();
     
     void SetNewValue(G4UIcommand*, G4String);
     
-  private:
+private:
     G4UIdirectory*             AnalysisDir;
     G4UIcmdWithAString*        ParticleNameCmd;
     G4UIcmdWithADoubleAndUnit* HistEMaxCmd;

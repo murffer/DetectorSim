@@ -22,14 +22,6 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
 
 
 
-  SetSurfaceRoughnessCmd =
-                      new G4UIcmdWithADouble("//setSurfaceRoughness", this);
-  SetSurfaceRoughnessCmd->
-                  SetGuidance("Set the roughness between Clad1 and  Fiber");
-  SetSurfaceRoughnessCmd->SetParameterName("roughness",false);
-  SetSurfaceRoughnessCmd->SetRange("roughness>0 && roughness<=1");
-  SetSurfaceRoughnessCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
-
   SetPhotonDetPolishCmd =
                        new G4UIcmdWithADouble("//setPhotonDetPolish", this);
   SetPhotonDetPolishCmd->SetGuidance("Set the polish of the mirror");
