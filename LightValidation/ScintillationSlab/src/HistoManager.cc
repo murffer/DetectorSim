@@ -36,7 +36,7 @@ void HistoManager::Book()
     const G4int kMaxHisto = 3;
     const G4String id[] = { "1","2","3"};
     const G4String title[] =
-    { "Energy Depostion",                       // 1
+    { "Time",                       // 1
         "Number of Optical Photons Created",    // 2
         "Number of Optical Phtons Detected"     // 3
     };
