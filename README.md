@@ -15,6 +15,11 @@ The following simulations are intended to expore more complex interaction sof th
 
   + LightYieldEDep - The light yield as a function of energy deposition and film thickness
 
+# Light Background
+  
+  + ScintillationSlab - A single scintillation bar. The optical photons are collected on a single PMT
+  + WLSScintBar - A single scintillating bar sandwiched between two WLS shifting bars
+
 # LightValidation
 
 Simulations for the light validation of differnet detector designs. The simulations included are:
