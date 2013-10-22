@@ -67,7 +67,7 @@ private:
     G4double pmtPolish;
     G4double pmtReflectivity;
     
-    static PhotonDetSD* mppcSD;
+    static PhotonDetSD* pmtSD;
     
 private:
     

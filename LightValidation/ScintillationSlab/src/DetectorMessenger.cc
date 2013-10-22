@@ -45,7 +45,6 @@ DetectorMessenger::~DetectorMessenger()
   delete UpdateCmd;
 
 
-  delete SetSurfaceRoughnessCmd;
     delete SetPhotonDetPolishCmd;
     delete SetPhotonDetReflectivityCmd;
 
@@ -57,10 +56,7 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String val)
 
     Detector->UpdateGeometry();
   }
-   else if( command == SetSurfaceRoughnessCmd ) {
 
-    Detector->SetSurfaceRoughness(G4UIcmdWithADouble::GetNewDoubleValue(val));
-  }
    else if( command == SetPhotonDetPolishCmd ) {
  
     Detector->SetPhotonDetPolish(G4UIcmdWithADouble::GetNewDoubleValue(val));

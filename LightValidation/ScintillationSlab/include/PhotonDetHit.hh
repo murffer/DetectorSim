@@ -1,3 +1,10 @@
+#ifndef PhotonDetHit_h
+#define PhotonDetHit_h 1
+
+#include "G4VHit.hh"
+#include "G4THitsCollection.hh"
+#include "G4Allocator.hh"
+
 #include "G4ThreeVector.hh"
 #include "G4Transform3D.hh"
 #include "G4RotationMatrix.hh"
