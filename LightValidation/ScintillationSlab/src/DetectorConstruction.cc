@@ -174,8 +174,20 @@ void DetectorConstruction::SetPhotonDetReflectivity(G4double reflectivity)
     pmtReflectivity = reflectivity;
 }
 
-
+/**
+ * Gets material
+ * @param name of the material
+ * @return a pointer to the material, or NULL if not found
+ */
 G4Material* DetectorConstruction::FindMaterial(G4String name) {
-    G4Material* material = G4Material::GetMaterial(name,true);
-    return material;
+  
+  G4Material* pttoMaterial = materials->GetMaterial(materialChoice);
+  if (pttoMaterial) { 
+    fMaterial = pttoMaterial;
+  } 
+  else {
+    G4cout << "\n--> warning from DetectorConstruction::FindMaterial : "
+      << materialChoice << " not found" << G4endl;
+  }              
+    return pttoMaterial;
 }
