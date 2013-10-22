@@ -46,10 +46,10 @@ DetectorConstruction::DetectorConstruction()
     pmtReflectivity = 0.;
     
     scintX = 30*cm;
-    scintY = 100*um;
+    scintY = 10*cm;
     scintZ = 100*cm;
     
-    pmtLength = 1*cm;
+    pmtLength = 5*cm;
     
     
     UpdateGeometryParameters();
@@ -70,20 +70,21 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
 {
+    G4bool fCheckOverlap = true;
     //--------------------------------------------------
     // World
     //--------------------------------------------------
     
-    G4VSolid* solidWorld = new G4Box("World", worldSizeX, worldSizeY, worldSizeZ);
+    G4VSolid* solidWorld = new G4Box("World", worldSizeX/2, worldSizeY/2, worldSizeZ/2);
     logicWorld = new G4LogicalVolume(solidWorld,FindMaterial("G4_AIR"),"World");
-    physiWorld = new G4PVPlacement(0,G4ThreeVector(), logicWorld, "World", 0, false, 0);
+    physiWorld = new G4PVPlacement(0,G4ThreeVector(), logicWorld, "World", 0, false, fCheckOverlap);
     
     //--------------------------------------------------
     // Scintillator
     //--------------------------------------------------
     G4VSolid* solidScintillator = new G4Box("Scintillator",scintX/2,scintY/2,scintZ/2);
-    G4LogicalVolume* logicScintillator = new G4LogicalVolume(solidScintillator,FindMaterial("Polystyrene"),"Scintillator");
-    new G4PVPlacement(0, G4ThreeVector(), logicScintillator, "Scintillator", logicWorld, false, 0);
+    G4LogicalVolume* logicScintillator = new G4LogicalVolume(solidScintillator,FindMaterial("G4_PLASTIC_SC_VINYLTOLUENE"),"Scintillator");
+    new G4PVPlacement(0, G4ThreeVector(), logicScintillator, "Scintillator", logicWorld, false,0, fCheckOverlap);
     
     
     //--------------------------------------------------
@@ -91,10 +92,10 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     //--------------------------------------------------
     
     // Physical Construction
-    G4double zOrig = scintZ+pmtLength/2;
-    G4VSolid* solidPhotonDet = new G4Box("PhotonDet",scintX,scintY,pmtLength/2);
+    G4double zOrig = (scintZ+pmtLength)/2;
+    G4VSolid* solidPhotonDet = new G4Box("PhotonDet",scintX/2,scintY/2,pmtLength/2);
     G4LogicalVolume*   logicPhotonDet = new G4LogicalVolume(solidPhotonDet, FindMaterial("G4_Pyrex_Glass"), "PhotonDet");
-    new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDet, "PhotonDet", logicWorld, false, 0);
+    new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDet, "PhotonDet", logicWorld, false, 0, fCheckOverlap);
     
     // PhotonDet Surface Properties
     G4OpticalSurface* PhotonDetSurface = new G4OpticalSurface("PhotonDetSurface", glisur, ground,dielectric_metal,pmtPolish);
@@ -150,9 +151,9 @@ void DetectorConstruction::UpdateGeometry()
 
 void DetectorConstruction::UpdateGeometryParameters()
 {
-    worldSizeX = scintX + pmtLength + 1.*cm;
-    worldSizeY = scintY+ pmtLength + 1.*cm;
-    worldSizeZ = scintZ+ pmtLength + 1.*cm;
+    worldSizeX = scintX + 1*cm;
+    worldSizeY = scintY + 1*cm;
+    worldSizeZ = scintZ + 2*pmtLength+5*cm;
     
 }
 
@@ -181,13 +182,6 @@ void DetectorConstruction::SetPhotonDetReflectivity(G4double reflectivity)
  */
 G4Material* DetectorConstruction::FindMaterial(G4String name) {
   
-  G4Material* pttoMaterial = materials->GetMaterial(materialChoice);
-  if (pttoMaterial) { 
-    fMaterial = pttoMaterial;
-  } 
-  else {
-    G4cout << "\n--> warning from DetectorConstruction::FindMaterial : "
-      << materialChoice << " not found" << G4endl;
-  }              
-    return pttoMaterial;
+  G4Material* pttoMaterial = materials->GetMaterial(name);
+  return pttoMaterial;
 }

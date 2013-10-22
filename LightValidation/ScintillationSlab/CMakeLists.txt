@@ -42,6 +42,7 @@ target_link_libraries(scintSlab ${Geant4_LIBRARIES} )
 #
 set(scintSlab_SCRIPTS
   vis.mac
+  init.mac
   gui.mac
   slab.in
   )

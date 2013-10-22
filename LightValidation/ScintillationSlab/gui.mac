@@ -4,9 +4,9 @@
 # It has no effect with G4UIterminal.
 #
 # File :
-/gui/addMenu g4file G4File
-/gui/addButton g4file Continue continue
-/gui/addButton g4file Exit "exit"
+/gui/addMenu file File
+/gui/addButton file Continue continue
+/gui/addButton file Exit "exit"
 #
 # Run menu :
 /gui/addMenu run Run
@@ -45,4 +45,3 @@
 /gui/addButton viewer "Update scene" "/vis/scene/notifyHandlers"
 #
 # To limit the output flow in the "dump" widget :
-#/B4/event/setPrintModulo 100
