@@ -1,7 +1,6 @@
 
 #include "PhotonDetSD.hh"
 #include "PhotonDetHit.hh"
-#include "UserTrackInformation.hh"
 
 #include "G4Track.hh"
 #include "G4ThreeVector.hh"
@@ -31,47 +30,26 @@ void PhotonDetSD::Initialize(G4HCofThisEvent* HCE)
   HCE->AddHitsCollection( HCID, PhotonDetHitCollection );
 }
 
-G4bool PhotonDetSD::ProcessHits(G4Step* , G4TouchableHistory* )
-{
-  return false;
+/**
+ * ProcessHits
+ *
+ * Adds a hit to the sensitive detector, depending on the step
+ */
+G4bool PhotonDetSD::ProcessHits(G4Step* aStep,G4TouchableHistory*){
+    if (aStep == NULL) return false;
+    G4Track* theTrack = aStep->GetTrack();
+    
+    // Need to know if this is an optical photon
+    if(theTrack->GetDefinition() != G4OpticalPhoton::OpticalPhotonDefinition()) return false;
+    
+    // Find out information regarding the hit
+    G4double      arrivalTime  = theTrack -> GetGlobalTime();
+    
+    // Creating the hit and add it to the collection
+    PhotonDetHitCollection->insert(new PhotonDetHit(arrivalTime));
+    return true;
 }
 
-//Generates a hit and uses the postStepPoint; PostStepPoint because the hit
-//is generated manually when the photon hits the detector
-G4bool PhotonDetSD::ProcessHits_constStep(const G4Step* aStep,
-                                             G4TouchableHistory* )
-{
-  if (aStep == NULL) return false;
-  G4Track* theTrack = aStep->GetTrack();
-
-  // Need to know if this is an optical photon
-  if(theTrack->GetDefinition()
-     != G4OpticalPhoton::OpticalPhotonDefinition()) return false;
-
-  // Find out information regarding the hit
-  G4StepPoint* thePostPoint = aStep->GetPostStepPoint();
- 
-  UserTrackInformation* trackInformation
-      = (UserTrackInformation*)theTrack->GetUserInformation();
- 
-  G4TouchableHistory* theTouchable
-      = (G4TouchableHistory*)(thePostPoint->GetTouchable());
- 
-  G4ThreeVector photonExit   = trackInformation -> GetExitPosition();
-  G4ThreeVector photonArrive = thePostPoint -> GetPosition();
-  G4double      arrivalTime  = theTrack -> GetGlobalTime();
-
-  // Convert the global coordinate for arriving photons into
-  // the local coordinate of the detector
-  photonArrive = theTouchable->GetHistory()->
-                                GetTopTransform().TransformPoint(photonArrive);
-
-  // Creating the hit and add it to the collection
-  PhotonDetHitCollection->
-            insert(new PhotonDetHit(photonExit, photonArrive, arrivalTime));
-
-  return true;
-}
 
 void PhotonDetSD::EndOfEvent(G4HCofThisEvent* ){ }
 

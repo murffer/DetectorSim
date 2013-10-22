@@ -47,9 +47,9 @@ DetectorConstruction::DetectorConstruction()
     
     scintX = 30*cm;
     scintY = 10*cm;
-    scintZ = 100*cm;
+    scintZ = 200*cm;
     
-    pmtLength = 5*cm;
+    pmtLength = 0.5*cm;
 
     UpdateGeometryParameters();
 }
@@ -97,6 +97,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDet, "PhotonDet", logicWorld, false, 0, fCheckOverlap);
     
     // PhotonDet Surface Properties
+    /*
     G4OpticalSurface* PhotonDetSurface = new G4OpticalSurface("PhotonDetSurface", glisur, ground,dielectric_metal,pmtPolish);
     G4MaterialPropertiesTable* PhotonDetSurfaceProperty =new G4MaterialPropertiesTable();
     
@@ -109,11 +110,12 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     
     PhotonDetSurface -> SetMaterialPropertiesTable(PhotonDetSurfaceProperty);
     new G4LogicalSkinSurface("PhotonDetSurface",logicPhotonDet,PhotonDetSurface);
+    */
     if (!pmtSD) {
-        G4cout<<"Adding the Sensitived Detector"<<G4endl;
+        G4cout<<"Trying to add the Sensitived Detector"<<G4endl;
         G4String pmtSDName = "/PhotonDet";
         pmtSD = new PhotonDetSD(pmtSDName);
-        
+        G4cout<<"Adding the Sensitived Detector"<<G4endl;
         G4SDManager* SDman = G4SDManager::GetSDMpointer();
         SDman->AddNewDetector(pmtSD);
     }
