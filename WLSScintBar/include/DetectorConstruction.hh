@@ -63,9 +63,13 @@ private:
     G4LogicalVolume*    logicScintillator;
     G4VPhysicalVolume*  physiScintillator;
     
-    G4Box*              solidPhotonDet;
-    G4LogicalVolume*    logicPhotonDet;
-    G4VPhysicalVolume*  physiPhotonDet;
+    G4Box*              solidPhotonDetTop;
+    G4LogicalVolume*    logicPhotonDetTop;
+    G4VPhysicalVolume*  physiPhotonDetTop;
+    
+    G4Box*              solidPhotonDetBot;
+    G4LogicalVolume*    logicPhotonDetBot;
+    G4VPhysicalVolume*  physiPhotonDetBot;
     
     G4Box*              solidWLS;
     G4LogicalVolume*    logicWLS;

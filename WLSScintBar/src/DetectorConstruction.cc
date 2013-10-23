@@ -109,9 +109,13 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     
     // Physical Construction
     G4double zOrig = (scintZ+pmtLength)/2;
-    solidPhotonDet = new G4Box("PhotonDet",(scintX+wlsThickness)/2,scintY/2,pmtLength/2);
-    logicPhotonDet = new G4LogicalVolume(solidPhotonDet,pmtMaterial, "PhotonDet");
-    physiPhotonDet = new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDet, "PhotonDet", logicWorld, false, 0, fCheckOverlap);
+    solidPhotonDetTop = new G4Box("PhotonDetTop",(scintX+wlsThickness)/2,scintY/2,pmtLength/2);
+    logicPhotonDetTop = new G4LogicalVolume(solidPhotonDetTop,pmtMaterial, "PhotonDetTop");
+    physiPhotonDetTop = new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDetTop, "PhotonDetTop", logicWorld, false, 0, fCheckOverlap);
+    
+    solidPhotonDetBot= new G4Box("PhotonDetBot",(scintX+wlsThickness)/2,scintY/2,pmtLength/2);
+    logicPhotonDetBot = new G4LogicalVolume(solidPhotonDetBot,pmtMaterial, "PhotonDetBot");
+    physiPhotonDetBot = new G4PVPlacement(0,G4ThreeVector(0.0,0.0,-zOrig), logicPhotonDetBot, "PhotonDetBot", logicWorld, false, 0, fCheckOverlap);
     
     if (!pmtSD) {
         G4String pmtSDName = "/PhotonDet";
@@ -121,7 +125,8 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     }
     
     // Setting the detector to be sensitive
-    logicPhotonDet->SetSensitiveDetector(pmtSD);
+    logicPhotonDetTop->SetSensitiveDetector(pmtSD);
+    logicPhotonDetBot->SetSensitiveDetector(pmtSD);
     PrintParameters();
     return physiWorld;
 }
