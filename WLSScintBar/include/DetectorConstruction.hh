@@ -6,6 +6,8 @@
 
 #include "G4RotationMatrix.hh"
 
+class G4OpticalSurface;
+class G4LogicalSkinSurface;
 class G4Box;
 class G4Tubs;
 class G4EllipticalTube;
@@ -40,6 +42,7 @@ public:
     void SetWLSMaterial          (G4String);
     void SetScintMaterial        (G4String);
     void SetPMTMaterial          (G4String);
+    void SetCladMaterial         (G4String);
     
     void SetPhotonDetPolish     (G4double);
     void SetPhotonDetReflectivity (G4double);
@@ -54,6 +57,7 @@ private:
     G4Material* detMaterial;
     G4Material* pmtMaterial;
     G4Material* wlsMaterial;
+    G4Material* cladMaterial;
     
     G4Box*              solidWorld;
     G4LogicalVolume*    logicWorld;
@@ -75,6 +79,12 @@ private:
     G4LogicalVolume*    logicWLS;
     G4VPhysicalVolume*  physiWLS;
     
+    G4Box*              solidClad;
+    G4LogicalVolume*    logicClad;
+    G4VPhysicalVolume*  physiClad;
+    G4OpticalSurface*   opSurfClad;
+    G4LogicalSkinSurface* surfClad;
+    
     G4double           worldSizeX;
     G4double           worldSizeY;
     G4double           worldSizeZ;
@@ -85,6 +95,7 @@ private:
     
     G4double            wlsThickness;
     G4double            pmtLength;
+    G4double            cladThickness;
     
     G4double pmtPolish;
     G4double pmtReflectivity;

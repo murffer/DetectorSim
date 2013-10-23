@@ -30,6 +30,7 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
     SetScintMaterialCmd = new G4UIcmdWithAString("/det/setSlabMaterial",this);
     SetScintMaterialCmd->SetGuidance("Select Material of the Scintillating Slab.");
     SetScintMaterialCmd->SetParameterName("choice",false);
+    SetScintMaterialCmd->SetCandidates("PSLiF  EJ426 G4_PLASTIC_SC_VINYLTOLUENE");
     SetScintMaterialCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
     
     SetPMTMaterialCmd = new G4UIcmdWithAString("/det/setPMTMaterial",this);
@@ -40,7 +41,14 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction * Det)
     SetWLSMaterialCmd = new G4UIcmdWithAString("/det/setWLSMaterial",this);
     SetWLSMaterialCmd->SetGuidance("Select Material of the Wavelength Shifter.");
     SetWLSMaterialCmd->SetParameterName("choice",false);
+    SetWLSMaterialCmd->SetCandidates("G4_PLEXIGLASS PMMA_WLS");
     SetWLSMaterialCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+    
+    SetCladMaterialCmd = new G4UIcmdWithAString("/det/setCladMaterial",this);
+    SetCladMaterialCmd->SetGuidance("Select Material of the cladding material.");
+    SetCladMaterialCmd->SetParameterName("choice",false);
+    SetCladMaterialCmd->SetCandidates("G4_AIR G4_TEFLON G4_MYLAR");
+    SetCladMaterialCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 }
 
 DetectorMessenger::~DetectorMessenger()
@@ -51,6 +59,7 @@ DetectorMessenger::~DetectorMessenger()
     delete SetScintMaterialCmd;
     delete SetScintThicknessCmd;
     delete SetWLSMaterialCmd;
+    delete SetCladMaterialCmd;
 }
 
 void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String val)
@@ -69,6 +78,9 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String val)
     }
     else if( command == SetWLSMaterialCmd ) {
         Detector-> SetWLSMaterial(val);
+    }
+    else if( command == SetCladMaterialCmd ) {
+        Detector-> SetCladMaterial(val);
     }
     
 }

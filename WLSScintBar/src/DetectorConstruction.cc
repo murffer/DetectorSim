@@ -8,6 +8,7 @@
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
 
+#include "G4OpticalSurface.hh"
 #include "G4OpBoundaryProcess.hh"
 #include "G4LogicalBorderSurface.hh"
 
@@ -48,6 +49,7 @@ DetectorConstruction::DetectorConstruction()
     scintZ = 200*cm;
     
     wlsThickness = 0.5*cm;
+    cladThickness = 2*mm;
     pmtLength = 0.5*cm;
     
     UpdateGeometryParameters();
@@ -65,6 +67,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     detMaterial = FindMaterial("G4_PLASTIC_SC_VINYLTOLUENE");
     pmtMaterial = FindMaterial("BK7");
     wlsMaterial = FindMaterial("PMMA_WLS");
+    cladMaterial = FindMaterial("G4_TEFLON");
     
     return ConstructDetector();
 }
@@ -89,11 +92,26 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     physiWorld = new G4PVPlacement(0,G4ThreeVector(), logicWorld, "World", 0, false, fCheckOverlap);
     
     //--------------------------------------------------
+    // Wrapping / Cladding
+    //--------------------------------------------------
+    G4double x = scintX + wlsThickness + cladThickness;
+    G4double y = scintY + cladThickness;
+    G4double z = scintZ + 2*pmtLength+cladThickness;
+    solidClad = new G4Box("Cladding",x/2,y/2,z/2);
+    logicClad = new G4LogicalVolume(solidClad,cladMaterial,"Cladding");
+    physiClad = new G4PVPlacement(0, G4ThreeVector(), logicClad, "Cladding", logicWorld, 0, false,fCheckOverlap);
+   opSurfClad = new G4OpticalSurface("Cladding");
+   surfClad = new G4LogicalSkinSurface("Cladding",logicClad,opSurfClad);
+    opSurfClad->SetType(dielectric_LUT);
+    opSurfClad->SetModel(LUT);
+    opSurfClad->SetFinish(polishedteflonair);
+    
+    //--------------------------------------------------
     // WLS Fibers
     //--------------------------------------------------
     solidWLS = new G4Box("WLS",(scintX+wlsThickness)/2,scintY/2,scintZ/2);
     logicWLS = new G4LogicalVolume(solidWLS,wlsMaterial,"WLS");
-    physiWLS = new G4PVPlacement(0, G4ThreeVector(), logicWLS, "WLS", logicWorld, 0, false,fCheckOverlap);
+    physiWLS = new G4PVPlacement(0, G4ThreeVector(), logicWLS, "WLS", logicClad, 0, false,fCheckOverlap);
     
     //--------------------------------------------------
     // Scintillator
@@ -101,7 +119,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     solidScintillator = new G4Box("Scintillator",scintX/2,scintY/2,scintZ/2);
     logicScintillator = new G4LogicalVolume(solidScintillator,detMaterial,"Scintillator");
     physiScintillator = new G4PVPlacement(0, G4ThreeVector(), logicScintillator, "Scintillator", logicWLS, false,0, fCheckOverlap);
-    
     
     //--------------------------------------------------
     // PhotonDet (Sensitive Detector)
@@ -111,11 +128,11 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     G4double zOrig = (scintZ+pmtLength)/2;
     solidPhotonDetTop = new G4Box("PhotonDetTop",(scintX+wlsThickness)/2,scintY/2,pmtLength/2);
     logicPhotonDetTop = new G4LogicalVolume(solidPhotonDetTop,pmtMaterial, "PhotonDetTop");
-    physiPhotonDetTop = new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDetTop, "PhotonDetTop", logicWorld, false, 0, fCheckOverlap);
+    physiPhotonDetTop = new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDetTop, "PhotonDetTop", logicClad, false, 0, fCheckOverlap);
     
     solidPhotonDetBot= new G4Box("PhotonDetBot",(scintX+wlsThickness)/2,scintY/2,pmtLength/2);
     logicPhotonDetBot = new G4LogicalVolume(solidPhotonDetBot,pmtMaterial, "PhotonDetBot");
-    physiPhotonDetBot = new G4PVPlacement(0,G4ThreeVector(0.0,0.0,-zOrig), logicPhotonDetBot, "PhotonDetBot", logicWorld, false, 0, fCheckOverlap);
+    physiPhotonDetBot = new G4PVPlacement(0,G4ThreeVector(0.0,0.0,-zOrig), logicPhotonDetBot, "PhotonDetBot", logicClad, false, 0, fCheckOverlap);
     
     if (!pmtSD) {
         G4String pmtSDName = "/PhotonDet";
@@ -180,15 +197,36 @@ void DetectorConstruction::UpdateGeometry()
 
 void DetectorConstruction::UpdateGeometryParameters()
 {
-    worldSizeX = scintX + 2*wlsThickness+1*cm;
+    worldSizeX = scintX + 2*wlsThickness+cladThickness+1*cm;
     worldSizeY = scintY + 1*cm;
-    worldSizeZ = scintZ + 2*pmtLength+5*cm;
+    worldSizeZ = scintZ + 2*pmtLength+2*cladThickness+5*cm;
     
 }
 void DetectorConstruction::SetScintThickness(G4double val){
     scintX = val;
 }
-
+/**
+ * Sets the material of the cladding
+ * @param material name
+ */
+void DetectorConstruction::SetCladMaterial(G4String name){
+    cladMaterial = FindMaterial(name);
+    if (opSurfClad){
+    if(name == "G4_TEFLON"){
+        opSurfClad->SetFinish(polishedteflonair);
+    }else if(name == "G4_AIR"){
+        opSurfClad->SetFinish(polishedair);
+    }
+    else if(name == "G4_MYLAR"){
+        opSurfClad->SetFinish(polishedvm2000air);
+    }else{
+        G4cout<<"Material "<<name<<" is not in surface database."<<G4endl;
+    }
+    }
+    else{
+        G4cout<<"Did not set optical surface as surfrace is not yet created."<<G4endl;
+    }
+}
 /**
  Sets the material of the WLS
  @param material name

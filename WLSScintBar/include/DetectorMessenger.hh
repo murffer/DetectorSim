@@ -36,6 +36,7 @@ class DetectorMessenger : public G4UImessenger
     G4UIcmdWithAString*        SetPMTMaterialCmd;
     G4UIcmdWithAString*        SetScintMaterialCmd;
     G4UIcmdWithAString*        SetWLSMaterialCmd;
+    G4UIcmdWithAString*        SetCladMaterialCmd;
 
 };
 
