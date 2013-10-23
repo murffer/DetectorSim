@@ -30,6 +30,7 @@ class Materials{
     void SetOpticalPropertiesAir();
     void SetOpticalPropertiesPMMA();
     void SetOpticalPropertiesEJ426();
+    void SetOpticalPropertiesPMMA_WLS();
 
     // Fields
     static Materials* instance;   /* Materials Instance         */
@@ -39,7 +40,9 @@ class Materials{
     G4Material* BK7;         /* PMT Window Glass (Boroscilate)  */
     G4Material* Silicone;    /* Optical Grease                  */
     G4Material* Air;         /* Air                             */
-    G4Material* PMMA;        /* PMMA (Plexiglass)               */
+    G4Material* PMMA;        /* PMMA (Plexiglass) 
+                        */
+    G4Material* PMMA_WLS;    /* WLS PMMA */
     G4Material* EJ426;       /* EJ426 (LiF:ZnS(Ag))             */
 		G4Material* EJ200;			 /* EJ200 (PVT Scintillator)				*/
 		G4Material* psDet;			 /* Polystyrene based detector 		  */
