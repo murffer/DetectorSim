@@ -44,11 +44,11 @@ void HistoManager::Book()
     // Default values (to be reset via /analysis/h1/set command)
     G4int nbins = 100;
     G4double vmin = 0.;
-    G4double vmax = 100.;
+    G4double vmax = 2.;
     
     // Create all histograms as inactivated
     for (G4int k=0; k<kMaxHisto; k++) {
         G4int ih = aMan->CreateH1(id[k], title[k], nbins, vmin, vmax);
-        aMan->SetActivation(G4VAnalysisManager::kH1, ih, false);
+        aMan->SetActivation(G4VAnalysisManager::kH1, ih, true);
     }
 }
