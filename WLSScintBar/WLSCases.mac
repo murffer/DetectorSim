@@ -35,17 +35,17 @@
 /gps/ene/mono 3.54 eV
 /det/setWLSMaterial G4_PLEXIGLASS
 /det/Update
-/run/beamOn 100000
+/run/beamOn 1000000
 /det/setWLSMaterial PMMA_WLS 
 /det/Update
-/run/beamOn 100000
+/run/beamOn 1000000
 
 /det/setSlabMaterial EJ426
 /gps/ene/mono 2.75 eV
 /det/setWLSMaterial G4_PLEXIGLASS
 /det/Update
-/run/beamOn 100000
+/run/beamOn 10000000
 /det/setWLSMaterial PMMA_WLS 
 /det/Update
-/run/beamOn 100000
+/run/beamOn 10000000
 
