@@ -36,15 +36,15 @@ public:
     void PrintParameters();
     
     // Set Material Commands for World and Scintillator
-    void SetWorldMaterial         (G4String);
-    void SetCoupleMaterial        (G4String);
-    void SetScintMaterial         (G4String);
-    void SetPMTMaterial           (G4String);
+    void SetWorldMaterial        (G4String);
+    void SetWLSMaterial          (G4String);
+    void SetScintMaterial        (G4String);
+    void SetPMTMaterial          (G4String);
     
     void SetPhotonDetPolish     (G4double);
     void SetPhotonDetReflectivity (G4double);
     void SetScintThickness      (G4double);
-
+    
     
     G4Material* FindMaterial(G4String);
     

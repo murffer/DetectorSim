@@ -131,7 +131,7 @@ void DetectorConstruction::PrintParameters(){
     <<"\n\t Length: "<<G4BestUnit(scintZ,"Length")
     <<"\n\t Width: "<<G4BestUnit(scintY,"Length")
     <<"\n\t Material:"<<detMaterial->GetName()
-    <<"PMT:"
+    <<"\nPMT:"
     <<"\n\t Length: "<<G4BestUnit(pmtLength,"Length")
     <<"\n\t Material:"<<pmtMaterial->GetName()
     <<G4endl;
@@ -185,23 +185,12 @@ void DetectorConstruction::SetScintThickness(G4double val){
 }
 
 /**
- Sets the polish of the photon detector
- @param polish (0 < polish <= 1) a polish of 1.0 is a perfect mirror surface
+ Sets the material of the WLS
+ @param material name
  */
-void DetectorConstruction::SetPhotonDetPolish(G4double polish)
-{
-    pmtPolish = polish;
+void DetectorConstruction::SetWLSMaterial(G4String name){
+    wlsMaterial = FindMaterial(name);
 }
-
-/**
- Sets the reflectivity of the photon dector
- @param reflectivity (0 < refelctivity <= 1) - a reflectivtiy of 1 is a perfect mirror
- */
-void DetectorConstruction::SetPhotonDetReflectivity(G4double reflectivity)
-{
-    pmtReflectivity = reflectivity;
-}
-
 /**
  * Gets material
  * @param name of the material
