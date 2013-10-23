@@ -1,0 +1,61 @@
+#
+# Macro file for the initialization phase of the slab 
+#
+#/run/verbose 1
+#/control/verbose 1
+#/event/verbose 1
+#/tracking/verbose 1
+#
+/run/initialize
+#
+# Setting up the manager
+/gps/particle opticalphoton
+/gps/ene/type Mono
+/gps/ene/mono 3.54 eV
+#
+/gps/pos/type Volume
+/gps/pos/shape Para
+/gps/pos/centre 0. 0. 0. cm
+/gps/pos/halfx 50. um
+/gps/pos/halfy 15. cm
+/gps/pos/halfz 100. cm
+/gps/ang/type iso
+#
+#
+/det/setSlabMaterial G4_PLASTIC_SC_VINYLTOLUENE
+/det/setWLSMaterial PMMA_WLS 
+/det/setCladMaterial G4_TEFLON
+/gps/ene/mono 2.94 eV
+/det/Update
+/run/beamOn 10000
+/det/setCladMaterial G4_AIR
+/det/Update
+/run/beamOn 10000
+/det/setCladMaterial G4_MYLAR
+/det/Update
+/run/beamOn 10000
+
+/det/setSlabMaterial PSLiF
+/det/setCladMaterial G4_TEFLON
+/gps/ene/mono 3.54 eV
+/det/Update
+/run/beamOn 100000
+/det/setCladMaterial G4_AIR
+/det/Update
+/run/beamOn 100000
+/det/setCladMaterial G4_MYLAR
+/det/Update
+/run/beamOn 100000
+
+/det/setSlabMaterial EJ426
+/gps/ene/mono 2.75 eV
+/det/setCladMaterial G4_TEFLON
+/det/Update
+/run/beamOn 1000000
+/det/setCladMaterial G4_AIR
+/det/Update
+/run/beamOn 1000000
+/det/setCladMaterial G4_MYLAR
+/det/Update
+/run/beamOn 1000000
+
