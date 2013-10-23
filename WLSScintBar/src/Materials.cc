@@ -290,7 +290,7 @@ void Materials::SetOpticalPropertiesPMMA_WLS(){
  * PMMA material is G4_PLEXIGLASS
  * Data Sources:
  *  Refractive Index is from S.N. Kasarova (Table 1) doi:10.1016/j.optmat.2006.07.010
- *  Absorbance is based on formula on pg. 139 of Urffer Notebook II, and on the transmission data from Eljen
+ *  Absorbance is based on Zwinkles (1990)
  */
 void Materials::SetOpticalPropertiesPMMA(){
 	const G4int nRINDEX = 6;
@@ -302,7 +302,7 @@ void Materials::SetOpticalPropertiesPMMA(){
 	// Absorbition Length
 	const G4int nABS=3;
 	G4double photonEnergyABS[nABS] = {3.3*eV,4.12*eV,2.75*eV};
-	G4double AbsLengthPMMA[nABS]={0.2*m,3*cm,5*cm};
+	G4double AbsLengthPMMA[nABS]={1.6*cm,25*cm,110*cm};
 
 	// Add entries into properties table
 	G4MaterialPropertiesTable* MPTPMMA = new G4MaterialPropertiesTable();
