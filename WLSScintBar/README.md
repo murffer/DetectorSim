@@ -1,11 +1,9 @@
-GS20 Calibration
-================
+Scintillation Slab With WLS and Cladding
+=======================================
 
-Simulation of gammas and neutrons and the subsquent energy depsotion and optical photons in GS20. 
+Simulation of optical photon collection in a scintillation bar that is wrapped in a wavelength shifting plasitc and ecnased in an optical cladding.
 
-Naming Conventions:
-  Abosrber - the GS20 Scintillator
-  PMT - the pmt
+GEOMETRY:
+---------
+The geometry is a thin 100 um slab that is 30 cm wide by 200 cm long.  There are two rectangular PMT's attached to either end of the bar.  The bar is encased in a plastic that can be set to a wavelength shifter. The entire assembly is wrapped in an optical covering (tape, mylar, air).
 
-The seperate histograms can be combined with the following command.
-  `hadd GS20_Neutron.root GS20_Neutron_*.root`

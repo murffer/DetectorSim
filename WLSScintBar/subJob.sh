@@ -1,5 +1,5 @@
 #!/bin/bash
-export G4WORKDIR=/home/murffer/G4DetectorSim/LightValidation/ScintillationSlab
+export G4WORKDIR=/home/murffer/G4DetectorSim/WLSScintBar
 
 #
 # Setting up the job
@@ -14,15 +14,25 @@ function JobSetup()
   echo 'cd $PBS_O_WORKDIR' >> job
 }
 
-function run()
+function runClad()
 {
   JobSetup
-  echo "exec $G4WORKDIR/build/scintSlab $G4WORKDIR/ptSrc.in > 25PTSRCOutput.txt" >> job
-  mv job Sub.qsub
-  qsub Sub.qsub
+  echo "exec $G4WORKDIR/build/scintSlab $G4WORKDIR/CladdingTest.mac > CladOutput.txt" >> job
+  mv job CladdSub.qsub
+  qsub CladdSub.qsub
+}
+
+function runWLS()
+{
+  JobSetup
+  echo "exec $G4WORKDIR/build/scintSlab $G4WORKDIR/WLSCases.mac > WLSOutput.txt" >> job
+  mv job WLSSub.qsub
+  qsub WLSSub.qsub
 }
 
 # Running the jobs
-run
+runClad
+runWLS
 # Cleaning up
-rm Sub.qsub
+rm CladSub.qsub
+rm WLSSub.qsub

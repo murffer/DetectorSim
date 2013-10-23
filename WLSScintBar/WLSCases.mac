@@ -23,6 +23,7 @@
 #
 #
 /det/setSlabMaterial G4_PLASTIC_SC_VINYLTOLUENE
+/gps/ene/mono 2.94 eV
 /det/setWLSMaterial G4_PLEXIGLASS
 /det/Update
 /run/beamOn 10000
@@ -31,6 +32,7 @@
 /run/beamOn 10000
 
 /det/setSlabMaterial PSLiF
+/gps/ene/mono 3.54 eV
 /det/setWLSMaterial G4_PLEXIGLASS
 /det/Update
 /run/beamOn 100000
@@ -39,6 +41,7 @@
 /run/beamOn 100000
 
 /det/setSlabMaterial EJ426
+/gps/ene/mono 2.75 eV
 /det/setWLSMaterial G4_PLEXIGLASS
 /det/Update
 /run/beamOn 100000
