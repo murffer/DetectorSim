@@ -284,7 +284,7 @@ void DetectorConstruction::SetVisAttributes(){
  */
 void DetectorConstruction::SetBirksParameter(G4double val){
 		// Expects units of mm/MeV
-    absMaterial->GetIonisation()->SetBirksConstant(val);
+    absMaterial->GetIonisation()->SetBirksConstant(val*mm/MeV);
 }
 /**
  * SetMountingThickness

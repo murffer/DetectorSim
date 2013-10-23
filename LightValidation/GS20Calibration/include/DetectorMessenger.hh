@@ -9,6 +9,7 @@ class G4UIdirectory;
 class G4UIcmdWithAString;
 class G4UIcmdWithAnInteger;
 class G4UIcmdWithADoubleAndUnit;
+class G4UIcmdWithADouble;
 class G4UIcmdWithoutParameter;
 
 class DetectorMessenger: public G4UImessenger
@@ -28,7 +29,7 @@ class DetectorMessenger: public G4UImessenger
     G4UIcmdWithADoubleAndUnit* MntThickCmd;
     G4UIcmdWithADoubleAndUnit* RefThickCmd;
     G4UIcmdWithADoubleAndUnit* SizeRadiusCmd;
-    G4UIcmdWithADoubleAndUnit* BirksCmd;
+    G4UIcmdWithADouble* 			 BirksCmd;
     G4UIcmdWithoutParameter*   UpdateCmd;
 };
 
