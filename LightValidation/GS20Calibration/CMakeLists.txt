@@ -64,6 +64,7 @@ macros/co60Source.mac
 macros/gRun.mac
 macros/nRun.mac
 macros/neutronSource.mac
+BirksConstant.mac
 )
 
 foreach(_script ${GS20CAL_SCRIPTS})

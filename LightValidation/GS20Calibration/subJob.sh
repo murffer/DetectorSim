@@ -28,10 +28,19 @@ function runNeutron()
   qsub nSub.qsub
 }
 
-# Running the jobs
-runGamma
-runNeutron
-# Cleaning up
-rm nSub.qsub
-rm gSub.qsub
+function runBirks()
+{
+  JobSetup
+  echo "mpirun $G4WORKDIR/build/GS20LightYieldCal $G4WORKDIR/BirksConstant.mac > BirksOutput.txt" >>job
+  mv job bSub.qsub
+  qsub bSub.qsub
+}
 
+## Running the jobs
+#runGamma
+#runNeutron
+runBirks
+## Cleaning up
+#rm nSub.qsub
+#rm gSub.qsub
+rm bSub.qsub

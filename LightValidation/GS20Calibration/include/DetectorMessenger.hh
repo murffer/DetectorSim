@@ -28,6 +28,7 @@ class DetectorMessenger: public G4UImessenger
     G4UIcmdWithADoubleAndUnit* MntThickCmd;
     G4UIcmdWithADoubleAndUnit* RefThickCmd;
     G4UIcmdWithADoubleAndUnit* SizeRadiusCmd;
+    G4UIcmdWithADoubleAndUnit* BirksCmd;
     G4UIcmdWithoutParameter*   UpdateCmd;
 };
 

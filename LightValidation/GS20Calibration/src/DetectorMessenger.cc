@@ -45,6 +45,13 @@ DetectorMessenger::DetectorMessenger(
   SizeRadiusCmd->SetRange("Size>0.");
   SizeRadiusCmd->SetUnitCategory("Length");    
   SizeRadiusCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+  
+	BirksCmd = new G4UIcmdWithADoubleAndUnit("/GS20LightYield/det/setBirks ",this);
+  BirksCmd->SetGuidance("Set Birks constant of detector");
+  BirksCmd->SetParameterName("birks",false);
+  BirksCmd->SetRange("birks>0.");
+  //BirksCmd->SetUnitCategory("Length/Energy");    
+  BirksCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 
   UpdateCmd = new G4UIcmdWithoutParameter("/GS20LightYield/det/update",this);
   UpdateCmd->SetGuidance("Update calorimeter geometry.");
@@ -60,7 +67,8 @@ DetectorMessenger::~DetectorMessenger()
   delete RefThickCmd;
   delete MntThickCmd;
   delete SizeRadiusCmd; 
-  delete UpdateCmd;
+  delete BirksCmd;
+	delete UpdateCmd;
   delete detDir;
   delete GS20LightYieldDir;  
 }
@@ -79,6 +87,9 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
    
   if( command == SizeRadiusCmd )
    { Detector->SetGS20Radius(SizeRadiusCmd->GetNewDoubleValue(newValue));}
+  
+	if( command == BirksCmd )
+   { Detector->SetBirksParameter(BirksCmd->GetNewDoubleValue(newValue));}
    
   if( command == UpdateCmd )
    { Detector->UpdateGeometry(); }
