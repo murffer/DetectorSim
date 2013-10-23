@@ -9,12 +9,6 @@
 /run/initialize
 #
 # Setting up the manager
-#
-/analysis/setFileName ScintSlab
-/analysis/h1/set 1 100 0  5 ms        # Resolution 
-/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
-/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
-#
 /gps/particle opticalphoton
 /gps/ene/type Mono
 /gps/ene/mono 3.94 eV
@@ -24,5 +18,31 @@
 /gps/pos/centre 0. 0. 0. cm
 /gps/pos/halfx 50. um
 /gps/pos/halfy 15. cm
-/gps/pos/halfz 50. cm
+/gps/pos/halfz 100. cm
 /gps/ang/type iso
+#
+#
+/det/setSlabMaterial G4_PLASTIC_SC_VINYLTOLUENE
+/det/setWLSMaterial G4_PLEXIGLASS
+/det/Update
+/run/beamOn 10000
+/det/setWLSMaterial PMMA_WLS 
+/det/Update
+/run/beamOn 10000
+
+/det/setSlabMaterial PSLiF
+/det/setWLSMaterial G4_PLEXIGLASS
+/det/Update
+/run/beamOn 100000
+/det/setWLSMaterial PMMA_WLS 
+/det/Update
+/run/beamOn 100000
+
+/det/setSlabMaterial EJ426
+/det/setWLSMaterial G4_PLEXIGLASS
+/det/Update
+/run/beamOn 100000
+/det/setWLSMaterial PMMA_WLS 
+/det/Update
+/run/beamOn 100000
+

@@ -45,6 +45,7 @@ set(scintSlab_SCRIPTS
   init.mac
   gui.mac
   wlsSlab.in
+  TestCases.mac
   )
 
 foreach(_script ${scintSlab_SCRIPTS})
