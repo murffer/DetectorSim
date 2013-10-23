@@ -5,8 +5,6 @@
 #include "G4Run.hh"
 #include "G4VHitsCollection.hh"
 
-#include "CaloHit.hh"
-
 #include "globals.hh"
 class HistoManager;
 class Analysis {
@@ -37,7 +35,6 @@ class Analysis {
     static Analysis *singleton;
 
     // Accumulation Variables
-    G4double eDepEvent;
     G4double nOPAbsEvent;
     HistoManager* fHistoManager; /* Histogram Manager */
 };

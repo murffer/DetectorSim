@@ -26,7 +26,6 @@ class DetectorConstruction : public G4VUserDetectorConstruction{
     
 		void SetBirksParameter(G4double);
 		void UpdateGeometry();
-		void PrintParameters();
 
 private:
 

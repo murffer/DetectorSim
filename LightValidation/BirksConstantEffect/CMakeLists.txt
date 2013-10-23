@@ -4,12 +4,6 @@ cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(BirksConstant)
 
 #----------------------------------------------------------------------------
-# check MPI package...
-find_package(MPI REQUIRED)
-# modify these var. if needed
-set(CMAKE_CXX_COMPILER mpicxx)
-
-#----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
 # You can set WITH_GEANT4_UIVIS to OFF via the command line or ccmake/cmake-gui
 # to build a batch mode only executable
@@ -27,18 +21,6 @@ endif()
 #
 include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include)
-
-#----------------------------------------------------------------------------
-# Add G4mpi library
-#
-SET(Geant4_LIBRARIES ${Geant4_LIBRARIES} G4mpi)
-ADD_LIBRARY(G4mpi SHARED IMPORTED)
-SET_PROPERTY(TARGET G4mpi APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-SET_TARGET_PROPERTIES(G4mpi PROPERTIES
-  IMPORTED_LOCATION_RELEASE "${Geant4_DIR}/../libG4mpi.so"
-  IMPORTED_SONAME_RELEASE "libG4mpi.so"
-)
-
 
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project
@@ -60,8 +42,8 @@ target_link_libraries(birksConstant ${Geant4_LIBRARIES})
 #
 set(GS20CAL_SCRIPTS
 vis.mac
-macros/gRun.mac
-macros/nRun.mac
+macros/co60Source.mac
+macros/neutronSource.mac
 BirksConstant.mac
 )
 

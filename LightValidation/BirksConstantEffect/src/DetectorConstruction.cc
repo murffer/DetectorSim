@@ -59,20 +59,6 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 }
 
 /**
- * PrintCaloParameters
- *
- * Prints the parameters of the geometry
- */
-void DetectorConstruction::PrintParameters(){
-
-  // print parameters
-  G4cout<<"\n------------ Detector Parameters ---------------------"
-    <<"\n--> The detector material is a disc of: "<<absMaterial->GetName()
-    <<"\n\t thickness: "<<G4BestUnit(gs20Thickness,"Length")
-    <<"\n\t radius: "<<G4BestUnit(gs20Radius,"Length")
-    <<G4endl;
-}
-/**
  * FindMaterial
  *
  * Finds, and if necessary, builds a material
@@ -94,7 +80,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
   G4SolidStore::GetInstance()->Clean();
 
   // World
-  worldS = new G4Tubs("World",3*cm,2*cm,0,360*deg); 
+  worldS = new G4Tubs("World",0,3*cm,2*cm,0,360*deg); 
   worldLV = new G4LogicalVolume(worldS,FindMaterial("G4_Galactic"),"World");
   worldPV = new G4PVPlacement(0,G4ThreeVector(),worldLV,"World",0,false,0,fCheckOverlaps);
 
@@ -103,8 +89,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
   gs20LV = new G4LogicalVolume(gs20S,absMaterial,"Absorber",0);
   gs20PV = new G4PVPlacement(0,G4ThreeVector(0,0,0),gs20LV,"Absorber - GS20",worldLV,false,0,fCheckOverlaps);
 
-  // Printing basic information about the geometry
-  PrintParameters();
 
   // Return the worlds physical volume
   return worldPV;
@@ -132,8 +116,6 @@ void DetectorConstruction::UpdateGeometry(){
   G4GeometryManager::GetInstance()->OpenGeometry();
   G4PhysicalVolumeStore::GetInstance()->Clean();
   G4LogicalVolumeStore::GetInstance()->Clean();
-  G4LogicalSkinSurface::CleanSurfaceTable();
-  G4LogicalBorderSurface::CleanSurfaceTable();
 
   // Creating the new geomtry  
   G4RunManager::GetRunManager()->DefineWorldVolume(ConstructVolumes());

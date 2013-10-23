@@ -69,7 +69,10 @@ void Analysis::PrepareNewEvent(const G4Event* ){
  * @param G4Event* event
  */
 void Analysis::EndOfEvent(const G4Event* ){
-  analysisManager->FillH1(1,nOPAbsEvent);
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  if ( analysisManager->IsActive() ) {
+  	analysisManager->FillH1(1,nOPAbsEvent);
+	}
 }
 
 /**

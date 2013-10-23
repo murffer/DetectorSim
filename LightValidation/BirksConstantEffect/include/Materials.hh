@@ -22,20 +22,30 @@ class Materials{
     Materials();
     void CreateMaterials();
     void SetOpticalPropertiesTeflon();
+  void SetOpticalPropertiesPS();
+  void SetOpticalPropertiesEJ200();
     void SetOpticalPropertiesGS20();
     void SetOpticalPropertiesBK7();
     void SetOpticalPropertiesSilicone();
     void SetOpticalPropertiesAir();
-    
+    void SetOpticalPropertiesPMMA();
+    void SetOpticalPropertiesEJ426();
+    void SetOpticalPropertiesPMMA_WLS();
+
     // Fields
-    static Materials* instance;   /* Materials Instance        */
-    G4NistManager* nistMan;  /* NIST Material Manager          */
-    G4Material* Teflon;      /* Teflon Tape                    */
-    G4Material* GS20;        /* GS20 Detector                  */
-    G4Material* BK7;         /* PMT Window Glass (Boroscilate) */
-    G4Material* Silicone;    /* Optical Grease */
-    G4Material* Air;         /* Air            */
-    G4Material* BlackTape;   /* Black tape     */
+    static Materials* instance;   /* Materials Instance         */
+    G4NistManager* nistMan;  /* NIST Material Manager           */
+    G4Material* Teflon;      /* Teflon Tape                     */
+    G4Material* GS20;        /* GS20 Detector                   */
+    G4Material* BK7;         /* PMT Window Glass (Boroscilate)  */
+    G4Material* Silicone;    /* Optical Grease                  */
+    G4Material* Air;         /* Air                             */
+    G4Material* PMMA;        /* PMMA (Plexiglass) 
+                        */
+    G4Material* PMMA_WLS;    /* WLS PMMA */
+    G4Material* EJ426;       /* EJ426 (LiF:ZnS(Ag))             */
+		G4Material* EJ200;			 /* EJ200 (PVT Scintillator)				*/
+		G4Material* psDet;			 /* Polystyrene based detector 		  */
 };
 
 #endif
