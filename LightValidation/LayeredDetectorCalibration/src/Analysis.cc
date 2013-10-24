@@ -60,7 +60,7 @@ void Analysis::PrepareNewRun(const G4Run* ){
  */
 void Analysis::PrepareNewEvent(const G4Event* ){
   // Initialize energy deposition to zero
-  eDepEvent = 0.0;
+  nOPDetEvent = 0.0;
   nOPAbsEvent = 0.0;
 }
 
@@ -72,7 +72,6 @@ void Analysis::PrepareNewEvent(const G4Event* ){
  */
 void Analysis::EndOfEvent(const G4Event* event){
   G4VHitsCollection *hc;
-  CaloHit *hit;
 
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   // Iterating through the hit collection to accumulate the energy deposition 
@@ -80,17 +79,13 @@ void Analysis::EndOfEvent(const G4Event* event){
   for(G4int hitItter = 0; hitItter < numHitColl; hitItter++){
     // Itterating through the hit collection
     hc = event->GetHCofThisEvent()->GetHC(hitItter);
-    for(G4int i = 0; i < hc->GetSize(); i++){
-      hit = (CaloHit*) hc->GetHit(i);
+    nOPDetEvent += hc->GetSize();
 
-      // Adding the energy deposition (in MeV)
-      eDepEvent += hit->GetEdep();
-    }
   }
   // Adding to the run accumulation only events with deposit energy
-  if (eDepEvent > 0.0){
-    analysisManager->FillH1(1,eDepEvent);
-  analysisManager->FillH1(2,nOPAbsEvent);
+  if (nOPAbsEvent > 0.0){
+    analysisManager->FillH1(2,nOPDetEvent);
+  analysisManager->FillH1(1,nOPAbsEvent);
   }
 }
 

@@ -101,7 +101,7 @@ void DetectorConstruction::PrintParameters(){
     <<"\n\t\tThickness: "<<G4BestUnit(detectorThickness,"Length")
     <<"\n\t--> Detector Mounting (M):"
     <<"\n\t\tMaterial:  "<<detMountMaterial->GetName()
-    <<"\n\t\tThickness (2x): "<<G4BestUnit(detMountThickness,"Length")
+    <<"\n\t\tThickness (2x): "<<G4BestUnit(mountThickness,"Length")
     <<"\n\t--> Optical Mounting (O):"
     <<"\n\t\tMaterial:  "<<mountMaterial->GetName()
     <<"\n\t\tThickness (2x): "<<G4BestUnit(mountThickness,"Length")
@@ -139,16 +139,17 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
     // Geometry parameters
     pmtRadius = 2.54*cm;
     pmtThickness = 5*mm;
+    
     mountThickness = 100*um;
     refThickness = 3.33*mm;
     
-    pmmaWidth = 10*cm;
-    pmmaHeight = 20*cm;
-    pmmaThickness = 5*cm;
+    pmmaWidth = 10.16*cm;
+    pmmaHeight = 15.24*cm;
+    pmmaThickness = 6*cm;
 
     detectorThickness = 100*um;
-
-    lightGuideHeight = 5*cm;
+    lightGuideHeight = 5.08*cm;
+    
     absMaterial = FindMaterial("EJ426");
     pmtMaterial = FindMaterial("BK7");
     refMaterial = FindMaterial("G4_TEFLON");
@@ -166,29 +167,36 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
         worldLV->SetVisAttributes(atb);
     }
     
-    /* Creating and Positing the RMP8 */
-    G4ThreeVector rpm8Tran(1*m,0,0);
+    /* Teflon Cladding around PMMA and Detector Slices */
+    cladS = new G4Box("Reflector_Clading",(pmmaThickness+refThickness)/2,(pmmaWidth+refThickness)/2,(pmmaHeight+refThickness)/2);
+    cladLV = new G4LogicalVolume(refS,cladMaterial,"Reflector");
+    cladPV = new G4PVPlacement(0,G4ThreeVector(-refThickness,0,0),cladLV,"Reflector",worldLV,false,0,fCheckOverlaps);
+    
+    /* Creating and Positing the PMMA and Detector
+     * 
+     * The Detector slices are positioned inside of the PMMA, and contains the detector and mounting
+     * slices. Each slice is positioned inside some optical grease (silcone).
+     */
+    sliceThickness = detectorThickness+2*mountThickness;
     std::list<G4double> slices;
-    slices.push_back(1.96*cm);
-    slices.push_back(2.49*cm);
-    slices.push_back(4.9*cm);
-    slices.push_back(6.86*cm);
-    pmmaLV = ConstructRPM8(slices);
-    pmmaPV = new G4PVPlacement(0,rpm8Tran,pmmaLV,"RPM8 Detector",worldLV,false,0,fCheckOverlaps);
+    slices.push_back(2*cm);
+    slices.push_back(4*cm);
+    pmmaLV = ConstructPMMA(slices);
+    pmmaPV = new G4PVPlacement(0,G4ThreeVector(),pmmaLV,"PMMA  Detector",refLV,false,0,fCheckOverlaps);
     
     /**
      * Setting up the Light Guides and PMT's
      */
-    G4double lgZTran = rpm8Height/2+lightGuideHeight/2;
-    G4VSolid* lightGuideS = new G4Trd("Light Guide",rpm8Thickness/2,pmtRadius,rpm8Width/2,pmtRadius,lightGuideHeight/2);
+    G4double lgZTran = pmmaHeight/2+lightGuideHeight/2;
+    G4VSolid* lightGuideS = new G4Trd("Light Guide",pmmaThickness/2,pmtRadius,pmmaWidth/2,pmtRadius,lightGuideHeight/2);
     G4LogicalVolume* lightGuideLV = new G4LogicalVolume(lightGuideS,lightGuideMaterial,"Light Guide");
-    new G4PVPlacement(0,rpm8Tran+G4ThreeVector(0,0,lgZTran),lightGuideLV,"Top Light Guide",worldLV,false,0,fCheckOverlaps);
+    new G4PVPlacement(0,G4ThreeVector(0,0,lgZTran),lightGuideLV,"Top Light Guide",worldLV,false,0,fCheckOverlaps);
     
     // PMT Glass
-    G4double pmtZTran = (rpm8Height+2*lightGuideHeight+pmtThickness)/2;
+    G4double pmtZTran = (pmmaHeight+2*lightGuideHeight+pmtThickness)/2;
     G4VSolid* pmtS = new G4Tubs("PMTGlass",0,pmtRadius,pmtThickness/2,0,360*deg);
     pmtLV = new G4LogicalVolume(pmtS,pmtMaterial,"PMT Glass",0);
-    pmtPV = new G4PVPlacement(0,rpm8Tran+G4ThreeVector(0,0,pmtZTran),pmtLV,"PMTGlass",worldLV,false,0,fCheckOverlaps);
+    pmtPV = new G4PVPlacement(0,G4ThreeVector(0,0,pmtZTran),pmtLV,"PMTGlass",worldLV,false,0,fCheckOverlaps);
 
     
     G4VisAttributes* atb= new G4VisAttributes(G4Colour::Yellow());
@@ -199,16 +207,9 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
     
     // Setting PMT Sensitive Detectors
     G4SDManager* SDman = G4SDManager::GetSDMpointer();
-    pmtSD = new PMTSD("PMT/TopPMTSD","PMTTopHitCollection");
+    pmtSD = new PMTSD("PMT/PMTSD","PMTTopHitCollection");
     SDman->AddNewDetector(pmtSD);
     pmtLV->SetSensitiveDetector(pmtSD);
- 
-    
-    // Setting Light Guide Sensitive Detectors
-    lgSD = new PMTSD("LightGuide/TopPMTSD","LGTopHitCollection");
-
-    SDman->AddNewDetector(lgSD);
-    lightGuideLV->SetSensitiveDetector(lgSD);
 
     
     // Print Materials
@@ -223,7 +224,13 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
 }
 
 /**
- * Constructs a Detector Slice
+ * Constructs a Detector Slice.
+ * 
+ * A detector slice consists of the mounting material (silcone) 
+ * which is the larger, parent volume of the detector slab.
+ *
+ * @return - a pointer to the mounting slice logical volume 
+ *      which contains the detector slice.
  */
 G4LogicalVolume* DetectorConstruction::ConstructDetectorSlice(G4int copyNum){
     
@@ -231,11 +238,13 @@ G4LogicalVolume* DetectorConstruction::ConstructDetectorSlice(G4int copyNum){
     std::ostringstream osSlice;
     osSlice <<"Slice_"<<copyNum;
     std::string sliceName = osSlice.str();
-    G4VSolid* sliceS = new G4Box("DetectorSlice",sliceThickness/2,rpm8Width/2,rpm8Height/2);
-    G4LogicalVolume* sliceLV = new G4LogicalVolume(sliceS,detMountMaterial,sliceName);
+    
+    G4VSolid* sliceS= new G4Box("Mounting",sliceThickness/2,pmmaWidth/2,pmmaHeight/2);
+    G4LogicalVolume* sliceLV = new G4LogicalVolume(sliceS,mountMaterial,sliceName);
+ 
     
     // Setting up the Absorber Solid Sheet
-    absS.push_back(new G4Box("DetectorSheet",detectorThickness/2, rpm8Width/2,rpm8Height/2));
+    absS.push_back(new G4Box("DetectorSheet",detectorThickness/2, pmmaWidth/2,pmmaHeight/2));
     absLV.push_back(new G4LogicalVolume(absS.back(),absMaterial,"Absorber"));
     absPV.push_back(new G4PVPlacement(0,G4ThreeVector(),absLV.back(),"Absorber",sliceLV,0,copyNum,fCheckOverlaps));
     
@@ -243,23 +252,14 @@ G4LogicalVolume* DetectorConstruction::ConstructDetectorSlice(G4int copyNum){
     atb->SetForceSolid(true);
     absLV.back()->SetVisAttributes(atb);
     
-    // Setting up the Absorber Sensitive Detector
-    G4SDManager* SDman = G4SDManager::GetSDMpointer();
-    std::ostringstream oss;
-    oss <<"Absorber/AbsSD_"<<copyNum;
-    std::string name = oss.str();
-    oss.str("");
-    oss.clear();
-    oss<<"AbsHitCollection_"<<copyNum;
-    AbsorberSD* absSD = new AbsorberSD(name,oss.str());
-    SDman->AddNewDetector(absSD);
-    absLV.back()->SetSensitiveDetector(absSD);
     
     G4double xTran = 0;
     if (mountThickness > 0){
+        
+        
         // Setting up the shapes
-        xTran = detMountThickness;
-        G4VSolid* mountS = new G4Box("Mounting",mountThickness/2,rpm8Width/2,rpm8Height/2);
+        xTran = mountThickness;
+        G4VSolid* mountS = new G4Box("Mounting",mountThickness/2,pmmaWidth/2,pmmaHeight/2);
         G4LogicalVolume* mountLV = new G4LogicalVolume(mountS,mountMaterial,"Optical Mounting");
         
         // Setting up the left coupling
@@ -277,13 +277,13 @@ G4LogicalVolume* DetectorConstruction::ConstructDetectorSlice(G4int copyNum){
  *
  * @return a pointer to the RPM8 logical volume
  */
-G4LogicalVolume* DetectorConstruction::ConstructRPM8(std::list<G4double> const& slices){
+G4LogicalVolume* DetectorConstruction::ConstructPMMA(std::list<G4double> const& slices){
     
     /**
      * Setting up the RPM8 Volume
      */
-    rpm8S = new G4Box("RPM8 footprint",rpm8Thickness/2,rpm8Width/2,rpm8Height/2);
-    rpm8LV = new G4LogicalVolume(rpm8S,FindMaterial("G4_POLYETHYLENE"),"HDPE Moderator");
+    pmmaS = new G4Box("RPM8 footprint",pmmaThickness/2,pmmaWidth/2,pmmaHeight/2);
+    pmmaLV = new G4LogicalVolume(pmmaS,FindMaterial("G4_POLYETHYLENE"),"HDPE Moderator");
     
     // Itterating through, setting up the detector
     G4double sliceXPos = 0;
@@ -295,7 +295,7 @@ G4LogicalVolume* DetectorConstruction::ConstructRPM8(std::list<G4double> const& 
         oss <<"Slice_"<<copyNum;
         sliceXPos = *it;
         sliceLV = ConstructDetectorSlice(copyNum);
-        new G4PVPlacement(0,G4ThreeVector(sliceXPos-rpm8Thickness/2,0,0),sliceLV,oss.str(),rpm8LV,false,copyNum,fCheckOverlaps);
+        new G4PVPlacement(0,G4ThreeVector(sliceXPos-pmmaThickness/2,0,0),sliceLV,oss.str(),pmmaLV,false,copyNum,fCheckOverlaps);
         copyNum ++;
         oss.str("");
         oss.flush();
@@ -304,57 +304,12 @@ G4LogicalVolume* DetectorConstruction::ConstructRPM8(std::list<G4double> const& 
     // Setting up the visulaziation attributes
     G4VisAttributes* atb= new G4VisAttributes(G4Colour::Gray());
     atb->SetForceSolid(true);
-    rpm8LV->SetVisAttributes(atb);
+    pmmaLV->SetVisAttributes(atb);
     // Returning the Logical Volume
-    return rpm8LV;
+    return pmmaLV;
 }
 
-/**
- * ConstructReflector
- *
- * Constructs the reflector around the detector assembly
- */
-G4LogicalVolume* DetectorConstruction::ConstructReflector(){
-    //TODO
-    /*
-     G4Tubs *refSide = new G4Tubs("refSide",gs20Radius,gs20Radius+refThickness,(refThickness+detectorThickness+mountThickness)/2,0,360*deg);
-     G4Tubs *refTop = new G4Tubs("refTop",0,gs20Radius,refThickness/2,0,360*deg);
-     refS = new G4UnionSolid("Reflector",refSide,refTop,0,G4ThreeVector(0,0,(detectorThickness+mountThickness)/2));
-     refLV = new G4LogicalVolume(refS,refMaterial,"Reflector",0);
-     zTran = (refThickness-mountThickness)/2;
-     refPV = new G4PVPlacement(0,G4ThreeVector(0,0,zTran),refLV,"Reflector",worldLV,false,0,fCheckOverlaps);
-     */
-    return NULL;
-}
-/**
- * Constructs the Source Logical Volume
- *
- * The source configuration is specified in PNNL 18471
- * @return a pointer to the logical volume of the source which needs to
- *  be placed in the Physical Volume
- */
-G4LogicalVolume* DetectorConstruction::ConstructSource(){
-    
-    // HDPE Shell
-    G4VSolid* sourceS = new G4Sphere("ModSrc",0,srcRadius+pbSrcThickness+modSrcThickness,0,360*deg,0,180*deg);
-    sourceLV = new G4LogicalVolume(sourceS,FindMaterial("G4_POLYETHYLENE"),"HDEPE encased souce");
-    
-    // Lead Shell
-    G4VSolid* pbSrcS = new G4Sphere("PbSrc",srcRadius,srcRadius+pbSrcThickness,0,360*deg,0,180*deg);
-    G4LogicalVolume* pbSrcLV = new G4LogicalVolume(pbSrcS,FindMaterial("G4_Pb"),"Lead encasing Source");
-    new G4PVPlacement(0,G4ThreeVector(),pbSrcLV,"Lead encasing source",sourceLV,false,0,fCheckOverlaps);
-    
-    // Cf252 source
-    G4VSolid* cf252S = new G4Sphere("Cf252Source",0,srcRadius,0,360*deg, 0,180*deg);
-    G4LogicalVolume* cf252LV = new G4LogicalVolume(cf252S,FindMaterial("G4_Pb"),"Cf252");
-    new G4PVPlacement(0,G4ThreeVector(),cf252LV,"Cf252",sourceLV,false,0,fCheckOverlaps);
-    
-    // Setting Visulatization of the source
-    G4VisAttributes* atb= new G4VisAttributes(G4Colour::Blue());
-    atb->SetForceSolid(true);
-    sourceLV->SetVisAttributes(atb);
-    return sourceLV;
-}
+
 /**
  * SetsOpticalSurfaces
  *
@@ -362,6 +317,7 @@ G4LogicalVolume* DetectorConstruction::ConstructSource(){
  */
 void DetectorConstruction::SetOpticalSurfaces(){
     // Reflector (Teflon) Optical Surface
+    /*
     G4OpticalSurface *refOpSurface = new G4OpticalSurface("Reflector Surface");
     refOpSurface->SetType(dielectric_LUT);
     refOpSurface->SetModel(LUT);
@@ -371,6 +327,7 @@ void DetectorConstruction::SetOpticalSurfaces(){
     // Detector Mounting and Silicon Grease Optical Surface (TODO)
     // This may not be necessary as we can almost assume perfect coupling between the GS20 and the PMT due to
     // the optical grease.
+     */
 }
 
 /**

@@ -41,8 +41,7 @@ private:
     
     /* METHODS */
     G4VPhysicalVolume* ConstructDetector();                               /* Constructs the detector          */
-    G4LogicalVolume* ConstructSource();                                   /* Constructs the source            */
-    G4LogicalVolume* ConstructRPM8(std::list<G4double> const &slices);    /* Constructs the RPM8 Detector     */
+    G4LogicalVolume* ConstructPMMA(std::list<G4double> const &slices);    /* Constructs the PMMA Detector     */
     G4LogicalVolume* ConstructDetectorSlice(G4int);                       /* Constructs a detector slice      */
     G4LogicalVolume* ConstructReflector();                                /* Constructs the reflector         */
     
@@ -53,16 +52,15 @@ private:
     G4VPhysicalVolume*  worldPV;
     G4VSolid*           worldS;
     
+    G4LogicalVolume*    cladLV;     /* Cladding */
+    G4VPhysicalVolume*  cladPV;
+    G4VSolid*           cladS;
+    
     std::vector<G4LogicalVolume*>   absLV; 			  /* Absorber */
     std::vector<G4VPhysicalVolume*> absPV;
     std::vector<G4VSolid*>          absS;
     
-     std::vector<G4LogicalVolume*>   mountLV;
-     std::vector<G4VPhysicalVolume*> mountPV;
-     std::vector<G4VSolid*>          mountS;
-
-    
-    G4LogicalVolume*    pmmaLV;       /* RMP8 Box */
+    G4LogicalVolume*    pmmaLV;       /* PMMA Slabs */
     G4VPhysicalVolume*  pmmaPV;
     G4VSolid*           pmmaS;
     
@@ -80,6 +78,7 @@ private:
     // Materials
     Materials* materials;            /* Material Manager                   */
     G4Material* absMaterial;        /* Absorber and Scintillator Material */
+    G4Material* cladMaterial;        /* Reflector and cladding */
     
     // Geometry parameters
     G4double pmmaThickness;         /* Thickness of the encsasing PMMA     */
@@ -92,7 +91,7 @@ private:
     G4double refThickness;        /* Thickness of Reflector around the RPM8   */
     G4double pmtRadius;           /* Radius of the PMT used in the RPM8       */
     G4double lightGuideHeight;    /* Height of the light guide to the PMT     */
-    G4double sliceThickness;      /* Thickness of a detector slice            */
+    G4double sliceThickness;      /* Thickness of a detector slice  (with mounting)          */
     
     G4Material* detMaterial;        /* Detector Material (GS20 Glass)         */
     G4Material* mountMaterial;      /* Mounting Material (Optical Grease      */
@@ -103,7 +102,6 @@ private:
     
     // Sensitive Detectors
     PMTSD*  pmtSD;               /* PMT SD  (Top PMT)        */
-    PMTSD*  lgSD;                /* PMT SD  (Top Light Guide)*/
   
     
     G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps

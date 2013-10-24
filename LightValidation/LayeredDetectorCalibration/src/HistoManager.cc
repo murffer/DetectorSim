@@ -34,8 +34,8 @@ void HistoManager::Book()
 
   // Create all histograms as inactivated 
   G4int ih = 0;
-  ih = aMan->CreateH1("eDep","Total Energy Depostion",100,0,100);
-  aMan->SetActivation(G4VAnalysisManager::kH1, ih, false);
-  ih = aMan->CreateH1("numPhotons","Number of Optical Photons Generated",100,0,100);
-  aMan->SetActivation(G4VAnalysisManager::kH1, ih, false);
+  ih = aMan->CreateH1("numPhotonsCreated","Number of Optical Photons Detected",100,0,10000);
+  aMan->SetActivation(G4VAnalysisManager::kH1, ih, true);
+  ih = aMan->CreateH1("numPhotonsDet","Number of Optical Photons Generated",100,0,10000);
+  aMan->SetActivation(G4VAnalysisManager::kH1, ih, true);
 }
