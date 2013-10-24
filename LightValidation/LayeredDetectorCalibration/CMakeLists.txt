@@ -2,6 +2,14 @@
 # Setup the project
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(scintSlabCal)
+
+option(USE_MPI "Use the GEANT4 MPI Libararies" OFF)
+#----------------------------------------------------------------------------
+# check MPI package...
+if(USE_MPI)
+	find_package(MPI REQUIRED)
+	set(CMAKE_CXX_COMPILER mpicxx)
+endif(USE_MPI)
 #----------------------------------------------------------------------------
 # Find ROOT package
 #----------------------------------------------------------------------------
@@ -16,6 +24,19 @@ if(WITH_GEANT4_UIVIS)
 else()
   find_package(Geant4 REQUIRED)
 endif()
+
+#----------------------------------------------------------------------------
+# Add G4mpi library
+#
+if(USE_MPI)
+	SET(Geant4_LIBRARIES ${Geant4_LIBRARIES} G4mpi)
+	ADD_LIBRARY(G4mpi SHARED IMPORTED)
+	SET_PROPERTY(TARGET G4mpi APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+	SET_TARGET_PROPERTIES(G4mpi PROPERTIES
+		IMPORTED_LOCATION_RELEASE "${Geant4_DIR}/../libG4mpi.so"
+		IMPORTED_SONAME_RELEASE "libG4mpi.so"
+	)
+endif(USE_MPI)
 
 #----------------------------------------------------------------------------
 # Setup Geant4 include directories and compile definitions
@@ -57,6 +78,7 @@ foreach(_script ${scintSlabCal_SCRIPTS})
     COPYONLY
     )
 endforeach()
+
 
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX

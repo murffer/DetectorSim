@@ -5,10 +5,14 @@
 #include "G4RunManager.hh"
 #include "G4Material.hh"
 
-
 #include "G4HCofThisEvent.hh"
 #include "G4Event.hh"
 #include "G4ThreeVector.hh"
+
+#ifdef USE_MPI
+#include "G4MPImanager.hh"
+#include <stdio.h>
+#endif
 
 #include "HistoManager.hh"
 Analysis* Analysis::singleton = 0;
@@ -47,9 +51,20 @@ Analysis::~Analysis(){
  */
 void Analysis::PrepareNewRun(const G4Run* ){
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  if ( analysisManager->IsActive() ) {
+#ifdef USE_MPI
+	if ( analysisManager->IsActive() ) {
+				// Creating a filename based on the rank
+				G4int rank = G4MPImanager::GetManager()-> GetRank();
+				char str[64];
+				sprintf(str, "-%03d", rank);
+				G4String fname = analysisManager->GetFileName() + G4String(str);
+        analysisManager->OpenFile(fname);
+  }  
+#else
+	if ( analysisManager->IsActive() ) {
     analysisManager->OpenFile();
-  }   
+  }  
+#endif
 }
 
 /**

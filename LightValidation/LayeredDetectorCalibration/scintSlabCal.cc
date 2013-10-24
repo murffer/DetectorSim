@@ -1,16 +1,22 @@
+#include "G4RunManager.hh"
+#include "G4UImanager.hh"
+
+// My Application
 #include "DetectorConstruction.hh"
 #include "PrimaryGeneratorAction.hh"
 #include "RunAction.hh"
 #include "EventAction.hh"
 #include "StackingAction.hh"
-
-#include "G4RunManager.hh"
-#include "G4UImanager.hh"
-
 #include "PhysicsList.hh"
 
 #include "Randomize.hh"
 #include "Analysis.hh"
+
+// MPI session
+#ifdef USE_MPI
+#include "G4MPImanager.hh"
+#include "G4MPIsession.hh"
+#endif
 
 #ifdef G4VIS_USE
 #include "G4VisExecutive.hh"
@@ -24,10 +30,15 @@ int main(int argc,char** argv){
 
     // Choose the Random engine
     CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine);
-
-    // ----------------- User Application Setting -----------------
+		// Setup the run Manager
+#ifdef USE_MPI
+	G4MPImanager* g4MPI = new G4MPImanager(argc, argv);
+	G4MPIsession* session = g4MPI-> GetMPIsession();
+#else
     G4RunManager * runManager = new G4RunManager;
-    runManager->SetUserInitialization(new DetectorConstruction()); 
+#endif
+    // ----------------- User Application Setting -----------------
+		runManager->SetUserInitialization(new DetectorConstruction()); 
     runManager->SetUserInitialization(new PhysicsList);
     runManager->SetUserAction(new PrimaryGeneratorAction());
     runManager->SetUserAction(new RunAction());
@@ -45,6 +56,12 @@ int main(int argc,char** argv){
     visManager->Initialize();
 #endif
 
+	// --------------------------------------------------------------------
+	// Starting the run session
+	// --------------------------------------------------------------------
+#ifdef USE_MPI
+	session-> SessionStart();
+#else
     // Get the pointer to the User Interface manager
     G4UImanager* UImanager = G4UImanager::GetUIpointer();
 
@@ -67,12 +84,18 @@ int main(int argc,char** argv){
         delete ui;
 #endif
     }
+#endif // USE MPI
 
-    // Job termination
+	// --------------------------------------------------------------------
+  // Job termination
+	// --------------------------------------------------------------------
 #ifdef G4VIS_USE
     delete visManager;
 #endif
     Analysis::GetInstance()->CleanUp();
-    delete runManager;
+#ifdef USE_MPI
+		delete g4MPI;
+#endif
+		delete runManager;
     return 0;
 }
