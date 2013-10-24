@@ -165,26 +165,27 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
     /* Teflon Cladding around PMMA and Detector Slices */
     cladS = new G4Box("Reflector_Clading",(pmmaThickness+refThickness)/2,(pmmaWidth+refThickness)/2,(pmmaHeight+refThickness)/2);
     cladLV = new G4LogicalVolume(cladS,cladMaterial,"Teflon Reflector");
-    cladPV = new G4PVPlacement(0,G4ThreeVector(-refThickness,0,0),cladLV,"Teflon Reflector",worldLV,false,0,fCheckOverlaps);
+    cladPV = new G4PVPlacement(0,G4ThreeVector(),cladLV,"Teflon Reflector",worldLV,false,0,fCheckOverlaps);
     
-    /* Creating and Positing the PMMA and Detector
+    /**
+		 * Creating and Positing the PMMA and Detector
      * 
-     * The Detector slices are positioned inside of the PMMA, and contains the detector and mounting
-     * slices. Each slice is positioned inside some optical grease (silcone).
-     * 
-     * The PMMA slices (with the detector and mounting) are then placed inside the telfon cladding.
+     * The Detector slices are positioned inside of the PMMA, and contains 
+		 * the detector and mounting slices. Each slice is positioned inside 
+		 * some optical grease (silcone). The PMMA slices (with the detector 
+		 * and mounting) are then placed inside the telfon cladding.
      */
     sliceThickness = detectorThickness+2*mountThickness;
     std::list<G4double> slices;
     slices.push_back(2*cm);
     slices.push_back(4*cm);
     pmmaLV = ConstructPMMA(slices);
-    pmmaPV = new G4PVPlacement(0,G4ThreeVector(),pmmaLV,"PMMA  Detector",cladLV,false,0,fCheckOverlaps);
+    pmmaPV = new G4PVPlacement(0,G4ThreeVector(0,0,refThickness/2),pmmaLV,"PMMA  Detector",cladLV,false,0,fCheckOverlaps);
     
     /**
      * Setting up the Light Guides and PMT's
      */
-    G4double lgZTran = pmmaHeight/2+lightGuideHeight/2+refThickness;
+    G4double lgZTran = pmmaHeight/2+lightGuideHeight/2+refThickness/2;
     G4VSolid* lightGuideS = new G4Trd("Light Guide",pmmaThickness/2,pmtRadius,pmmaWidth/2,pmtRadius,lightGuideHeight/2);
     G4LogicalVolume* lightGuideLV = new G4LogicalVolume(lightGuideS,lightGuideMaterial,"Light Guide");
     new G4PVPlacement(0,G4ThreeVector(0,0,lgZTran),lightGuideLV,"Top Light Guide",worldLV,false,0,fCheckOverlaps);
