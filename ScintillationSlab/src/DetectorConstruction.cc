@@ -69,21 +69,29 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
 {
+    // Clean old geometry, if any
+    G4GeometryManager::GetInstance()->OpenGeometry();
+    G4PhysicalVolumeStore::GetInstance()->Clean();
+    G4LogicalVolumeStore::GetInstance()->Clean();
+    G4SolidStore::GetInstance()->Clean();
+    
+    // Want to check the overlaps (could turn this off once debuged)
     G4bool fCheckOverlap = true;
+    
     //--------------------------------------------------
     // World
     //--------------------------------------------------
     
-    G4VSolid* solidWorld = new G4Box("World", worldSizeX/2, worldSizeY/2, worldSizeZ/2);
+    solidWorld = new G4Box("World", worldSizeX/2, worldSizeY/2, worldSizeZ/2);
     logicWorld = new G4LogicalVolume(solidWorld,FindMaterial("G4_AIR"),"World");
     physiWorld = new G4PVPlacement(0,G4ThreeVector(), logicWorld, "World", 0, false, fCheckOverlap);
     
     //--------------------------------------------------
     // Scintillator
     //--------------------------------------------------
-    G4VSolid* solidScintillator = new G4Box("Scintillator",scintX/2,scintY/2,scintZ/2);
-    G4LogicalVolume* logicScintillator = new G4LogicalVolume(solidScintillator,detMaterial,"Scintillator");
-    new G4PVPlacement(0, G4ThreeVector(), logicScintillator, "Scintillator", logicWorld, false,0, fCheckOverlap);
+    solidScintillator = new G4Box("Scintillator",scintX/2,scintY/2,scintZ/2);
+    logicScintillator = new G4LogicalVolume(solidScintillator,detMaterial,"Scintillator");
+    physiScintillator = new G4PVPlacement(0, G4ThreeVector(), logicScintillator, "Scintillator", logicWorld, false,0, fCheckOverlap);
     
     
     //--------------------------------------------------
@@ -92,9 +100,9 @@ G4VPhysicalVolume* DetectorConstruction::ConstructDetector()
     
     // Physical Construction
     G4double zOrig = (scintZ+pmtLength)/2;
-    G4VSolid* solidPhotonDet = new G4Box("PhotonDet",scintX/2,scintY/2,pmtLength/2);
-    G4LogicalVolume*   logicPhotonDet = new G4LogicalVolume(solidPhotonDet,pmtMaterial, "PhotonDet");
-    new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDet, "PhotonDet", logicWorld, false, 0, fCheckOverlap);
+    solidPhotonDet = new G4Box("PhotonDet",scintX/2,scintY/2,pmtLength/2);
+    logicPhotonDet = new G4LogicalVolume(solidPhotonDet,pmtMaterial, "PhotonDet");
+    physiPhotonDet = new G4PVPlacement(0,G4ThreeVector(0.0,0.0,zOrig), logicPhotonDet, "PhotonDet", logicWorld, false, 0, fCheckOverlap);
     
     if (!pmtSD) {
         G4String pmtSDName = "/PhotonDet";
@@ -132,14 +140,15 @@ void DetectorConstruction::SetScintMaterial(G4String matName){
 void DetectorConstruction::SetPMTMaterial(G4String matName){
     pmtMaterial = FindMaterial(matName);
 }
-
+/**
+ Updates the Geometry by deleting the old geoemtry and then starting over
+ */
 void DetectorConstruction::UpdateGeometry()
 {
-    if (!physiWorld) return;
+ //   if (!physiWorld) return;
     
     // clean-up previous geometry
     G4GeometryManager::GetInstance()->OpenGeometry();
-    
     G4PhysicalVolumeStore::GetInstance()->Clean();
     G4LogicalVolumeStore::GetInstance()->Clean();
     G4SolidStore::GetInstance()->Clean();

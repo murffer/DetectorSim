@@ -4,16 +4,16 @@
 /**
  * Creates a Histogram manger with the default name
  */
-HistoManager::HistoManager(): fFileName("GS20Calibration")
+HistoManager::HistoManager(): fFileName("energyDep")
 {
-    Book();
+  Book();
 }
 /**
  * Deconstructor
  */
 HistoManager::~HistoManager()
 {
-    delete G4AnalysisManager::Instance();
+  delete G4AnalysisManager::Instance();
 }
 /**
  * Sets up the histograms
@@ -24,31 +24,18 @@ HistoManager::~HistoManager()
  */
 void HistoManager::Book()
 {
-    // Create or get analysis manager
-    G4AnalysisManager* aMan = G4AnalysisManager::Instance();
-    aMan->SetFileName(fFileName);
-    aMan->SetVerboseLevel(0);
-    aMan->SetFirstHistoId(1);     // start histogram numbering from 1
-    aMan->SetActivation(true);    // enable inactivation of histograms
-    
-    
-    // Define histograms start values
-    const G4int kMaxHisto = 3;
-    const G4String id[] = { "1","2","3"};
-    const G4String title[] =
-    { "Energy Depostion",                       // 1
-        "Number of Optical Photons Created",    // 2
-        "Number of Optical Phtons Detected"     // 3
-    };
-    
-    // Default values (to be reset via /analysis/h1/set command)
-    G4int nbins = 100;
-    G4double vmin = 0.;
-    G4double vmax = 100.;
-    
-    // Create all histograms as inactivated
-    for (G4int k=0; k<kMaxHisto; k++) {
-        G4int ih = aMan->CreateH1(id[k], title[k], nbins, vmin, vmax);
-        aMan->SetActivation(G4VAnalysisManager::kH1, ih, false);
-    }
+  // Create or get analysis manager
+  G4AnalysisManager* aMan = G4AnalysisManager::Instance();
+  aMan->SetFileName(fFileName);
+  aMan->SetVerboseLevel(0);
+  aMan->SetFirstHistoId(1);     // start histogram numbering from 1
+  aMan->SetActivation(true);    // enable inactivation of histograms
+
+
+  // Create all histograms as inactivated 
+  G4int ih = 0;
+  ih = aMan->CreateH1("numPhotonsCreated","Number of Optical Photons Detected",100,0,10000);
+  aMan->SetActivation(G4VAnalysisManager::kH1, ih, true);
+  ih = aMan->CreateH1("numPhotonsDet","Number of Optical Photons Generated",100,0,10000);
+  aMan->SetActivation(G4VAnalysisManager::kH1, ih, true);
 }
