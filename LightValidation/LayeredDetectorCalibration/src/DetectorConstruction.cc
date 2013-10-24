@@ -72,7 +72,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     // Creating Detector Materials
     materials = Materials::GetInstance();
     
-    // Return Physical World
+    // Physical World
     G4VPhysicalVolume* world = ConstructVolumes();
     
     // Sets up the Optical Surfaces
@@ -94,15 +94,12 @@ void DetectorConstruction::PrintParameters(){
     <<"\n\tThickness (x): "<<G4BestUnit(pmmaThickness,"Length")
     <<"\n\tWidth (y):     "<<G4BestUnit(pmmaWidth,"Length")
     <<"\n\tHeight (z):    "<<G4BestUnit(pmmaHeight,"Length")
-    <<"\n--> Detector Slice (O M A M O):"
+    <<"\n--> Detector Slice (M A M):"
     <<"\n\tThickness: "<<G4BestUnit(sliceThickness,"Length")
     <<"\n\t--> Abosrber (A):"
     <<"\n\t\tMaterial (1x):  "<<absMaterial->GetName()
     <<"\n\t\tThickness: "<<G4BestUnit(detectorThickness,"Length")
     <<"\n\t--> Detector Mounting (M):"
-    <<"\n\t\tMaterial:  "<<detMountMaterial->GetName()
-    <<"\n\t\tThickness (2x): "<<G4BestUnit(mountThickness,"Length")
-    <<"\n\t--> Optical Mounting (O):"
     <<"\n\t\tMaterial:  "<<mountMaterial->GetName()
     <<"\n\t\tThickness (2x): "<<G4BestUnit(mountThickness,"Length")
     <<"\n--> Light Guide:"
@@ -121,8 +118,7 @@ void DetectorConstruction::PrintParameters(){
  * Finds, and if necessary, builds a material
  */
 G4Material* DetectorConstruction::FindMaterial(G4String name){
-    G4Material* material = G4Material::GetMaterial(name,true);
-    return material;
+    return materials->GetMaterial(name);
 }
 /**
  * Construct()
@@ -154,7 +150,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
     pmtMaterial = FindMaterial("BK7");
     refMaterial = FindMaterial("G4_TEFLON");
     mountMaterial = FindMaterial("Silicone");
-    detMountMaterial = FindMaterial("G4_PLEXIGLASS");
     lightGuideMaterial = FindMaterial("G4_PLEXIGLASS");
     
     /* World */
@@ -169,7 +164,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
     
     /* Teflon Cladding around PMMA and Detector Slices */
     cladS = new G4Box("Reflector_Clading",(pmmaThickness+refThickness)/2,(pmmaWidth+refThickness)/2,(pmmaHeight+refThickness)/2);
-    cladLV = new G4LogicalVolume(refS,cladMaterial,"Reflector");
+    cladLV = new G4LogicalVolume(cladS,cladMaterial,"Reflector");
     cladPV = new G4PVPlacement(0,G4ThreeVector(-refThickness,0,0),cladLV,"Reflector",worldLV,false,0,fCheckOverlaps);
     
     /* Creating and Positing the PMMA and Detector
@@ -181,6 +176,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
     std::list<G4double> slices;
     slices.push_back(2*cm);
     slices.push_back(4*cm);
+    G4cout<<"Creating Detector Slices"<<G4endl;
     pmmaLV = ConstructPMMA(slices);
     pmmaPV = new G4PVPlacement(0,G4ThreeVector(),pmmaLV,"PMMA  Detector",refLV,false,0,fCheckOverlaps);
     
@@ -242,7 +238,7 @@ G4LogicalVolume* DetectorConstruction::ConstructDetectorSlice(G4int copyNum){
     G4VSolid* sliceS= new G4Box("Mounting",sliceThickness/2,pmmaWidth/2,pmmaHeight/2);
     G4LogicalVolume* sliceLV = new G4LogicalVolume(sliceS,mountMaterial,sliceName);
  
-    
+
     // Setting up the Absorber Solid Sheet
     absS.push_back(new G4Box("DetectorSheet",detectorThickness/2, pmmaWidth/2,pmmaHeight/2));
     absLV.push_back(new G4LogicalVolume(absS.back(),absMaterial,"Absorber"));
@@ -252,24 +248,6 @@ G4LogicalVolume* DetectorConstruction::ConstructDetectorSlice(G4int copyNum){
     atb->SetForceSolid(true);
     absLV.back()->SetVisAttributes(atb);
     
-    
-    G4double xTran = 0;
-    if (mountThickness > 0){
-        
-        
-        // Setting up the shapes
-        xTran = mountThickness;
-        G4VSolid* mountS = new G4Box("Mounting",mountThickness/2,pmmaWidth/2,pmmaHeight/2);
-        G4LogicalVolume* mountLV = new G4LogicalVolume(mountS,mountMaterial,"Optical Mounting");
-        
-        // Setting up the left coupling
-        new G4PVPlacement(0,G4ThreeVector(-xTran,0,0),mountLV,"OpticalCoupling",sliceLV,0,-copyNum,fCheckOverlaps);
-        
-        // Setting up the right coupling
-        new G4PVPlacement(0,G4ThreeVector(xTran,0,0),mountLV,"OpticalCoupling",sliceLV,0,copyNum,fCheckOverlaps);
-        
-        // TODO: Add in the optical surfaces
-    }
     return sliceLV;
 }
 /**

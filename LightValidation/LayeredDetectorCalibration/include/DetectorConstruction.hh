@@ -95,7 +95,6 @@ private:
     
     G4Material* detMaterial;        /* Detector Material (GS20 Glass)         */
     G4Material* mountMaterial;      /* Mounting Material (Optical Grease      */
-    G4Material* detMountMaterial;   /* Detector Mounting Material (PMMA Dics  */
     G4Material* refMaterial;        /* Reflector Material (Teflon Tape)       */
     G4Material* pmtMaterial;        /* PMT Material (Boroscilate (BK7) Glass  */
     G4Material* lightGuideMaterial; /* Material for the light guide           */
