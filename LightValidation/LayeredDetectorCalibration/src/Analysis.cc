@@ -54,7 +54,7 @@ void Analysis::PrepareNewRun(const G4Run* ){
 #ifdef USE_MPI
 	if ( analysisManager->IsActive() ) {
 				// Creating a filename based on the rank
-				G4int rank = G4MPImanager::GetManager()-> GetRank();
+			G4int rank = G4MPImanager::GetManager()-> GetRank();
 				char str[64];
 				sprintf(str, "-%03d", rank);
 				G4String fname = analysisManager->GetFileName() + G4String(str);

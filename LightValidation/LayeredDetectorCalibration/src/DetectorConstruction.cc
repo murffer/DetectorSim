@@ -108,7 +108,7 @@ void DetectorConstruction::PrintParameters(){
     <<"\n--> PMT Material: "<<pmtMaterial->GetName()
     <<"\n\t thickness: "<<G4BestUnit(pmtThickness,"Length")
     <<"\n\t radius: "<<G4BestUnit(pmtRadius,"Length")
-    <<"\n--> Reflector Material: "<<refMaterial->GetName()
+    <<"\n--> Reflector Material: "<<cladMaterial->GetName()
     <<"\n\t thickness: "<<G4BestUnit(refThickness,"Length")
     <<G4endl;
 }
@@ -148,7 +148,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
     
     absMaterial = FindMaterial("EJ426");
     pmtMaterial = FindMaterial("BK7");
-    refMaterial = FindMaterial("G4_TEFLON");
+    cladMaterial = FindMaterial("G4_TEFLON");
     mountMaterial = FindMaterial("Silicone");
     lightGuideMaterial = FindMaterial("G4_PLEXIGLASS");
     

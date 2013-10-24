@@ -4,6 +4,10 @@ cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(scintSlabCal)
 
 option(USE_MPI "Use the GEANT4 MPI Libararies" OFF)
+if(USE_MPI)
+	set(USE_MPI ON)
+	add_definitions(-DUSE_MPI)
+endif(USE_MPI)
 #----------------------------------------------------------------------------
 # check MPI package...
 if(USE_MPI)

@@ -34,10 +34,9 @@ int main(int argc,char** argv){
 #ifdef USE_MPI
 	G4MPImanager* g4MPI = new G4MPImanager(argc, argv);
 	G4MPIsession* session = g4MPI-> GetMPIsession();
-#else
-    G4RunManager * runManager = new G4RunManager;
 #endif
     // ----------------- User Application Setting -----------------
+    G4RunManager * runManager = new G4RunManager;
 		runManager->SetUserInitialization(new DetectorConstruction()); 
     runManager->SetUserInitialization(new PhysicsList);
     runManager->SetUserAction(new PrimaryGeneratorAction());
