@@ -164,32 +164,33 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
     
     /* Teflon Cladding around PMMA and Detector Slices */
     cladS = new G4Box("Reflector_Clading",(pmmaThickness+refThickness)/2,(pmmaWidth+refThickness)/2,(pmmaHeight+refThickness)/2);
-    cladLV = new G4LogicalVolume(cladS,cladMaterial,"Reflector");
-    cladPV = new G4PVPlacement(0,G4ThreeVector(-refThickness,0,0),cladLV,"Reflector",worldLV,false,0,fCheckOverlaps);
+    cladLV = new G4LogicalVolume(cladS,cladMaterial,"Teflon Reflector");
+    cladPV = new G4PVPlacement(0,G4ThreeVector(-refThickness,0,0),cladLV,"Teflon Reflector",worldLV,false,0,fCheckOverlaps);
     
     /* Creating and Positing the PMMA and Detector
      * 
      * The Detector slices are positioned inside of the PMMA, and contains the detector and mounting
      * slices. Each slice is positioned inside some optical grease (silcone).
+     * 
+     * The PMMA slices (with the detector and mounting) are then placed inside the telfon cladding.
      */
     sliceThickness = detectorThickness+2*mountThickness;
     std::list<G4double> slices;
     slices.push_back(2*cm);
     slices.push_back(4*cm);
-    G4cout<<"Creating Detector Slices"<<G4endl;
     pmmaLV = ConstructPMMA(slices);
-    pmmaPV = new G4PVPlacement(0,G4ThreeVector(),pmmaLV,"PMMA  Detector",refLV,false,0,fCheckOverlaps);
+    pmmaPV = new G4PVPlacement(0,G4ThreeVector(),pmmaLV,"PMMA  Detector",cladLV,false,0,fCheckOverlaps);
     
     /**
      * Setting up the Light Guides and PMT's
      */
-    G4double lgZTran = pmmaHeight/2+lightGuideHeight/2;
+    G4double lgZTran = pmmaHeight/2+lightGuideHeight/2+refThickness;
     G4VSolid* lightGuideS = new G4Trd("Light Guide",pmmaThickness/2,pmtRadius,pmmaWidth/2,pmtRadius,lightGuideHeight/2);
     G4LogicalVolume* lightGuideLV = new G4LogicalVolume(lightGuideS,lightGuideMaterial,"Light Guide");
     new G4PVPlacement(0,G4ThreeVector(0,0,lgZTran),lightGuideLV,"Top Light Guide",worldLV,false,0,fCheckOverlaps);
     
     // PMT Glass
-    G4double pmtZTran = (pmmaHeight+2*lightGuideHeight+pmtThickness)/2;
+    G4double pmtZTran = lgZTran+ lightGuideHeight/2 +pmtThickness/2;
     G4VSolid* pmtS = new G4Tubs("PMTGlass",0,pmtRadius,pmtThickness/2,0,360*deg);
     pmtLV = new G4LogicalVolume(pmtS,pmtMaterial,"PMT Glass",0);
     pmtPV = new G4PVPlacement(0,G4ThreeVector(0,0,pmtZTran),pmtLV,"PMTGlass",worldLV,false,0,fCheckOverlaps);
@@ -203,7 +204,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
     
     // Setting PMT Sensitive Detectors
     G4SDManager* SDman = G4SDManager::GetSDMpointer();
-    pmtSD = new PMTSD("PMT/PMTSD","PMTTopHitCollection");
+    pmtSD = new PMTSD("PMT/PMTSD","PMTHitCollection");
     SDman->AddNewDetector(pmtSD);
     pmtLV->SetSensitiveDetector(pmtSD);
 
