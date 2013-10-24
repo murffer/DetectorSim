@@ -4,7 +4,7 @@
 /**
  * Creates a Histogram manger with the default name
  */
-HistoManager::HistoManager(): fFileName("energyDep")
+HistoManager::HistoManager(): fFileName("LayeredDetectorCal")
 {
   Book();
 }
