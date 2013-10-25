@@ -36,7 +36,7 @@ class DetectorConstruction : public G4VUserDetectorConstruction{
     void SetReflectorThickness(G4double);
     void SetMountingThickness(G4double);
     void SetDetectorRadius(G4double);
-		void SetBirksParameter(G4double);
+		void SetDetectorMaterial(G4String);
 
 		void UpdateGeometry();
 		void PrintParameters();

@@ -278,13 +278,12 @@ void DetectorConstruction::SetVisAttributes(){
     worldPV->GetLogicalVolume()->SetVisAttributes(atb);}
 }
 /**
- * Sets the Birks Parameter of the scintilliator
+ * Set Detector Material
  *
- * @param value - the Birks parameter
+ * @param name - detector name
  */
-void DetectorConstruction::SetBirksParameter(G4double val){
-		// Expects units of mm/MeV
-    absMaterial->GetIonisation()->SetBirksConstant(val*mm/MeV);
+void DetectorConstruction::SetDetectorMaterial(G4String name){
+	absMaterial = FindMaterial(name);
 }
 /**
  * SetMountingThickness

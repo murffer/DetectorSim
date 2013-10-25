@@ -12,47 +12,44 @@ DetectorMessenger::DetectorMessenger(
                                            DetectorConstruction* Det)
 :Detector(Det)
 { 
-  DetectorLightYieldDir = new G4UIdirectory("/DetectorLightYield/");
-  DetectorLightYieldDir->SetGuidance("UI commands of this example");
   
-  detDir = new G4UIdirectory("/DetectorLightYield/det/");
+  detDir = new G4UIdirectory("/det/");
   detDir->SetGuidance("detector control");
     
-  AbsThickCmd = new G4UIcmdWithADoubleAndUnit("/DetectorLightYield/det/setDetectorThick",this);
+  AbsThickCmd = new G4UIcmdWithADoubleAndUnit("/det/setDetectorThick",this);
   AbsThickCmd->SetGuidance("Set Thickness of the Absorber");
   AbsThickCmd->SetParameterName("Size",false);
   AbsThickCmd->SetRange("Size>=0.");
   AbsThickCmd->SetUnitCategory("Length");
   AbsThickCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
     
-  RefThickCmd = new G4UIcmdWithADoubleAndUnit("/DetectorLightYield/det/setRefThick",this);
+  RefThickCmd = new G4UIcmdWithADoubleAndUnit("/det/setRefThick",this);
   RefThickCmd->SetGuidance("Set Thickness of the Light Reflector (teflon)");
   RefThickCmd->SetParameterName("Size",false);
   RefThickCmd->SetRange("Size>=0.");
   RefThickCmd->SetUnitCategory("Length");
   RefThickCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
     
-  MntThickCmd = new G4UIcmdWithADoubleAndUnit("/DetectorLightYield/det/setMntThick",this);
+  MntThickCmd = new G4UIcmdWithADoubleAndUnit("/det/setMntThick",this);
   MntThickCmd->SetGuidance("Set Thickness of the Mounting (Optical Grease)");
   MntThickCmd->SetParameterName("Size",false);
   MntThickCmd->SetRange("Size>=0.");
   MntThickCmd->SetUnitCategory("Length");
   MntThickCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
   
-  SizeRadiusCmd = new G4UIcmdWithADoubleAndUnit("/DetectorLightYield/det/setDetectorRadius",this);
+  SizeRadiusCmd = new G4UIcmdWithADoubleAndUnit("/det/setDetectorRadius",this);
   SizeRadiusCmd->SetGuidance("Set tranverse size of the calorimeter");
   SizeRadiusCmd->SetParameterName("Size",false);
   SizeRadiusCmd->SetRange("Size>0.");
   SizeRadiusCmd->SetUnitCategory("Length");    
   SizeRadiusCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
- 
-	BirksCmd = new G4UIcmdWithADouble("/DetectorLightYield/det/setBirks",this);
-  BirksCmd->SetGuidance("Set Birks constant of detector");
-  BirksCmd->SetParameterName("birks",false);
-  BirksCmd->SetRange("birks>0.");
-  BirksCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
 
-  UpdateCmd = new G4UIcmdWithoutParameter("/DetectorLightYield/det/update",this);
+	DetMaterialCmd = new G4UIcmdWithAString("/det/setDetectorMaterial",this);
+	DetMaterialCmd->SetGuidance("Set the detector material");
+	DetMaterialCmd->SetCandidates("GS20 EJ426 PSLiF G4_PLASTIC_SC_VINYLTOLUENE");
+  DetMaterialCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+
+  UpdateCmd = new G4UIcmdWithoutParameter("/det/update",this);
   UpdateCmd->SetGuidance("Update calorimeter geometry.");
   UpdateCmd->SetGuidance("This command MUST be applied before \"beamOn\" ");
   UpdateCmd->SetGuidance("if you changed geometrical value(s).");

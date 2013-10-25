@@ -23,6 +23,9 @@ class Materials{
     void CreateMaterials();
     void SetOpticalPropertiesTeflon();
     void SetOpticalPropertiesGS20();
+    void SetOpticalPropertiesEJ426();
+    void SetOpticalPropertiesPS();
+    void SetOpticalPropertiesEJ200();
     void SetOpticalPropertiesBK7();
     void SetOpticalPropertiesSilicone();
     void SetOpticalPropertiesAir();
@@ -36,6 +39,9 @@ class Materials{
     G4Material* Silicone;    /* Optical Grease */
     G4Material* Air;         /* Air            */
     G4Material* BlackTape;   /* Black tape     */
+		G4Material* EJ200;				/* EJ-200					*/
+		G4Material* psDet;				/* PS Lif Detector 		*/
+		G4Material* EJ426;				/* EJ-426 (LiF ZnS:Ag)*/
 };
 
 #endif
