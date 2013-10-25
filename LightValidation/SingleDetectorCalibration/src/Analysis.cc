@@ -11,8 +11,10 @@
 
 #include "HistoManager.hh"
 
+#ifdef USE_MPI
 #include "G4MPImanager.hh"
 #include <stdio.h>
+#endif
 
 Analysis* Analysis::singleton = 0;
 
@@ -51,16 +53,20 @@ void Analysis::CleanUp(){
 void Analysis::PrepareNewRun(const G4Run*){
 
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    if ( analysisManager->IsActive() ) {
+#ifdef USE_MPI
+	if ( analysisManager->IsActive() ) {
 				// Creating a filename based on the rank
-				G4int rank = G4MPImanager::GetManager()-> GetRank();
+			G4int rank = G4MPImanager::GetManager()-> GetRank();
 				char str[64];
 				sprintf(str, "-%03d", rank);
-				// Setting the new filename
 				G4String fname = analysisManager->GetFileName() + G4String(str);
         analysisManager->OpenFile(fname);
-				G4cout<<"Hopefully saving as: "<<fname<<G4endl;
-    }
+  }  
+#else
+	if ( analysisManager->IsActive() ) {
+    analysisManager->OpenFile();
+  }  
+#endif
 }
 /**
  * Sets the number of optical photons generated

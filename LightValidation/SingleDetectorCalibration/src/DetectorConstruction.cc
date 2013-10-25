@@ -93,8 +93,8 @@ void DetectorConstruction::PrintParameters(){
   // print parameters
   G4cout<<"\n------------ Detector Parameters ---------------------"
     <<"\n--> The detector material is a disc of: "<<absMaterial->GetName()
-    <<"\n\t thickness: "<<G4BestUnit(gs20Thickness,"Length")
-    <<"\n\t radius: "<<G4BestUnit(gs20Radius,"Length")
+    <<"\n\t thickness: "<<G4BestUnit(detThickness,"Length")
+    <<"\n\t radius: "<<G4BestUnit(detRadius,"Length")
     <<"\n--> Mounting Material: "<<mountMaterial->GetName()
     <<"\n\t thickness: "<<G4BestUnit(refThickness,"Length")
     <<"\n--> PMT Material: "<<pmtMaterial->GetName()
@@ -128,8 +128,8 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
   worldSizeZ  = 5*cm;      // Fixed World Size; 
 
   // Geometry parameters
-  gs20Thickness = 2*mm;	          /* Thickness of GS20 Scintilator  */
-  gs20Radius  = 1.27*cm;		      /* Radius of GS20 Sctintillator   */
+  detThickness = 2*mm;	          /* Thickness of Detector Scintilator  */
+  detRadius  = 1.27*cm;		      /* Radius of Detector Sctintillator   */
   pmtRadius = 2.54*cm;
   pmtThickness = 5*mm;
   mountThickness = 100*um;
@@ -147,33 +147,33 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
   worldLV = new G4LogicalVolume(worldS,FindMaterial("G4_Galactic"),"World");
   worldPV = new G4PVPlacement(0,G4ThreeVector(),worldLV,"World",0,false,0,fCheckOverlaps);
 
-  // GS20 Detector
-  gs20S = new G4Tubs("Abs",0,gs20Radius,gs20Thickness/2,0,360*deg);
+  // Detector Detector
+  gs20S = new G4Tubs("Abs",0,detRadius,detThickness/2,0,360*deg);
   gs20LV = new G4LogicalVolume(gs20S,absMaterial,"Absorber",0);
   gs20PV = new G4PVPlacement(0,G4ThreeVector(0,0,0),gs20LV,"Absorber - GS20",worldLV,false,0,fCheckOverlaps);
 
   // Abosrber and PMT Mounting (Optical Grease)
-  mountS = new G4Tubs("opticalGrease",0,gs20Radius,mountThickness/2,0,360*deg);
+  mountS = new G4Tubs("opticalGrease",0,detRadius,mountThickness/2,0,360*deg);
   mountLV = new G4LogicalVolume(mountS,mountMaterial,"PMT Glass",0);
-  zTran = -(gs20Thickness+mountThickness)/2;
+  zTran = -(detThickness+mountThickness)/2;
   mountPV = new G4PVPlacement(0,G4ThreeVector(0,0,zTran),mountLV,"Grease",worldLV,false,0,fCheckOverlaps);
 
   // PMT Glass
   pmtS = new G4Tubs("PMTGlass",0,pmtRadius,pmtThickness/2,0,360*deg);
   pmtLV = new G4LogicalVolume(pmtS,pmtMaterial,"PMT Glass",0);
-  zTran = -(gs20Thickness/2+pmtThickness/2+mountThickness);
+  zTran = -(detThickness/2+pmtThickness/2+mountThickness);
   pmtPV = new G4PVPlacement(0,G4ThreeVector(0,0,zTran),pmtLV,"PMTGlass",worldLV,false,0,fCheckOverlaps);
 
   // Light Reflector (Teflon)
-  G4Tubs *refSide = new G4Tubs("refSide",gs20Radius,gs20Radius+refThickness,(refThickness+gs20Thickness+mountThickness)/2,0,360*deg);
-  G4Tubs *refTop = new G4Tubs("refTop",0,gs20Radius,refThickness/2,0,360*deg);
-  refS = new G4UnionSolid("Reflector",refSide,refTop,0,G4ThreeVector(0,0,(gs20Thickness+mountThickness)/2));
+  G4Tubs *refSide = new G4Tubs("refSide",detRadius,detRadius+refThickness,(refThickness+detThickness+mountThickness)/2,0,360*deg);
+  G4Tubs *refTop = new G4Tubs("refTop",0,detRadius,refThickness/2,0,360*deg);
+  refS = new G4UnionSolid("Reflector",refSide,refTop,0,G4ThreeVector(0,0,(detThickness+mountThickness)/2));
   refLV = new G4LogicalVolume(refS,refMaterial,"Reflector",0);
   zTran = (refThickness-mountThickness)/2;
   refPV = new G4PVPlacement(0,G4ThreeVector(0,0,zTran),refLV,"Reflector",worldLV,false,0,fCheckOverlaps);
 
   // PMT Cap
-  G4double capLength = gs20Thickness+refThickness+pmtThickness+mountThickness+capThickness;
+  G4double capLength = detThickness+refThickness+pmtThickness+mountThickness+capThickness;
   G4Tubs *capSide = new G4Tubs("CapSide",pmtRadius,pmtRadius+capThickness,capLength/2,0,2*pi);
   G4Tubs *capTop = new G4Tubs("CapTop",0,pmtRadius,capThickness/2,0,2*pi);
   pmtCapS = new G4UnionSolid("PMTCap",capSide,capTop,0,G4ThreeVector(0,0,(capLength-capThickness)/2));
@@ -182,7 +182,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
   pmtCapPV = new G4PVPlacement(0,G4ThreeVector(0,0,zTran),pmtCapLV,"PMTCap",worldLV,false,0,fCheckOverlaps);
 
   // PMT Air
-  pmtAirS = new G4Tubs("PMTAir",gs20Radius+refThickness,pmtRadius,(gs20Thickness+mountThickness+refThickness)/2,0,2*pi);
+  pmtAirS = new G4Tubs("PMTAir",detRadius+refThickness,pmtRadius,(detThickness+mountThickness+refThickness)/2,0,2*pi);
   pmtAirLV = new G4LogicalVolume(pmtAirS,FindMaterial("G4_AIR"),"PMT Air Gap",0);
   zTran = (refThickness-mountThickness)/2;
   pmtAirPV = new G4PVPlacement(0,G4ThreeVector(0,0,zTran),pmtAirLV,"PMTAir",worldLV,false,0,fCheckOverlaps);
@@ -305,25 +305,25 @@ void DetectorConstruction::SetReflectorThickness(G4double val){
 }
 
 /**
- * SetGS20Thickness
+ * SetDetectorThickness
  *
  * Sets the detector thickness
  */
-void DetectorConstruction::SetGS20Thickness(G4double val){
-  gs20Thickness = val;
+void DetectorConstruction::SetDetectorThickness(G4double val){
+  detThickness = val;
 }
 
 /**
- * SetGS20Radius
+ * SetDetectorRadius
  *
  * Sets the calorimter radius
  */
-void DetectorConstruction::SetGS20Radius(G4double val){
+void DetectorConstruction::SetDetectorRadius(G4double val){
   if (val > pmtRadius){
-    G4cout<<"Warning: tring to replace GS20 Radius with a radius that is bigger than the PMT"<<G4endl;
+    G4cout<<"Warning: tring to replace Detector Radius with a radius that is bigger than the PMT"<<G4endl;
   } 
   else
-    gs20Radius = val;
+    detRadius = val;
 }
 
 /**

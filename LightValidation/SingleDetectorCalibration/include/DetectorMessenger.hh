@@ -23,7 +23,7 @@ class DetectorMessenger: public G4UImessenger
   private:
     DetectorConstruction* Detector;
     
-    G4UIdirectory*             GS20LightYieldDir;
+    G4UIdirectory*             DetectorLightYieldDir;
     G4UIdirectory*             detDir;
     G4UIcmdWithADoubleAndUnit* AbsThickCmd;
     G4UIcmdWithADoubleAndUnit* MntThickCmd;

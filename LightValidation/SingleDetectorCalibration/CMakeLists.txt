@@ -3,11 +3,17 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(singleFilmCal)
 
+option(USE_MPI "Use the GEANT4 MPI Libararies" OFF)
+if(USE_MPI)
+	set(USE_MPI ON)
+	add_definitions(-DUSE_MPI)
+endif(USE_MPI)
 #----------------------------------------------------------------------------
 # check MPI package...
-find_package(MPI REQUIRED)
-# modify these var. if needed
-set(CMAKE_CXX_COMPILER mpicxx)
+if(USE_MPI)
+	find_package(MPI REQUIRED)
+	set(CMAKE_CXX_COMPILER mpicxx)
+endif(USE_MPI)
 
 #----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
@@ -20,6 +26,19 @@ if(WITH_GEANT4_UIVIS)
 else()
   find_package(Geant4 REQUIRED)
 endif()
+
+#----------------------------------------------------------------------------
+# Add G4mpi library
+#
+if(USE_MPI)
+	SET(Geant4_LIBRARIES ${Geant4_LIBRARIES} G4mpi)
+	ADD_LIBRARY(G4mpi SHARED IMPORTED)
+	SET_PROPERTY(TARGET G4mpi APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+	SET_TARGET_PROPERTIES(G4mpi PROPERTIES
+		IMPORTED_LOCATION_RELEASE "${Geant4_DIR}/../libG4mpi.so"
+		IMPORTED_SONAME_RELEASE "libG4mpi.so"
+	)
+endif(USE_MPI)
 
 #----------------------------------------------------------------------------
 # Setup Geant4 include directories and compile definitions
