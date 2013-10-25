@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
 # Setup the project
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-project(GS20Cal)
+project(singleFilmCal)
 
 #----------------------------------------------------------------------------
 # check MPI package...
@@ -50,12 +50,12 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(GS20LightYieldCal GS20LightYieldCal.cc ${sources} ${headers})
-target_link_libraries(GS20LightYieldCal ${Geant4_LIBRARIES})
+add_executable(lightYieldCal lightYieldCal.cc ${sources} ${headers})
+target_link_libraries(lightYieldCal ${Geant4_LIBRARIES})
 
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
-# build GS20Cal. This is so that we can run the executable directly because it
+# build singleFilmCal. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
 set(GS20CAL_SCRIPTS
@@ -78,11 +78,11 @@ endforeach()
 # For internal Geant4 use - but has no effect if you build this
 # example standalone
 #
-add_custom_target(GS20Cal DEPENDS GS20LightYieldCal)
+add_custom_target(singleFilmCal DEPENDS lightYieldCal)
 
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
 #
-install(TARGETS GS20LightYieldCal DESTINATION bin)
+install(TARGETS lightYieldCal DESTINATION bin)
 
 

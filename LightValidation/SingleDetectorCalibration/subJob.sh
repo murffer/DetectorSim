@@ -16,14 +16,14 @@ function JobSetup()
 function runGamma()
 {
   JobSetup
-  echo "mpirun $G4WORKDIR/build/GS20LightYieldCal $G4WORKDIR/macros/gRun.mac > GammaOutput.txt" >> job
+  echo "mpirun $G4WORKDIR/build/lightYieldCal $G4WORKDIR/macros/gRun.mac > GammaOutput.txt" >> job
   mv job gSub.qsub
   qsub gSub.qsub
 }
 function runNeutron()
 {
   JobSetup
-  echo "mpirun $G4WORKDIR/build/GS20LightYieldCal $G4WORKDIR/macros/nRun.mac > NeutronOutput.txt" >> job
+  echo "mpirun $G4WORKDIR/build/lightYieldCal $G4WORKDIR/macros/nRun.mac > NeutronOutput.txt" >> job
   mv job nSub.qsub
   qsub nSub.qsub
 }
