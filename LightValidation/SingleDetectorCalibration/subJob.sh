@@ -1,5 +1,5 @@
 #!/bin/bash
-export G4WORKDIR=/home/murffer/G4DetectorSim/LightValidation/GS20Calibration
+export G4WORKDIR=/home/murffer/G4DetectorSim/LightValidation/SingleDetectorCalibration
 #
 # Setting up the job
 #

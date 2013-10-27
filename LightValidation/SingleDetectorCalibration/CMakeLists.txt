@@ -48,18 +48,6 @@ include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 #----------------------------------------------------------------------------
-# Add G4mpi library
-#
-SET(Geant4_LIBRARIES ${Geant4_LIBRARIES} G4mpi)
-ADD_LIBRARY(G4mpi SHARED IMPORTED)
-SET_PROPERTY(TARGET G4mpi APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-SET_TARGET_PROPERTIES(G4mpi PROPERTIES
-  IMPORTED_LOCATION_RELEASE "${Geant4_DIR}/../libG4mpi.so"
-  IMPORTED_SONAME_RELEASE "libG4mpi.so"
-)
-
-
-#----------------------------------------------------------------------------
 # Locate sources and headers for this project
 # NB: headers are included so they will show up in IDEs
 #

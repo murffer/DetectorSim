@@ -22,8 +22,8 @@ void ExportHistogram(TFile* f,const char* histKey,const char* outputfile){
  *  root[#] main()
  */
 int main(){
-  TFile* fN = new TFile("GS20_Neutron.root","r");
-  TFile* fG = new TFile("GS20_Gamma.root","r");
+  TFile* fN = new TFile("Neutron.root","r");
+  TFile* fG = new TFile("Gamma.root","r");
 	std::cout<<"Got the file pointers"<<std::endl;
 
 	TH1F* hN = (TH1F*) fN->Get("3");
