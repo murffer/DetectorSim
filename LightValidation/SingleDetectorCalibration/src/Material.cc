@@ -306,7 +306,7 @@ void Materials::SetOpticalPropertiesPS(){
     MPTPolystyrene->AddProperty("ABSLENGTH",PhotonEnergy,AbsPS,nEntries);
     MPTPolystyrene->AddProperty("FASTCOMPONENT",PhotonEnergy, ScintilFast,nEntries);
     MPTPolystyrene->AddConstProperty("SCINTILLATIONYIELD",1000/MeV);
-    MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE",1.0);
+    MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE",1.5);
     MPTPolystyrene->AddConstProperty("FASTTIMECONSTANT", 10.*ns);
     psDet->SetMaterialPropertiesTable(MPTPolystyrene);
     psDet->GetIonisation()->SetBirksConstant(0.025*mm/MeV);
@@ -419,7 +419,7 @@ void Materials::SetOpticalPropertiesGS20(){
     MPTGS20->AddConstProperty("FASTTIMECONSTANT",50*ns);      //
     MPTGS20->AddConstProperty("SCINTILLATIONYIELD", 3600*MeV);
     MPTGS20->AddConstProperty("YIELDRATIO", 1.0);
-    MPTGS20->AddConstProperty("RESOLUTIONSCALE", 1.0);
+    MPTGS20->AddConstProperty("RESOLUTIONSCALE", 1.15);
     GS20->SetMaterialPropertiesTable(MPTGS20);
     GS20->GetIonisation()->SetBirksConstant(0.025*mm/MeV);
 }
