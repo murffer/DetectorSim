@@ -1,13 +1,19 @@
 #----------------------------------------------------------------------------
 # Setup the project
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-project(GS20Cal)
+project(singleFilmCal)
 
+option(USE_MPI "Use the GEANT4 MPI Libararies" OFF)
+if(USE_MPI)
+	set(USE_MPI ON)
+	add_definitions(-DUSE_MPI)
+endif(USE_MPI)
 #----------------------------------------------------------------------------
 # check MPI package...
-find_package(MPI REQUIRED)
-# modify these var. if needed
-set(CMAKE_CXX_COMPILER mpicxx)
+if(USE_MPI)
+	find_package(MPI REQUIRED)
+	set(CMAKE_CXX_COMPILER mpicxx)
+endif(USE_MPI)
 
 #----------------------------------------------------------------------------
 # Find Geant4 package, activating all available UI and Vis drivers by default
@@ -22,23 +28,24 @@ else()
 endif()
 
 #----------------------------------------------------------------------------
+# Add G4mpi library
+#
+if(USE_MPI)
+	SET(Geant4_LIBRARIES ${Geant4_LIBRARIES} G4mpi)
+	ADD_LIBRARY(G4mpi SHARED IMPORTED)
+	SET_PROPERTY(TARGET G4mpi APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
+	SET_TARGET_PROPERTIES(G4mpi PROPERTIES
+		IMPORTED_LOCATION_RELEASE "${Geant4_DIR}/../libG4mpi.so"
+		IMPORTED_SONAME_RELEASE "libG4mpi.so"
+	)
+endif(USE_MPI)
+
+#----------------------------------------------------------------------------
 # Setup Geant4 include directories and compile definitions
 # Setup include directory for this project
 #
 include(${Geant4_USE_FILE})
 include_directories(${PROJECT_SOURCE_DIR}/include)
-
-#----------------------------------------------------------------------------
-# Add G4mpi library
-#
-SET(Geant4_LIBRARIES ${Geant4_LIBRARIES} G4mpi)
-ADD_LIBRARY(G4mpi SHARED IMPORTED)
-SET_PROPERTY(TARGET G4mpi APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-SET_TARGET_PROPERTIES(G4mpi PROPERTIES
-  IMPORTED_LOCATION_RELEASE "${Geant4_DIR}/../libG4mpi.so"
-  IMPORTED_SONAME_RELEASE "libG4mpi.so"
-)
-
 
 #----------------------------------------------------------------------------
 # Locate sources and headers for this project
@@ -50,12 +57,12 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(GS20LightYieldCal GS20LightYieldCal.cc ${sources} ${headers})
-target_link_libraries(GS20LightYieldCal ${Geant4_LIBRARIES})
+add_executable(lightYieldCal lightYieldCal.cc ${sources} ${headers})
+target_link_libraries(lightYieldCal ${Geant4_LIBRARIES})
 
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
-# build GS20Cal. This is so that we can run the executable directly because it
+# build singleFilmCal. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
 set(GS20CAL_SCRIPTS
@@ -78,11 +85,11 @@ endforeach()
 # For internal Geant4 use - but has no effect if you build this
 # example standalone
 #
-add_custom_target(GS20Cal DEPENDS GS20LightYieldCal)
+add_custom_target(singleFilmCal DEPENDS lightYieldCal)
 
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
 #
-install(TARGETS GS20LightYieldCal DESTINATION bin)
+install(TARGETS lightYieldCal DESTINATION bin)
 
 

@@ -28,15 +28,15 @@ class DetectorConstruction : public G4VUserDetectorConstruction{
     G4VPhysicalVolume* ConstructVolumes();                      /* Construct the detector volumes */
 
     G4Material* FindMaterial(G4String);                                 /* Finds a Material     */
-		G4double GetGS20Thickness()		    {return gs20Thickness;};  /* GS20 Thickness       */
-		G4double GetGS20Radius()			    {return gs20Radius;};     /* GS20 Radius          */
+		G4double GetDetectorThickness()		    {return detThickness;};  /* Detector Thickness       */
+		G4double GetDetectorRadius()			    {return detRadius;};     /* Detector Radius          */
 		G4Material* GetAbsorberMaterial()	{return absMaterial;};    /* Returns the Abosrber */
     
-		void SetGS20Thickness(G4double);
+		void SetDetectorThickness(G4double);
     void SetReflectorThickness(G4double);
     void SetMountingThickness(G4double);
-    void SetGS20Radius(G4double);
-		void SetBirksParameter(G4double);
+    void SetDetectorRadius(G4double);
+		void SetDetectorMaterial(G4String);
 
 		void UpdateGeometry();
 		void PrintParameters();
@@ -54,7 +54,7 @@ private:
 		G4VPhysicalVolume*  worldPV;
 		G4VSolid*           worldS;
 
-    G4LogicalVolume*    gs20LV;			/* GS20 Absorber */
+    G4LogicalVolume*    gs20LV;			/* Detector Absorber */
 		G4VPhysicalVolume*  gs20PV;			
 		G4VSolid*	          gs20S;
 
@@ -83,9 +83,9 @@ private:
     G4Material* absMaterial;        /* Absorber and Scintillator Material */
 
 		// Geometry parameters
-    G4double gs20Thickness;	      	// Thickness of Absorber
+    G4double detThickness;	      	// Thickness of Absorber
 		G4double refThickness;        	// Thickness of Reflector
-		G4double gs20Radius;		    	  // Outer Radius of Detector
+		G4double detRadius;		    	  // Outer Radius of Detector
     G4double pmtRadius;             // Radius of the PMT
 		G4double detectorThickness;         // Thickness of entire detectorrimeter
     G4double pmtThickness;          /* Thickness of the PMT Glass       */
