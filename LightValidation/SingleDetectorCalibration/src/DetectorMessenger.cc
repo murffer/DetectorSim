@@ -63,10 +63,9 @@ DetectorMessenger::~DetectorMessenger()
   delete RefThickCmd;
   delete MntThickCmd;
   delete SizeRadiusCmd; 
-  delete BirksCmd;
 	delete UpdateCmd;
   delete detDir;
-  delete DetectorLightYieldDir;  
+	delete DetMaterialCmd;
 }
 
 void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
@@ -84,9 +83,9 @@ void DetectorMessenger::SetNewValue(G4UIcommand* command,G4String newValue)
   if( command == SizeRadiusCmd )
    { Detector->SetDetectorRadius(SizeRadiusCmd->GetNewDoubleValue(newValue));}
   
-	if( command == BirksCmd )
-   { Detector->SetBirksParameter(BirksCmd->GetNewDoubleValue(newValue));}
-   
+	if( command == DetMaterialCmd )
+   { Detector->SetDetectorMaterial(newValue);}
+		   
   if( command == UpdateCmd )
    { Detector->UpdateGeometry(); }
 

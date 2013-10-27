@@ -128,14 +128,14 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
   worldSizeZ  = 5*cm;      // Fixed World Size; 
 
   // Geometry parameters
-  detThickness = 2*mm;	          /* Thickness of Detector Scintilator  */
-  detRadius  = 1.27*cm;		      /* Radius of Detector Sctintillator   */
+  detThickness = 50*um;	          /* Thickness of Detector Scintilator  */
+  detRadius  = 2.*cm;		      /* Radius of Detector Sctintillator   */
   pmtRadius = 2.54*cm;
   pmtThickness = 5*mm;
   mountThickness = 100*um;
   refThickness = 3.33*mm;
   capThickness = 2*mm;                       /* Thickness of the cap     */
-  absMaterial = FindMaterial("GS20");
+  absMaterial = FindMaterial("PSLiF");
   pmtMaterial = FindMaterial("BK7");
   refMaterial = FindMaterial("G4_TEFLON");
   mountMaterial = FindMaterial("Silicone");

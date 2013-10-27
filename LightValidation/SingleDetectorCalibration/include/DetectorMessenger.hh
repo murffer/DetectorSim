@@ -23,13 +23,12 @@ class DetectorMessenger: public G4UImessenger
   private:
     DetectorConstruction* Detector;
     
-    G4UIdirectory*             DetectorLightYieldDir;
     G4UIdirectory*             detDir;
     G4UIcmdWithADoubleAndUnit* AbsThickCmd;
     G4UIcmdWithADoubleAndUnit* MntThickCmd;
     G4UIcmdWithADoubleAndUnit* RefThickCmd;
     G4UIcmdWithADoubleAndUnit* SizeRadiusCmd;
-    G4UIcmdWithADouble* 			 BirksCmd;
+		G4UIcmdWithAString*				 DetMaterialCmd;
     G4UIcmdWithoutParameter*   UpdateCmd;
 };
 
