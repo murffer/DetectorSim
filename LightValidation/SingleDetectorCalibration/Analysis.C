@@ -42,7 +42,7 @@ int main(){
 	hG->Draw("same");
   hG->SetLineColor(2);
   c->Update();
-  c->SaveAs("GS20SimulatedLightOverlap.eps");
+  c->SaveAs("SimulatedLightOverlap.eps");
 	std::cout<<"Wrote the histogram"<<std::endl;
   
   ExportHistogram(fN,"3","NeutronOPDist.csv");
