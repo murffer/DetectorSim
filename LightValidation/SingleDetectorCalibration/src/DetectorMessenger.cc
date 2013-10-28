@@ -59,7 +59,7 @@ DetectorMessenger::DetectorMessenger(
 
 DetectorMessenger::~DetectorMessenger()
 {
-  delete AbsThickCmd;
+	delete AbsThickCmd;
   delete RefThickCmd;
   delete MntThickCmd;
   delete SizeRadiusCmd; 

@@ -47,7 +47,6 @@ private:
 		G4VPhysicalVolume* ConstructDetector();       /* Constructs the detector          */
 		void SetVisAttributes();                      /* Sets visulationation attributes  */
 		void SetSensitiveDetectors();                 /* Sets up sensitive detectors      */
-    void SetOpticalSurfaces();                    /* Sets up optical surfaces         */
 
     /* FIELDS */
 		G4LogicalVolume*    worldLV;		// World

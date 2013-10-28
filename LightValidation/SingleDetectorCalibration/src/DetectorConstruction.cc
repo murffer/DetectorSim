@@ -10,9 +10,6 @@
 #include "G4SolidStore.hh"
 #include "G4RunManager.hh"
 #include "G4RegionStore.hh"
-#include "G4LogicalBorderSurface.hh"
-#include "G4LogicalSkinSurface.hh"
-#include "G4OpticalSurface.hh"
 
 #include "G4Material.hh"
 #include "G4NistManager.hh"
@@ -68,12 +65,13 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
 
   // Creating Detector Materials
   materials = Materials::GetInstance();
+  absMaterial = FindMaterial("PSLiF");
+  pmtMaterial = FindMaterial("BK7");
+  refMaterial = FindMaterial("G4_TEFLON");
+  mountMaterial = FindMaterial("Silicone");
 
   // Return Physical World
   G4VPhysicalVolume* world = ConstructVolumes();
-
-  // Sets up the Optical Surfaces
-  SetOpticalSurfaces();
 
   // Set Visulation Attributes
   SetVisAttributes();
@@ -135,10 +133,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
   mountThickness = 100*um;
   refThickness = 3.33*mm;
   capThickness = 2*mm;                       /* Thickness of the cap     */
-  absMaterial = FindMaterial("PSLiF");
-  pmtMaterial = FindMaterial("BK7");
-  refMaterial = FindMaterial("G4_TEFLON");
-  mountMaterial = FindMaterial("Silicone");
   G4double zTran;
 
   // The constructors take half thickness, so divide by two for them
@@ -194,23 +188,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
   return worldPV;
 }
 /**
- * SetsOpticalSurfaces
- *
- * Sets the optical surfaces for the detector volumes
- */
-void DetectorConstruction::SetOpticalSurfaces(){
-  // Reflector (Teflon) Optical Surface
-  G4OpticalSurface *refOpSurface = new G4OpticalSurface("Reflector Surface");
-  refOpSurface->SetType(dielectric_LUT);
-  refOpSurface->SetModel(LUT);
-  refOpSurface->SetFinish(polishedteflonair);
-  G4LogicalSkinSurface *refLogSurface = new G4LogicalSkinSurface("Reflector Logical Skin Surface",refLV,refOpSurface);
-
-  // Detector Mounting and Silicon Grease Optical Surface (TODO)
-  // This may not be necessary as we can almost assume perfect coupling between the GS20 and the PMT due to
-  // the optical grease. 
-}
-/**
  * SetSensitiveDetectors
  *
  * Setting the Sensitive Detectors of the Detector.
@@ -227,8 +204,8 @@ void DetectorConstruction::SetSensitiveDetectors(){
     absSD = new AbsorberSD("Absorber/AbsSD","AbsHitCollection");
     SDman->AddNewDetector(absSD);
   }
-  gs20LV->SetSensitiveDetector(absSD);
-  pmtLV->SetSensitiveDetector(pmtSD);
+	pmtLV->SetSensitiveDetector(pmtSD);
+	gs20LV->SetSensitiveDetector(absSD);
 }
 /**
  * SetVisAttributes()
@@ -284,6 +261,7 @@ void DetectorConstruction::SetVisAttributes(){
  */
 void DetectorConstruction::SetDetectorMaterial(G4String name){
 	absMaterial = FindMaterial(name);
+	G4cout<<"Set the absorber material to "<<absMaterial->GetName()<<G4endl;
 }
 /**
  * SetMountingThickness
@@ -338,16 +316,17 @@ void DetectorConstruction::UpdateGeometry(){
   G4GeometryManager::GetInstance()->OpenGeometry();
   G4PhysicalVolumeStore::GetInstance()->Clean();
   G4LogicalVolumeStore::GetInstance()->Clean();
-  G4LogicalSkinSurface::CleanSurfaceTable();
-  G4LogicalBorderSurface::CleanSurfaceTable();
+	G4cout<<"Cleaned up previous goemetry"<<G4endl;
 
   // Creating the new geomtry  
   G4RunManager::GetRunManager()->DefineWorldVolume(ConstructVolumes());
-  SetOpticalSurfaces();
   SetSensitiveDetectors(); 
   SetVisAttributes();
+	PrintParameters();
+	G4cout<<"Created the new goemtry"<<G4endl;
 
   // Updating the engine
   G4RunManager::GetRunManager()->GeometryHasBeenModified();
   G4RegionStore::GetInstance()->UpdateMaterialList(worldPV);
+	G4cout<<"Updated the run engine"<<G4endl;
 }

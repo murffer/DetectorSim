@@ -30,7 +30,7 @@ Materials::Materials(){
 }
 
 Materials::~Materials(){
-  delete Teflon;      /* Teflon Tape    */
+	delete Teflon;      /* Teflon Tape    */
   delete EJ200;				/* EJ-200					*/
   delete psDet;				/* PS Lif Detector 		*/
   delete EJ426;				/* EJ-426 (LiF ZnS:Ag)*/
@@ -38,7 +38,6 @@ Materials::~Materials(){
   delete BK7;         /* PMT Window Glass (Boroscilate) */
   delete Silicone;    /* Optical Grease */
   delete Air;         /* Air            */
-  delete BlackTape;   /* Black tape     */
 }
 /**
  * Setting the Singleton Class

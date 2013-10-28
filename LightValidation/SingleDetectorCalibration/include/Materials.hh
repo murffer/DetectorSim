@@ -38,7 +38,6 @@ class Materials{
     G4Material* BK7;         /* PMT Window Glass (Boroscilate) */
     G4Material* Silicone;    /* Optical Grease */
     G4Material* Air;         /* Air            */
-    G4Material* BlackTape;   /* Black tape     */
 		G4Material* EJ200;				/* EJ-200					*/
 		G4Material* psDet;				/* PS Lif Detector 		*/
 		G4Material* EJ426;				/* EJ-426 (LiF ZnS:Ag)*/

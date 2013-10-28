@@ -137,17 +137,18 @@ G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 void Analysis::EndOfRun(const G4Run* ){
     // Print some output
     G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-    G4cout<<"\tAverage Energy Deposited: "
-    << G4BestUnit(analysisManager->GetH1(1)->mean(),"Energy")
-    << " +/- " << G4BestUnit(analysisManager->GetH1(1)->rms(),"Energy")
-    << "\n\tAverage Number of Optical Photons Created: "
-    << analysisManager->GetH1(2)->mean()
-    << " +/- " << analysisManager->GetH1(2)->rms()
-    << "\n\tAverage Number of Optical Photons Detected: "
-    << analysisManager->GetH1(3)->mean()
-    << " +/- " << analysisManager->GetH1(3)->rms()
-    << G4endl;
-    
+    if ( analysisManager->IsActive() ) {
+			G4cout<<"\tAverage Energy Deposited: "
+			<< G4BestUnit(analysisManager->GetH1(1)->mean(),"Energy")
+			<< " +/- " << G4BestUnit(analysisManager->GetH1(1)->rms(),"Energy")
+			<< "\n\tAverage Number of Optical Photons Created: "
+			<< analysisManager->GetH1(2)->mean()
+			<< " +/- " << analysisManager->GetH1(2)->rms()
+			<< "\n\tAverage Number of Optical Photons Detected: "
+			<< analysisManager->GetH1(3)->mean()
+			<< " +/- " << analysisManager->GetH1(3)->rms()
+			<< G4endl;
+   	} 
     //save histograms
     if ( analysisManager->IsActive() ) {
         analysisManager->Write();

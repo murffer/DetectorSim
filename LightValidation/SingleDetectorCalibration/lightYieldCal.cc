@@ -96,5 +96,5 @@ int main(int argc,char** argv){
 		delete g4MPI;
 #endif
 		delete runManager;
-    return 0;
+		return 0;
 }
