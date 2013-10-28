@@ -76,9 +76,13 @@ private:
     G4VSolid*           mountPMTS;
     
     // Materials
-    Materials* materials;            /* Material Manager                   */
+    Materials* materials;           /* Material Manager                   */
     G4Material* absMaterial;        /* Absorber and Scintillator Material */
-    G4Material* cladMaterial;        /* Reflector and cladding */
+    G4Material* cladMaterial;       /* Reflector and cladding 								*/
+    G4Material* detMaterial;        /* Detector Material (GS20 Glass)         */
+    G4Material* mountMaterial;      /* Mounting Material (Optical Grease      */
+    G4Material* pmtMaterial;        /* PMT Material (Boroscilate (BK7) Glass  */
+    G4Material* lightGuideMaterial; /* Material for the light guide           */
     
     // Geometry parameters
     G4double pmmaThickness;         /* Thickness of the encsasing PMMA     */
@@ -93,11 +97,6 @@ private:
     G4double lightGuideHeight;    /* Height of the light guide to the PMT     */
     G4double sliceThickness;      /* Thickness of a detector slice  (with mounting)          */
     
-    G4Material* detMaterial;        /* Detector Material (GS20 Glass)         */
-    G4Material* mountMaterial;      /* Mounting Material (Optical Grease      */
-    G4Material* refMaterial;        /* Reflector Material (Teflon Tape)       */
-    G4Material* pmtMaterial;        /* PMT Material (Boroscilate (BK7) Glass  */
-    G4Material* lightGuideMaterial; /* Material for the light guide           */
     
     // Sensitive Detectors
     PMTSD*  pmtSD;               /* PMT SD  (Top PMT)        */

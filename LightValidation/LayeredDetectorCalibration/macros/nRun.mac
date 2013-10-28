@@ -12,5 +12,5 @@
 /analysis/h1/set 1 100 0  10000 none    # Number of Optical Photons
 /analysis/h1/set 2 100 0  10000 none    # Number of Optical Photons
 # Running through absorber thickness
-/run/beamOn 100
+/run/beamOn 1000
 #
