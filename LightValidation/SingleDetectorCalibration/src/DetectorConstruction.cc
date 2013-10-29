@@ -69,6 +69,15 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
   pmtMaterial = FindMaterial("BK7");
   refMaterial = FindMaterial("G4_TEFLON");
   mountMaterial = FindMaterial("Silicone");
+  
+	// Geometry parameters
+  detThickness = 50*um;	          /* Thickness of Detector Scintilator  */
+  detRadius  = 2.*cm;		      /* Radius of Detector Sctintillator   */
+  pmtRadius = 2.54*cm;
+  pmtThickness = 5*mm;
+  mountThickness = 100*um;
+  refThickness = 3.33*mm;
+  capThickness = 2*mm;                       /* Thickness of the cap     */
 
   // Return Physical World
   G4VPhysicalVolume* world = ConstructVolumes();
@@ -125,14 +134,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
 
   worldSizeZ  = 5*cm;      // Fixed World Size; 
 
-  // Geometry parameters
-  detThickness = 50*um;	          /* Thickness of Detector Scintilator  */
-  detRadius  = 2.*cm;		      /* Radius of Detector Sctintillator   */
-  pmtRadius = 2.54*cm;
-  pmtThickness = 5*mm;
-  mountThickness = 100*um;
-  refThickness = 3.33*mm;
-  capThickness = 2*mm;                       /* Thickness of the cap     */
   G4double zTran;
 
   // The constructors take half thickness, so divide by two for them
