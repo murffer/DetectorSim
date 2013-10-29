@@ -26,9 +26,10 @@ class CylinderRPM(object):
         self.material['Moderator'] = {'name':'HDPE','mt':456, 'rho': 0.93}         # HPDE
         
         # Cell and Surface Inital Numbering
-        self.CellStartNum = 6000
-        self.SurfaceStartNum = 6000
+        self.CellStartNum = 600
+        self.SurfaceStartNum = 600
         self.ZeroSurfaceNum = 500
+        self.UniverseNum = 200
         self.surfGeo = None
         self.inp = inp
         self.name = 'OUT_'+self.inp.strip('.mcnp')+'.'
@@ -71,6 +72,7 @@ class CylinderRPM(object):
         c - the cell string
         detectorCells - a list of the numbers corresponding to the detectors cells
         """
+        cellsCreated = 0
         sNum = self.SurfaceStartNum
         cNum = self.CellStartNum
         detectorCells = list()
@@ -90,7 +92,12 @@ class CylinderRPM(object):
             # List of cells for the detector
             if self.surfGeo[key] is 'Detector':
                 detectorCells.append(cNum)
-        return s,c,detectorCells
+            cellsCreated += 1
+        # Last cell up to universe boundary
+        m = self.material['Moderator']
+        c += '{:5d} {:d} -{:4.3f} {:d} u={:d}\n'.format(cNum+1,m['mt'],m['rho'],sNum,uNum)
+        cellsCreated += 1
+        return s,c,detectorCells,cellsCreated
     
     def runModel(self):
         """ 
@@ -131,12 +138,12 @@ class CylinderRPM(object):
         #               Add in Detector Cells and Surfaces               #
         ##################################################################
         universeNum = 1
-        (s,c,detectorCells) = self.createDetectorCylinder(universeNum)
+        (s,c,detectorCells,cellsCreated) = self.createDetectorCylinder(universeNum)
         surfString += s
         cellString += 'c ------------------- Detector Cylinder Universe ------------------------\n'
         cellString += c
         transNum = 1
-        uCellNum = 1000
+        uCellNum = self.UniverseNum
         transString = ''
         positions = ((4.23,10.16),(4.23,-10.16))
         cellString += 'c ----------------------- Detector Universe ----------------------------\n'
@@ -148,18 +155,11 @@ class CylinderRPM(object):
         # Adding the PMMA Moderator Block
         m = self.material['Moderator']
         cellString += 'c ------------------------- HDPE Moderator -----------------------------\n'
-        cellString += '{:5d} {:d} -{:4.3f} -{:d}  '.format(500,m['mt'],m['rho'],self.SurfaceStartNum)
-        cellString += ''.join('#{:d} '.format(i) for i in range(1000,uCellNum))
+        cellString += '{:5d} {:d} -{:4.3f} -{:d}  '.format(500,m['mt'],m['rho'],self.ZeroSurfaceNum)
+        cellString += ''.join('#{:d} '.format(i) for i in range(self.UniverseNum,uCellNum))
         cellString += '\n'
-        print transString
-        print cellString
-
-
-        ##################################################################
-        #                      Write the Surface                         #
-        ##################################################################
-
-        
+        # Getting total number of cells
+        numCells += cellsCreated + uCellNum-self.UniverseNum +1
         ##################################################################
         #                      Write the Tallies                         #
         ##################################################################
