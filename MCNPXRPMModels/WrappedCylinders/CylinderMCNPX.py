@@ -5,10 +5,11 @@ MCNPX Model for Cylindrical RPM8
 """
 #import mctal
 import subprocess
-class CylinderRMP(object):
+class CylinderRPM(object):
     # Material Dictionaries
-    cellForStr = '{:5d} {:d} -{:4.3f} {:d} -{:d} 502 -503 504 -505\n'
-    surForStr = '{:5d} cz {:5.3f}\n'
+    cellForStr = '{:5d} {:d} -{:4.3f} {:d} -{:d} u={:d}\n'
+    surfForStr = '{:5d} cz {:5.3f}\n'
+    tranForStr = '*tr{:d} {:4.3f} {:4.3f} 0.000\n'
     geoParam={'RPM8Size':12.7,'DetectorThickness':0.01,'DetectorSpacing':0.4,
                'CylinderLightGuideRadius':0.5,'CylinderRadius':2.5}
     
@@ -50,10 +51,10 @@ class CylinderRMP(object):
         Creates a dictionary of surface positions and cylinders
         """
         self.surfGeo = dict()
-        r = self.geomParam['CylinderLightGuideRadius']
+        r = self.geoParam['CylinderLightGuideRadius']
         self.surfGeo[r] = 'LightGuide'
         #self.material =  {'Moderator':None,'Detector':None,'LightGuide':None}
-        while(r + self.geoParam['DetectorThickenss'] < self.geoParam['CylinderRadius']):
+        while(r + self.geoParam['DetectorThickness'] < self.geoParam['CylinderRadius']):
             r += self.geoParam['DetectorThickness']
             self.surfGeo[r] = 'Detector'
             r += self.geoParam['DetectorSpacing']
@@ -61,12 +62,35 @@ class CylinderRMP(object):
                 self.surfGeo[r] = 'LightGuide'
         return self.surfGeo
     
-    def createDetectorUniverise(xpos=0,ypos=0,uNum=0):
+    def createDetectorCylinder(self,uNum=1):
         """
-        Creates a detector univerise string
+        Creates a detector cylinder 
+        
+        Returns an ntuple of s,c,detectorCells
+        s - the surface string
+        c - the cell string
+        detectorCells - a list of the numbers corresponding to the detectors cells
         """
-        s = ''
-        return s
+        sNum = self.SurfaceStartNum
+        cNum = self.CellStartNum
+        detectorCells = list()
+        s = '{:5d} rcc 0 0 0 0 0 217.7 {}\n'.format(self.SurfaceStartNum,self.geoParam['CylinderRadius'])
+        c = ''
+        keyList = sorted(self.surfGeo.keys(), key = lambda x: float(x))
+        for key in keyList:
+            sPrev = sNum
+            sNum += 1
+            cNum += 1
+            s += self.surfForStr.format(sNum,key)
+            m = self.material[self.surfGeo[key]]
+            if cNum == self.CellStartNum+1:
+                c+= '{:5d} {:d} -{:4.3f} -{:d} u={:d}\n'.format(cNum,m['mt'],m['rho'],sNum,uNum)
+            else:
+                c += self.cellForStr.format(cNum,m['mt'],m['rho'],sPrev,sNum,uNum)
+            # List of cells for the detector
+            if self.surfGeo[key] is 'Detector':
+                detectorCells.append(cNum)
+        return s,c,detectorCells
     
     def runModel(self):
         """ 
@@ -86,8 +110,8 @@ class CylinderRMP(object):
 
         Creates an input deck of the given geometry
         """
-        self.inp = 'INP_'+self.genome+'.mcnp'
-        self.name = 'OUT_'+self.genome+'.'
+        self.inp = 'INP_Cylinder.mcnp'
+        self.name = 'OUT_Cylinder.'
         oFile = self.inp
         
         # Problem Constants
@@ -98,58 +122,49 @@ class CylinderRMP(object):
 
         surfString = 'c  ########################### Surface Cards ##############################\n'
         surfString += 'c ------------------- Encasing Bounds (Size of RPM8) ---------------------\n'
-        surfString += '500 px 0                                                                  \n'
-        surfString += '501 px 12.7                                                               \n'
-        surfString += '502 py -15.25                                                             \n'
-        surfString += '503 py 15.25                                                              \n'
-        surfString += '504 pz 0                                                                  \n'
-        surfString += '505 pz 217.7                                                              \n'
-        
-        # Add in other cells here
-        numCells = 4 # 3 Source, 1 RPM8 Encasingdd
-        detectorCells = list()
-        rpmCells = list()
-        keyList = sorted(self.geo.keys(), key = lambda x: float(x))
-        
-        ##################################################################
-        #                       Write the cells                          #
-        ##################################################################
-        cNum = self.CellStartNum
-        sNum = self.SurfaceStartNum
-        sPrev = self.ZeroSurfaceNum
-        
-        for key in keyList:
-            # Creating the cell
-            m = self.material[self.geo[key]] 
-            cellString += self.cellForStr.format(cNum,m['mt'],m['rho'],sPrev,sNum)
-            rpmCells.append(cNum) 
-            # List of cells for the detector
-            if self.geo[key] is 'Detector':
-                detectorCells.append(cNum)
+        surfString += '500 rpp 0 12.7 -15.25 15.25 0 217.7                                       \n'
 
-            # Incrementing counters
-            sPrev = sNum
-            sNum += 1
-            cNum += 1
-            numCells +=1
+        # Add in other cells here
+        numCells = 4 # 3 Source, 1 RPM8 Encasing
+        
+        ##################################################################
+        #               Add in Detector Cells and Surfaces               #
+        ##################################################################
+        universeNum = 1
+        (s,c,detectorCells) = self.createDetectorCylinder(universeNum)
+        surfString += s
+        cellString += 'c ------------------- Detector Cylinder Universe ------------------------\n'
+        cellString += c
+        transNum = 1
+        uCellNum = 1000
+        transString = ''
+        positions = ((4.23,10.16),(4.23,-10.16))
+        cellString += 'c ----------------------- Detector Universe ----------------------------\n'
+        for pos in positions:
+            transString += self.tranForStr.format(transNum,pos[0],pos[1])
+            cellString += '{:5d} 0 -{:d} trcl={:d} fill={:d}\n'.format(uCellNum,self.SurfaceStartNum,transNum,universeNum)
+            transNum +=1
+            uCellNum +=1
+        # Adding the PMMA Moderator Block
+        m = self.material['Moderator']
+        cellString += 'c ------------------------- HDPE Moderator -----------------------------\n'
+        cellString += '{:5d} {:d} -{:4.3f} -{:d}  '.format(500,m['mt'],m['rho'],self.SurfaceStartNum)
+        cellString += ''.join('#{:d} '.format(i) for i in range(1000,uCellNum))
+        cellString += '\n'
+        print transString
+        print cellString
+
 
         ##################################################################
         #                      Write the Surface                         #
         ##################################################################
-        surfString += 'c ------------------------ Detector Bounds -------------------------------\n'
-        sNum = self.SurfaceStartNum
-        sPrev = self.ZeroSurfaceNum
-        for key in keyList:
-            surfString += self.surForStr.format(sNum,float(key))
-            sPrev = sNum
-            sNum += 1
+
         
         ##################################################################
         #                      Write the Tallies                         #
         ##################################################################
         tallyString = 'c ------------------------- Tallies Yo! -----------------------------------\n'
-        tallies = {'F4:n':{'cells':rpmCells,'comments':'FC4 Cell Flux\n','options':'\nE4 6E-7 10 '},
-                'F54:n':{'cells':detectorCells,'comments':'FC54 6Li Reaction Rates\n',
+        tallies = {'F54:n':{'cells':detectorCells,'comments':'FC54 6Li Reaction Rates\n',
                     'options':' T\nSD54 1 {0:d}R\nFM54 -1 3 105'}}
         for t in tallies:
             # Getting a list of cells
@@ -181,7 +196,7 @@ class CylinderRMP(object):
 
         
         with open(oFile,'w') as o:
-            o.write('MCNPX Simulation of RPM8 Genome: '+self.genome+'\n')
+            o.write('MCNPX Simulation of RPM8 Cylinder\n')
             o.write(cellString)
             o.write('\n')
             o.write(surfString)
@@ -190,6 +205,7 @@ class CylinderRMP(object):
             o.write(self.getSrcString())
             o.write(tallyString)
             o.write(self.getMaterialString())
+            o.write(transString)
             o.write('\n')
         
     def getRunString(self):
@@ -251,10 +267,9 @@ class CylinderRMP(object):
         return matString
 
 if __name__ == "__main__":
-    genome = '0001001000010010000000000'
-    m  = MCNPX()
-    print m
-    m.createBinaryGeometry(genome)
-    m.printGeo()
+    m  = CylinderRPM()
+    m.createSurfaceGeo()
+    m.createDetectorCylinder()
+ #   m.printGeo()
     m.createInputDeck()
-    m.runModel()
+ #   m.runModel()
