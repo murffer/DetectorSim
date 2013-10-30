@@ -4,6 +4,9 @@
 MCNPX Model for Cylindrical RPM8
 """
 #import mctal
+import sys
+sys.path.append('../')
+from MCNPMaterial import Materials 
 import subprocess
 class CylinderRPM(object):
     # Material Dictionaries
@@ -21,7 +24,7 @@ class CylinderRPM(object):
         """
         # Material dictionary for the moderator, light guide, and detector
         self.material =  {'Moderator':None,'Detector':None,'LightGuide':None}
-        self.material['Detector'] = {'name':'Detector','mt': 3, 'rho': 1.1}       # detector
+        self.material['Detector'] = {'name':'Detector','mt': 3, 'rho': 1.1,'matString':None}       # detector
         self.material['LightGuide'] = {'name': 'PMMA','mt':10, 'rho':0.93}   # PMMA
         self.material['Moderator'] = {'name':'HDPE','mt':456, 'rho': 0.93}         # HPDE
         
@@ -33,7 +36,8 @@ class CylinderRPM(object):
         self.surfGeo = None
         self.inp = inp
         self.name = 'OUT_'+self.inp.strip('.mcnp')+'.'
-   
+        self.setMaterial(0.1,'PS')
+
     def __str__(self):
         s = '\tMCNPX Model of Wrapped Cylinder\n'
         s += '\t Cell Number Starts: {0:d}\n'.format(self.CellStartNum)
@@ -46,6 +50,19 @@ class CylinderRPM(object):
         t = m.tallies[4]
         # Returing the total
         return t.data[-1],t.errors[-1]
+    
+    def setMaterial(self,massFraction,polymer):
+        """
+        Sets the detector material
+        """
+        M = Materials()
+        num = self.material['Detector']['mt']
+        if polymer == 'PS':
+            self.material['Detector']['matString'] = M.GetPSLiF(massFraction,num)
+        elif polymer == 'PEN':
+            self.material['Detector']['matString'] = M.GetPENLiF(massFraction,num)
+        else:
+           raise ValueError('Polymer {} is not in the material database'.format(polymer)) 
 
     def createSurfaceGeo(self):
         """
@@ -107,7 +124,7 @@ class CylinderRPM(object):
         cmd = '#!/bin/bash\n'
         cmd += '#PBS -N {0}\n#PBS -V\n#PBS -q gen1\n#PBS -l nodes=1:ppn=1\n'
         cmd += 'cd $PBS_O_WORKDIR\nmpirun mcnpx inp={1} name={2}\n'
-        job = cmd.format('Cylinder',self.inp,self.name)
+        job = cmd.format('Job_RPMCylinder',self.inp,self.name)
         with open('qsub','w') as o:
             o.write(job)
         subprocess.call(qsub+' qsub',shell=True)
@@ -203,7 +220,9 @@ class CylinderRPM(object):
         surfString += 'c -------------- Outside World -------------------------------------------\n'
         surfString += '1000 so 250                                                               \n'
 
-        
+        matString = 'c -------------------------- Material Cards -----------------------------\n'
+        matString += self.material['Detector']['matString']
+        matString += self.getMaterialString()
         with open(oFile,'w') as o:
             o.write('MCNPX Simulation of RPM8 Cylinder\n')
             o.write(cellString)
@@ -213,7 +232,7 @@ class CylinderRPM(object):
             o.write(self.getRunString().format(numCells))
             o.write(self.getSrcString())
             o.write(tallyString)
-            o.write(self.getMaterialString())
+            o.write(matString)
             o.write(transString)
             o.write('\n')
         
@@ -245,13 +264,7 @@ class CylinderRPM(object):
         """
         Returns the MCNXP material string
         """
-        matString = 'c -------------------------- Material Cards -----------------------------\n'
-        matString += 'm3    6012.70c  -0.520977  $ 70% PEN, 25% LiF, 5% PPO/POPOP rho=1.1 g/cc\n'
-        matString += '      6013.70c  -0.00563475  1001.70c   -0.0316177   1002.70c   -3.63645e-06\n'
-        matString += '      8016.70c  -0.188123    8017.70c   -7.16609e-05 8018.70c   -0.000386592\n'
-        matString += '      7014.70c  -0.00317338  7015.70c   -1.17212e-05  3006.70c  -0.0574746  \n'
-        matString += '      3007.70c  -0.00302205  9019.70c   -0.189503                           \n'
-        matString += 'm10   1001.70c  -0.080538       $Lucite (PMMA / Plexiglass)    rho = 1.19 g/cc\n'
+        matString = 'm10   1001.70c  -0.080538       $Lucite (PMMA / Plexiglass)    rho = 1.19 g/cc\n'
         matString += '      6012.70c  -0.599848    8016.70c       -0.319614                       \n'
         matString += 'm204  7014.70c      -0.755636  $air (US S. Atm at sea level) rho = 0.001225 \n'
         matString += '      8016.70c      -0.231475 18036.70c     -3.9e-005 18038.70c      -8e-006\n'

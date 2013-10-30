@@ -50,7 +50,7 @@ class Materials(object):
         Creates a material string for a given mass fraction
         """
         formatString = '{:d}.70c -{:5.4f} '
-        s = 'mt{:d}   '
+        s = 'm{:d}    '
         matStrings = list()
         for i in massFraction:
             matStrings.append(formatString.format(self.zaaid[i],massFraction[i]))
