@@ -160,9 +160,11 @@ class CylinderRPM(object):
         cellString += '\n'
         # Getting total number of cells
         numCells += cellsCreated + uCellNum-self.UniverseNum +1
+        
         ##################################################################
         #                      Write the Tallies                         #
         ##################################################################
+        univCells = range(self.UniverseNum,uCellNum)
         tallyString = 'c ------------------------- Tallies Yo! -----------------------------------\n'
         tallies = {'F54:n':{'cells':detectorCells,'comments':'FC54 6Li Reaction Rates\n',
                     'options':' T\nSD54 1 {0:d}R\nFM54 -1 3 105'}}
@@ -170,11 +172,21 @@ class CylinderRPM(object):
             # Getting a list of cells
             tallyString += tallies[t]['comments']
             tallyString += str(t)+' '
-            cell = list(str(c)+' ' for c in tallies[t]['cells'])
-            cell = [cell[i:i+6] for i in range(0,len(cell),6)]
-            tallyString += '      '.join(''.join(i)+'\n' for i in cell)
+            j = 0
+            for u in univCells:
+                cell = list('('+str(c)+'<'+str(u)+') ' for c in tallies[t]['cells'])
+                cell = [cell[i:i+6] for i in range(0,len(cell),6)]
+                print cell
+                if j > 0:
+                    print 'over the first loop'
+                    tallyString += '      '+''.join(''.join(i)+'\n' for i in cell)
+                else:
+                    tallyString += '      '.join(''.join(i)+'\n' for i in cell)
+                print 'Finished tallies of universe '+str(u)
+                j +=1
+            print tallyString
             tallyString = tallyString.rstrip()
-            tallyString += tallies[t]['options'].format(len(tallies[t]['cells']))
+            tallyString += tallies[t]['options'].format(len(univCells)*len(tallies[t]['cells']))
             tallyString+='\n'
 
         # Finish up the problem data
