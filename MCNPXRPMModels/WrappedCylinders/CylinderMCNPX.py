@@ -104,9 +104,10 @@ class CylinderRPM(object):
         Runs the Model by submission to Tourqe / Maui
         """
         qsub= subprocess.check_output('which qsub',shell=True).strip()
-        cmd = '#PBS -N {0}\n#PBS -V\n#PBS -q gen2\n#PBS -l nodes=1:ppn=1\n'
+        cmd = '#!/bin/bash\n'
+        cmd += '#PBS -N {0}\n#PBS -V\n#PBS -q gen1\n#PBS -l nodes=1:ppn=1\n'
         cmd += 'cd $PBS_O_WORKDIR\nmpirun mcnpx inp={1} name={2}\n'
-        job = cmd.format(self.genome,self.inp,self.name)
+        job = cmd.format('Cylinder',self.inp,self.name)
         with open('qsub','w') as o:
             o.write(job)
         subprocess.call(qsub+' qsub',shell=True)
@@ -176,15 +177,11 @@ class CylinderRPM(object):
             for u in univCells:
                 cell = list('('+str(c)+'<'+str(u)+') ' for c in tallies[t]['cells'])
                 cell = [cell[i:i+6] for i in range(0,len(cell),6)]
-                print cell
                 if j > 0:
-                    print 'over the first loop'
                     tallyString += '      '+''.join(''.join(i)+'\n' for i in cell)
                 else:
                     tallyString += '      '.join(''.join(i)+'\n' for i in cell)
-                print 'Finished tallies of universe '+str(u)
                 j +=1
-            print tallyString
             tallyString = tallyString.rstrip()
             tallyString += tallies[t]['options'].format(len(univCells)*len(tallies[t]['cells']))
             tallyString+='\n'
@@ -284,4 +281,4 @@ if __name__ == "__main__":
     m.createDetectorCylinder()
  #   m.printGeo()
     m.createInputDeck()
- #   m.runModel()
+    m.runModel()
