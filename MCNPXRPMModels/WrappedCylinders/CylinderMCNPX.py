@@ -130,13 +130,17 @@ class CylinderRPM(object):
         subprocess.call(qsub+' qsub',shell=True)
         subprocess.call('rm qsub',shell=True)
     
-    def createInputDeck(self):
+    def createInputDeck(self,cylinderPositions,inp=None,name=None):
         """ createInputDeck 
 
         Creates an input deck of the given geometry
         """
-        self.inp = 'INP_Cylinder.mcnp'
-        self.name = 'OUT_Cylinder.'
+        self.inp = inp
+        self.name = name
+        if not inp:
+            self.inp = 'INP_Cylinder.mcnp'
+        if not name:
+            self.name = 'OUT_Cylinder.'
         oFile = self.inp
         
         # Problem Constants
@@ -163,9 +167,8 @@ class CylinderRPM(object):
         transNum = 1
         uCellNum = self.UniverseNum
         transString = ''
-        positions = ((4.23,10.16),(4.23,-10.16))
         cellString += 'c ----------------------- Detector Universe ----------------------------\n'
-        for pos in positions:
+        for pos in cylinderPositions:
             transString += self.tranForStr.format(transNum,pos[0],pos[1])
             cellString += '{:5d} 0 -{:d} trcl={:d} fill={:d}\n'.format(uCellNum,self.SurfaceStartNum,transNum,universeNum)
             transNum +=1
@@ -288,10 +291,29 @@ class CylinderRPM(object):
         matString += 'mt10  poly.01t                                                               \n'
         return matString
 
-if __name__ == "__main__":
-    m  = CylinderRPM()
-    m.createSurfaceGeo()
-    m.createDetectorCylinder()
- #   m.printGeo()
-    m.createInputDeck()
-    m.runModel()
+def run(loading,polymers):
+    """
+    Runs a matrix of loading and polymers
+    """
+    cylinderPositions = ((4.23,10.16),(4.23,-10.16))
+    for l in loading:
+        for p in polymers:
+            m  = CylinderRPM()
+            m.createSurfaceGeo()
+            m.setMaterial(l,p)
+            m.createDetectorCylinder()
+            inp='Cylinder_{}LiF_{}.mcnp'.format(int(l*100),p)
+            name='OUTCylinder_{}LiF_{}.'.format(int(l*100),p)
+            m.createInputDeck(cylinderPositions,inp,name)
+            m.runModel()
+
+import argparse
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-r','--run',action="store_true",
+            default=False,help='Runs the cylinders for multiple polymers and precent loadings')
+    parser.add_argument('loading',metavar='loading',type=float,nargs='*',action="store",
+            default=(0.1,0.2,0.3),help='Precent Loading of LiF')
+    args = parser.parse_args()
+    if args.run:
+        run(args.loading,('PS','PEN'))
