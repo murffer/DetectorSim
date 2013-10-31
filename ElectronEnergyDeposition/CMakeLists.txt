@@ -41,7 +41,7 @@ target_link_libraries(electronEDep ${Geant4_LIBRARIES} )
 # relies on these scripts being in the current working directory.
 #
 set(electronEDep_SCRIPTS
-  eDep.mac vis.mac beamSource.mac 
+  eDep.mac vis.mac beamSource.mac caloSizes.mac
   )
 
 foreach(_script ${electronEDep_SCRIPTS})

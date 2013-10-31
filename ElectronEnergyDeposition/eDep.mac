@@ -6,7 +6,7 @@
 /control/verbose 0
 /run/verbose 0
 #
-/testem/det/setMat G4_POLYSTYRENE 
+/det/setMat G4_POLYSTYRENE 
 #
 /run/initialize
 #
@@ -14,50 +14,20 @@
 /gps/particle e-
 /control/execute beamSource.mac
 /gps/ene/mono 1 keV
-/run/beamOn 10000
-#
-/gps/particle e-
-/control/execute beamSource.mac
-/gps/ene/mono 2.2 keV
-/run/beamOn 10000
-#
-/gps/particle e-
-/control/execute beamSource.mac
-/gps/ene/mono 4.6 keV
-/run/beamOn 10000
+/control/execute caloSizes.mac
 #
 /gps/particle e-
 /control/execute beamSource.mac
 /gps/ene/mono 10 keV
-/run/beamOn 10000
-#
-/gps/particle e-
-/control/execute beamSource.mac
-/gps/ene/mono 22 keV
-/run/beamOn 10000
-#
-/gps/particle e-
-/control/execute beamSource.mac
-/gps/ene/mono 46 keV
-/run/beamOn 10000
+/control/execute caloSizes.mac
 #
 /gps/particle e-
 /control/execute beamSource.mac
 /gps/ene/mono 100 keV
-/run/beamOn 10000
-#
-/gps/particle e-
-/control/execute beamSource.mac
-/gps/ene/mono 220 keV
-/run/beamOn 10000
-#
-/gps/particle e-
-/control/execute beamSource.mac
-/gps/ene/mono 460 keV
-/run/beamOn 10000
+/control/execute caloSizes.mac
 #
 /gps/particle e-
 /control/execute beamSource.mac
 /gps/ene/mono 1000 keV
-/run/beamOn 10000
+/control/execute caloSizes.mac
 #
