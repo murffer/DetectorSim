@@ -34,8 +34,8 @@ PhysicsList::PhysicsList(DetectorConstruction* p)
   
   fCurrentDefaultCut   = 1.0*mm;              /* The default range cut  */
   fCutForGamma         = fCurrentDefaultCut;  /* Default gamma cut      */
-  fCutForElectron      = fCurrentDefaultCut;  /* Default electron cut   */
-  fCutForPositron      = fCurrentDefaultCut;  /* Default positron cut   */
+  fCutForElectron      = 10*nm;               /* Default electron cut   */
+  fCutForPositron      = fCutForElectron;     /* Default positron cut   */
   fCutForAlpha         = fCurrentDefaultCut;  /* Default cut for alpha  */
   fCutForTriton        = fCurrentDefaultCut;  /* Default cut for triton */
 
