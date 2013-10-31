@@ -1,0 +1,55 @@
+Electron Energy Deposition Simulation
+=====================================
+
+Simulation of energy deposition of electrons in materials.
+
+Geometry
+--------
+The geometry is a box representing a 'semi infinite' homegeonous medium. The default geometry is constructed in DetectorConstruction class, but all of the above parameters can be changed interactively via the commands defined in the DetectorMessenger class.
+ 
+Physics List
+------------
+
+The physics lists are from the the G4 kernal, with specialized cuts. The options of the physics list are:
+   - "emstandard_opt0" recommended standard EM physics for LHC
+   - "emstandard_opt1" best CPU performance standard physics for LHC
+   - "emstandard_opt2"     
+   - "emstandard_opt3" best current advanced EM options. 
+  
+  PhysicsList contains also G4Decay and G4RadioactiveDecay processes
+             
+  Physics lists and options can be (re)set with UI commands. A few commands have been added to PhysicsList, in order to set the production threshold for secondaries for gamma and e-/e+.
+  
+Run / Compiling
+---------------
+The code is setup to use the CMakeEnviroment distrubuted with GEANT4.
+ 
+  - execute rangeSim in 'batch' mode from macro files
+	% rangeSim   runs.mac
+ 		
+  - execute rangeSim in 'interactive mode' with visualization
+	% rangeSim
+	....
+	Idle> type your commands
+	....
+	Idle> exit
+		
+Histograms and Analysis
+-----------------------
+ 
+rangeSim produces several histo which are saved as testem1.root by default.Content of these histo:  
+
+ 1.  total energy deposit
+      
+The histograms are managed by G4AnalysisManager class and its Messenger. The histos can be individually activated with the command :
+   `/analysis/h1/set id nbBins  valMin valMax unit` 
+where unit is the desired unit for the histo (MeV or keV, deg or mrad, etc..)
+   
+One can control the name of the histograms file with the command:
+   `/analysis/setFileName  name`  (default testem1)
+   
+     
+   It is also possible to print selected histograms on an ascii file:
+   /analysis/h1/setAscii id
+   All selected histos will be written on a file name.ascii  (default testem1)
+
