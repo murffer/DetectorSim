@@ -18,6 +18,12 @@
 /gun/energy 10 keV
 /control/execute caloSizes.mac
 #
+/gun/energy 50 keV
+/control/execute caloSizes.mac
+#
 /gun/energy 100 keV
+/control/execute caloSizes.mac
+#
+/gun/energy 500 keV
 /control/execute caloSizes.mac
 #
