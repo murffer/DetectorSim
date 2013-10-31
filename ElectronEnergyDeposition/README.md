@@ -24,11 +24,11 @@ Run / Compiling
 ---------------
 The code is setup to use the CMakeEnviroment distrubuted with GEANT4.
  
-  - execute rangeSim in 'batch' mode from macro files
-	% rangeSim   runs.mac
+  - execute electronEDep in 'batch' mode from macro files
+	% electronEDep   eDep.mac
  		
-  - execute rangeSim in 'interactive mode' with visualization
-	% rangeSim
+  - execute electronEDep in 'interactive mode' with visualization
+	% electronEDep
 	....
 	Idle> type your commands
 	....
@@ -36,20 +36,6 @@ The code is setup to use the CMakeEnviroment distrubuted with GEANT4.
 		
 Histograms and Analysis
 -----------------------
- 
-rangeSim produces several histo which are saved as testem1.root by default.Content of these histo:  
 
- 1.  total energy deposit
-      
-The histograms are managed by G4AnalysisManager class and its Messenger. The histos can be individually activated with the command :
-   `/analysis/h1/set id nbBins  valMin valMax unit` 
-where unit is the desired unit for the histo (MeV or keV, deg or mrad, etc..)
-   
-One can control the name of the histograms file with the command:
-   `/analysis/setFileName  name`  (default testem1)
-   
-     
-   It is also possible to print selected histograms on an ascii file:
-   /analysis/h1/setAscii id
-   All selected histos will be written on a file name.ascii  (default testem1)
+No histograms are produced in this simulation. Instead, the analysis of the simulation can be summerized into a csv with the provided python script, `analysis.py`
 
