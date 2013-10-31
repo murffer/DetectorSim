@@ -11,7 +11,6 @@ class G4Run;
 class G4ParticleGun;
 class DetectorConstruction;
 class PrimaryGeneratorAction;
-class HistoManager;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -36,7 +35,7 @@ class RunAction : public G4UserRunAction
   private:
     DetectorConstruction*   fDetector;      /** Pointer to detector geometry */
     PrimaryGeneratorAction* fPrimary;       /** Pointer to primary action    */
-    HistoManager*           fHistoManager;  /** Pointer to analysis manager  */
+
       
     G4double        fEdep;       /** Energy deposition in run    */
     G4double        fEdep2;

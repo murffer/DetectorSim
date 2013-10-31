@@ -1,7 +1,6 @@
 #include "RunAction.hh"
 #include "DetectorConstruction.hh"
 #include "PrimaryGeneratorAction.hh"
-#include "HistoManager.hh"
 
 #include "G4Run.hh"
 #include "G4ParticleGun.hh"
@@ -22,13 +21,13 @@
 RunAction::RunAction(DetectorConstruction* det, PrimaryGeneratorAction* kin)
 :fDetector(det), fPrimary(kin)
 { 
- fHistoManager = new HistoManager();
+
 }
 
 
 RunAction::~RunAction()
 {
- delete fHistoManager;
+
 }
 
 /**
@@ -42,13 +41,7 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
   G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
 
   fEdep = fEdep2 = 0.;
-     
-  //histograms
-  //
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  if ( analysisManager->IsActive() ) {
-    analysisManager->OpenFile();
-  }   
+    
 }
 
 /**
@@ -98,12 +91,5 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     
     // reset default precision
  G4cout.precision(prec);
-                                    
-    
-  //save histograms
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  if ( analysisManager->IsActive() ) {
-    analysisManager->Write();
-    analysisManager->CloseFile();
-  }
+
 }
