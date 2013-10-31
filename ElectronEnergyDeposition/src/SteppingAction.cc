@@ -25,7 +25,6 @@ SteppingAction::SteppingAction(RunAction* run, EventAction* event)
  */
 void SteppingAction::UserSteppingAction(const G4Step* aStep)
 {
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
    
   G4double EdepStep = aStep->GetTotalEnergyDeposit();
   if (EdepStep > 0.) {  fRunAction->AddEdep(EdepStep);

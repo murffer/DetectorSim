@@ -1,6 +1,5 @@
 #include "EventAction.hh"
 
-#include "EventActionMessenger.hh"
 #include "HistoManager.hh"
 
 #include "G4Event.hh"
@@ -13,16 +12,16 @@
  * and using the default EventActionMessenger.
  */
 EventAction::EventAction()
-  :fDrawFlag("none"),fPrintModulo(100000),fEventMessenger(0)
+  :fDrawFlag("none"),fPrintModulo(100000)
 {
-  fEventMessenger = new EventActionMessenger(this);
+ 
 }
 /**
  * Deconstructor by deleting the event messenger
  */
 EventAction::~EventAction()
 {
-  delete fEventMessenger;
+
 }
 /**
  * Initilizes the energy deposition of the event and prints the event

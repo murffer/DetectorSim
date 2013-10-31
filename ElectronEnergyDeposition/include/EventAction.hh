@@ -41,6 +41,5 @@ class EventAction : public G4UserEventAction
     G4String               fDrawFlag;           /** Flag to draw the energy */
     G4int                  fPrintModulo;        /** Print modulos           */
 
-    EventActionMessenger*  fEventMessenger;
 };
 #endif
