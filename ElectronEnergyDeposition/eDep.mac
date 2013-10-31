@@ -13,14 +13,11 @@
 # Simulated Ranges
 /gun/particle e-
 /gun/energy 1 keV
-/analysis/h1/set 1 100 0 1 keV
 /control/execute caloSizes.mac
 #
 /gun/energy 10 keV
-/analysis/h1/set 1 100 0 10 keV
 /control/execute caloSizes.mac
 #
 /gun/energy 100 keV
-/analysis/h1/set 1 100 0 100 keV
 /control/execute caloSizes.mac
 #

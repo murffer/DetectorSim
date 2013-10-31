@@ -1,7 +1,6 @@
 #include "SteppingAction.hh"
 #include "RunAction.hh"
 #include "EventAction.hh"
-#include "HistoManager.hh"
 
 #include "G4SteppingManager.hh"
 #include "G4VProcess.hh"
@@ -27,9 +26,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 {
    
   G4double EdepStep = aStep->GetTotalEnergyDeposit();
-  if (EdepStep > 0.) {
-                      fEventAction->AddEdep(EdepStep);
-  }
+  if (EdepStep > 0.) { fEventAction->AddEdep(EdepStep);}
 
 
 }
