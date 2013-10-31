@@ -1,24 +1,21 @@
 /det/setSize 10 um
+/det/update
 /run/beamOn 10000
 /det/setSize 22 um
+/det/update
 /run/beamOn 10000
 /det/setSize 46 um
+/det/update
 /run/beamOn 10000
 /det/setSize 100 um
+/det/update
 /run/beamOn 10000
 /det/setSize 220 um
+/det/update
 /run/beamOn 10000
 /det/setSize 460 um
+/det/update
 /run/beamOn 10000
 /det/setSize 1 mm
-/run/beamOn 10000
-/det/setSize 2.2 mm
-/run/beamOn 10000
-/det/setSize 4.6 mm
-/run/beamOn 10000
-/det/setSize 10 mm
-/run/beamOn 10000
-/det/setSize 22 mm
-/run/beamOn 10000
-/det/setSize 46 mm
+/det/update
 /run/beamOn 10000

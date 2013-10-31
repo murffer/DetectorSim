@@ -30,9 +30,3 @@
 /analysis/h1/set 1 100 0 100 keV
 /control/execute caloSizes.mac
 #
-/gps/particle e-
-/control/execute beamSource.mac
-/gps/ene/mono 1000 keV
-/analysis/h1/set 1 100 0 1000 keV
-/control/execute caloSizes.mac
-#
