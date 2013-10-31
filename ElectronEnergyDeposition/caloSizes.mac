@@ -39,6 +39,7 @@
 /run/beamOn 100000
 /det/setSize 398.1 um
 /det/update
+/run/beamOn 100000
 /det/setSize 631.0 um
 /det/update
 /run/beamOn 100000
