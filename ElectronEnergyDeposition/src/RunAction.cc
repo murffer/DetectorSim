@@ -66,28 +66,24 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
    
   G4cout << "\n ======================== run summary ======================\n";
   
-  G4int prec = G4cout.precision(5);
+  G4int prec = G4cout.precision(8);
   
   G4cout << "\n The run was: " << NbOfEvents << " " << partName << " of "
          << G4BestUnit(energy,"Energy") << " through " 
          << G4BestUnit(length,"Length") << " of "
          << material->GetName() << " (density: " 
-         << G4BestUnit(density,"Volumic Mass") << ")\n" << G4endl;
-
-
-    G4double eDepRms;
+         << G4BestUnit(density,"Volumic Mass") << ")" << G4endl;
 
     fEdep /= dNbOfEvents; fEdep2 /= dNbOfEvents;
-    eDepRms = fEdep2 - fEdep*fEdep;
+    G4double eDepRms = fEdep2 - fEdep*fEdep;
     if (eDepRms>0.) eDepRms = std::sqrt(eDepRms); else eDepRms = 0.;
     
  G4cout << "\n total energy deposit: " 
         << G4BestUnit(fEdep, "Energy")
         << "+/- "<<G4BestUnit(eDepRms,"Energy")
         <<G4endl;
-    
-    
-    G4cout << "\n ============================================================\n";
+
+    G4cout << " ============================================================\n";
     
     // reset default precision
  G4cout.precision(prec);
