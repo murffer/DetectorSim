@@ -8,5 +8,5 @@ Naming Conventions:
   Abosrber - the GS20 Scintillator
   PMT - the pmt
 
-The seperate histograms can be combined with the following command.
+The seperate histograms can be combined using the clean up script provided with the simulation
   `hadd GS20_Neutron.root GS20_Neutron_*.root`
