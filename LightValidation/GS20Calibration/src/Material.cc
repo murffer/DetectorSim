@@ -354,9 +354,9 @@ void Materials::SetOpticalPropertiesGS20(){
     MPTGS20->AddConstProperty("FASTTIMECONSTANT",50*ns);      //
     MPTGS20->AddConstProperty("SCINTILLATIONYIELD", 3600/MeV);
     MPTGS20->AddConstProperty("YIELDRATIO", 1.0);
-    MPTGS20->AddConstProperty("RESOLUTIONSCALE", 1);
+    MPTGS20->AddConstProperty("RESOLUTIONSCALE", 8);
     GS20->SetMaterialPropertiesTable(MPTGS20);
-    GS20->GetIonisation()->SetBirksConstant(0.025*mm/MeV);
+    GS20->GetIonisation()->SetBirksConstant(0.01*mm/MeV);
 }
 /**
  * Sets the optical properties of BK7
