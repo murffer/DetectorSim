@@ -28,6 +28,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include
                     ${Geant4_INCLUDE_DIR})
 file(GLOB sources ${PROJECT_SOURCE_DIR}/src/*.cc)
 file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
+file(GLOB macros ${PROJECT_SOURCE_DIR}/*.mac)
 
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
@@ -41,7 +42,8 @@ target_link_libraries(electronEDep ${Geant4_LIBRARIES} )
 # relies on these scripts being in the current working directory.
 #
 set(electronEDep_SCRIPTS
-  eDep.mac vis.mac beamSource.mac caloSizes.mac
+  eDep.mac 
+  caloSizes.mac
   )
 
 foreach(_script ${electronEDep_SCRIPTS})
