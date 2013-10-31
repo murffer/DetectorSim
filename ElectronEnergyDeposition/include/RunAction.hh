@@ -31,7 +31,7 @@ class RunAction : public G4UserRunAction
      *
      * @param - the energy deposited in the run
      */
-    void AddEdep(G4double val)     { fEdep += val;}
+    void AddEdep(G4double val)     { fEdep += val; fEdep2 += val*val;};
   
   private:
     DetectorConstruction*   fDetector;      /** Pointer to detector geometry */
@@ -39,6 +39,7 @@ class RunAction : public G4UserRunAction
     HistoManager*           fHistoManager;  /** Pointer to analysis manager  */
       
     G4double        fEdep;       /** Energy deposition in run    */
+    G4double        fEdep2;
 
 };
 #endif

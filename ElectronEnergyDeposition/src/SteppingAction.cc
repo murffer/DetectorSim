@@ -13,8 +13,8 @@
  * @param run - the RunAction
  * @param event - the EventAction
  */
-SteppingAction::SteppingAction(RunAction* run, EventAction* event)
-:fRunAction(run), fEventAction(event)
+SteppingAction::SteppingAction(EventAction* event)
+:fEventAction(event)
 { }
 
 /**
@@ -27,7 +27,7 @@ void SteppingAction::UserSteppingAction(const G4Step* aStep)
 {
    
   G4double EdepStep = aStep->GetTotalEnergyDeposit();
-  if (EdepStep > 0.) {  fRunAction->AddEdep(EdepStep);
+  if (EdepStep > 0.) {
                       fEventAction->AddEdep(EdepStep);
   }
 

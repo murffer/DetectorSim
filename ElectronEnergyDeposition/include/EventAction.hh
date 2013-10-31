@@ -5,10 +5,11 @@
 #include "globals.hh"
 
 class EventActionMessenger;
+class RunAction;
 class EventAction : public G4UserEventAction
 {
   public:
-    EventAction();
+    EventAction(RunAction*);
     ~EventAction();
 
   public:
@@ -37,6 +38,7 @@ class EventAction : public G4UserEventAction
 
 
   private:
+        RunAction*    fRunAction;       /** Pointer to RunAction    */
     G4double               fTotalEnergyDeposit; /** Total Energy Depositon  */
     G4String               fDrawFlag;           /** Flag to draw the energy */
     G4int                  fPrintModulo;        /** Print modulos           */

@@ -40,12 +40,8 @@ RunAction::~RunAction()
 void RunAction::BeginOfRunAction(const G4Run* aRun)
 {  
   G4cout << "### Run " << aRun->GetRunID() << " start." << G4endl;
-  
-  // save Rndm status
-  ////G4RunManager::GetRunManager()->SetRandomNumberStore(true);
-  CLHEP::HepRandom::showEngineStatus();
 
-  fEdep = 0.;
+  fEdep = fEdep2 = 0.;
      
   //histograms
   //
@@ -83,25 +79,31 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
          << G4BestUnit(energy,"Energy") << " through " 
          << G4BestUnit(length,"Length") << " of "
          << material->GetName() << " (density: " 
-         << G4BestUnit(density,"Volumic Mass") << ")" << G4endl;
-         
- G4cout << "\n ============================================================\n";
- 
- G4cout << "\n total energy deposit: " 
-        << G4BestUnit(fEdep/dNbOfEvents, "Energy") << G4endl;
-             
+         << G4BestUnit(density,"Volumic Mass") << ")\n" << G4endl;
 
+
+    G4double eDepRms;
+
+    fEdep /= dNbOfEvents; fEdep2 /= dNbOfEvents;
+    eDepRms = fEdep2 - fEdep*fEdep;
+    if (eDepRms>0.) eDepRms = std::sqrt(eDepRms); else eDepRms = 0.;
+    
+ G4cout << "\n total energy deposit: " 
+        << G4BestUnit(fEdep, "Energy")
+        << "+/- "<<G4BestUnit(eDepRms,"Energy")
+        <<G4endl;
+    
+    
+    G4cout << "\n ============================================================\n";
+    
     // reset default precision
  G4cout.precision(prec);
                                     
     
-  //save histograms      
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();  
+  //save histograms
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   if ( analysisManager->IsActive() ) {
     analysisManager->Write();
     analysisManager->CloseFile();
-  }    
-  
-  // show Rndm status
-  CLHEP::HepRandom::showEngineStatus(); 
+  }
 }

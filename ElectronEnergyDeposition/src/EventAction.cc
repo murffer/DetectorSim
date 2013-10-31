@@ -1,4 +1,5 @@
 #include "EventAction.hh"
+#include "RunAction.hh"
 
 #include "HistoManager.hh"
 
@@ -11,8 +12,8 @@
  * The default print is set to every 100,000 events along without drawing 
  * and using the default EventActionMessenger.
  */
-EventAction::EventAction()
-  :fDrawFlag("none"),fPrintModulo(100000)
+EventAction::EventAction(RunAction* run)
+:fRunAction(run),fDrawFlag("none"),fPrintModulo(100000)
 {
  
 }
@@ -29,15 +30,8 @@ EventAction::~EventAction()
  *
  * @param evt - the event
  */
-void EventAction::BeginOfEventAction(const G4Event* evt)
-{
- G4int evtNb = evt->GetEventID();
- 
- //printing survey
- if (evtNb%fPrintModulo == 0) {
-    G4cout << "\n---> Begin of Event: " << evtNb << G4endl;
-}
- 
+void EventAction::BeginOfEventAction(const G4Event*){
+
  //additional initializations            
  fTotalEnergyDeposit = 0.;
 }
@@ -49,5 +43,6 @@ void EventAction::BeginOfEventAction(const G4Event* evt)
  */
 void EventAction::EndOfEventAction(const G4Event*)
 {
+    fRunAction->AddEdep(fTotalEnergyDeposit);
   G4AnalysisManager::Instance()->FillH1(1,fTotalEnergyDeposit);
 }
