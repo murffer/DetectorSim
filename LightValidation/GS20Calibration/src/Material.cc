@@ -20,7 +20,6 @@ Materials::Materials(){
   CreateMaterials();
   SetOpticalPropertiesTeflon();
   SetOpticalPropertiesGS20();
-  SetOpticalPropertiesPS();
   SetOpticalPropertiesEJ200();
   SetOpticalPropertiesEJ426();
   SetOpticalPropertiesBK7();
@@ -32,7 +31,6 @@ Materials::Materials(){
 Materials::~Materials(){
 	delete Teflon;      /* Teflon Tape    */
   delete EJ200;				/* EJ-200					*/
-  delete psDet;				/* PS Lif Detector 		*/
   delete EJ426;				/* EJ-426 (LiF ZnS:Ag)*/
   delete GS20;        /* GS20 Detector  */
   delete BK7;         /* PMT Window Glass (Boroscilate) */
@@ -141,14 +139,6 @@ void Materials::CreateMaterials(){
     GS20->AddMaterial(LiOxide,18*perCent);
     GS20->AddMaterial(Ce2O3,4*perCent);
     
-    //--------------------------------------------------
-    // LiF Polystyrene
-    //--------------------------------------------------
-    G4Material* ps = nistMan->FindOrBuildMaterial("G4_POLYSTYRENE");
-    psDet = new G4Material("PSLiF",1.1*g/cm3,2,kStateSolid);
-    psDet->AddMaterial(ps,90*perCent);
-    psDet->AddMaterial(LiF,10*perCent);
-    
 		//----------------------------------------------------------------------
     // EJ426 (LiF/ZnS(Ag)). See pg. 114 of Urffer II Labnote book
     //----------------------------------------------------------------------
@@ -256,60 +246,6 @@ void Materials::SetOpticalPropertiesEJ426(){
     MPTEJ426->DumpTable();
     EJ426->SetMaterialPropertiesTable(MPTEJ426);
 }
-/**
- * Sets the Optical Properties for Polystyrene
- *
- */
-void Materials::SetOpticalPropertiesPS(){
-    //--------------------------------------------------
-    //  Polystyrene
-    //--------------------------------------------------
-    
-    const G4int nEntries = 50;
-    
-    G4double PhotonEnergy[nEntries] =
-    {2.00*eV,2.03*eV,2.06*eV,2.09*eV,2.12*eV,
-        2.15*eV,2.18*eV,2.21*eV,2.24*eV,2.27*eV,
-        2.30*eV,2.33*eV,2.36*eV,2.39*eV,2.42*eV,
-        2.45*eV,2.48*eV,2.51*eV,2.54*eV,2.57*eV,
-        2.60*eV,2.63*eV,2.66*eV,2.69*eV,2.72*eV,
-        2.75*eV,2.78*eV,2.81*eV,2.84*eV,2.87*eV,
-        2.90*eV,2.93*eV,2.96*eV,2.99*eV,3.02*eV,
-        3.05*eV,3.08*eV,3.11*eV,3.14*eV,3.17*eV,
-        3.20*eV,3.23*eV,3.26*eV,3.29*eV,3.32*eV,
-        3.35*eV,3.38*eV,3.41*eV,3.44*eV,3.47*eV};
-    G4double RefractiveIndexPS[nEntries] =
-    { 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50,
-        1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50,
-        1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50,
-        1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50,
-        1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50, 1.50};
-    
-    G4double AbsPS[nEntries] =
-    {2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,
-        2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,
-        2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,
-        2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,
-        2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm,2.*cm};
-    
-    G4double ScintilFast[nEntries] =
-    {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-        0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-        1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-        1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-    
-    // Add entries into properties table
-    G4MaterialPropertiesTable* MPTPolystyrene = new G4MaterialPropertiesTable();
-    MPTPolystyrene->AddProperty("RINDEX",PhotonEnergy,RefractiveIndexPS,nEntries);
-    MPTPolystyrene->AddProperty("ABSLENGTH",PhotonEnergy,AbsPS,nEntries);
-    MPTPolystyrene->AddProperty("FASTCOMPONENT",PhotonEnergy, ScintilFast,nEntries);
-    MPTPolystyrene->AddConstProperty("SCINTILLATIONYIELD",1000/MeV);
-    MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE",1.5);
-    MPTPolystyrene->AddConstProperty("FASTTIMECONSTANT", 10.*ns);
-    psDet->SetMaterialPropertiesTable(MPTPolystyrene);
-    psDet->GetIonisation()->SetBirksConstant(0.025*mm/MeV);
-}
 
 /**
  * Sets the optical properties of EJ200
@@ -416,9 +352,9 @@ void Materials::SetOpticalPropertiesGS20(){
     // Setting  Scintillation Properties
 	  MPTGS20->AddProperty("FASTCOMPONENT",photonEnergyEM,emGS20,nEM);
     MPTGS20->AddConstProperty("FASTTIMECONSTANT",50*ns);      //
-    MPTGS20->AddConstProperty("SCINTILLATIONYIELD", 3600*MeV);
+    MPTGS20->AddConstProperty("SCINTILLATIONYIELD", 3600/MeV);
     MPTGS20->AddConstProperty("YIELDRATIO", 1.0);
-    MPTGS20->AddConstProperty("RESOLUTIONSCALE", 1.15);
+    MPTGS20->AddConstProperty("RESOLUTIONSCALE", 1);
     GS20->SetMaterialPropertiesTable(MPTGS20);
     GS20->GetIonisation()->SetBirksConstant(0.025*mm/MeV);
 }
