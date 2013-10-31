@@ -12,22 +12,27 @@
 #
 # Simulated Ranges
 /gps/particle e-
+
 /control/execute beamSource.mac
 /gps/ene/mono 1 keV
+/analysis/h1/set 1 100 0 1 keV
 /control/execute caloSizes.mac
 #
 /gps/particle e-
 /control/execute beamSource.mac
 /gps/ene/mono 10 keV
+/analysis/h1/set 1 100 0 10 keV
 /control/execute caloSizes.mac
 #
 /gps/particle e-
 /control/execute beamSource.mac
 /gps/ene/mono 100 keV
+/analysis/h1/set 1 100 0 100 keV
 /control/execute caloSizes.mac
 #
 /gps/particle e-
 /control/execute beamSource.mac
 /gps/ene/mono 1000 keV
+/analysis/h1/set 1 100 0 1000 keV
 /control/execute caloSizes.mac
 #
