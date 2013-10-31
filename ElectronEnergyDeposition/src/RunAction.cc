@@ -78,7 +78,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     G4double eDepRms = fEdep2 - fEdep*fEdep;
     if (eDepRms>0.) eDepRms = std::sqrt(eDepRms); else eDepRms = 0.;
     
- G4cout << "\n total energy deposit: " 
+ G4cout << "   total energy deposit: " 
         << G4BestUnit(fEdep, "Energy")
         << "+/- "<<G4BestUnit(eDepRms,"Energy")
         <<G4endl;
