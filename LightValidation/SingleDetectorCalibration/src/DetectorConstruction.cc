@@ -329,5 +329,6 @@ void DetectorConstruction::UpdateGeometry(){
   // Updating the engine
   G4RunManager::GetRunManager()->GeometryHasBeenModified();
   G4RegionStore::GetInstance()->UpdateMaterialList(worldPV);
+  G4RunManager::GetRunManager()->PhysicsHasBeenModified();
 	G4cout<<"Updated the run engine"<<G4endl;
 }

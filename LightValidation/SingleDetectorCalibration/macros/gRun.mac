@@ -16,7 +16,7 @@
 /analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
 /analysis/h1/set 2 100 0  6000 none    # Number of Optical Photons
 /analysis/h1/set 3 100 0  6000 none    # Number of Optical Photons
-/run/beamOn 1000000
+/run/beamOn 10000
 #
 # GS20 Simulation
 #
@@ -28,4 +28,4 @@
 /analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
 /analysis/h1/set 2 100 0  6000 none    # Number of Optical Photons
 /analysis/h1/set 3 100 0  6000 none    # Number of Optical Photons
-/run/beamOn 1000000
+/run/beamOn 10000
