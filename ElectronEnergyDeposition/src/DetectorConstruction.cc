@@ -61,8 +61,8 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   G4SolidStore::GetInstance()->Clean();
 
   // Creating the new geoemtry
-  G4Box* sBox = new G4Box("Container",fBoxSize/2,fBoxSize/2,fBoxSize/2);
-  fLBox = new G4LogicalVolume(sBox,fMaterial,fMaterial->GetName());
+  G4Box* sBox = new G4Box("World",fBoxSize/2,fBoxSize/2,fBoxSize/2);
+  fLBox = new G4LogicalVolume(sBox,fMaterial,"World");
   fPBox = new G4PVPlacement(0,G4ThreeVector(),fLBox,fMaterial->GetName(),0,false,0);
 
   PrintParameters();
