@@ -16,7 +16,8 @@
 *.a
 
 # CMAKE Build files
-build
+build*
+GNU*
 CMakeCache.txt
 CMakeFiles
 Makefile

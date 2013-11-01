@@ -1,0 +1,11 @@
+# Setting up verbosity
+/tracking/verbose 0
+/run/verbose 0
+# 
+# Running the co60 beam source
+#
+/control/execute macros/co60Source.mac
+#
+# Setting up the analysis
+#
+/control/execute macros/BirksConstant.mac

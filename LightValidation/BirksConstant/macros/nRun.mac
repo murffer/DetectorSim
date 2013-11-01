@@ -1,0 +1,11 @@
+# Setting up verbosity
+/tracking/verbose 0
+/run/verbose 0
+#
+# Setting up the source
+#
+/control/execute macros/neutronSource.mac
+#
+# Setting up the analysis
+#
+/control/execute macros/BirksConstant.mac
