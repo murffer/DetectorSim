@@ -151,7 +151,6 @@ void Materials::CreateMaterials(){
 	EJ426->AddMaterial(nistMan->FindOrBuildMaterial("G4_F"),0.253);
 	EJ426->AddMaterial(nistMan->FindOrBuildMaterial("G4_Zn"),0.447);
 	EJ426->AddMaterial(nistMan->FindOrBuildMaterial("G4_S"),0.219);
-	G4cout<<EJ426;
 
 	//--------------------------------------------------
 	// LiF Polystyrene
@@ -254,7 +253,7 @@ void Materials::SetOpticalPropertiesPMMA(){
  *  Light yield from Eijk
  */
 void Materials::SetOpticalPropertiesEJ426(){
-    
+
 	// Refrative Index
 	const G4int nRINDEX = 2;
 	G4double photonEnergyRINDEX[nRINDEX] = {3.5*eV,2.75*eV};
@@ -263,7 +262,7 @@ void Materials::SetOpticalPropertiesEJ426(){
 	// Absorbition Length
 	const G4int nABS=2;
 	G4double photonEnergyABS[nABS] = {3.5*eV,2.75*eV};
-	G4double AbsLengthEJ426[nABS]={100*um,100*um};
+	G4double AbsLengthEJ426[nABS]={1*mm,1*mm};
 
 	// Setting sctintillation to be the emission spectra
 	const G4int nEM = 10;
@@ -281,13 +280,13 @@ void Materials::SetOpticalPropertiesEJ426(){
 	// Setting  Scintillation Properties
 	MPTEJ426->AddProperty("FASTCOMPONENT",photonEnergyEM,emEJ426,nEM);
 	MPTEJ426->AddConstProperty("FASTTIMECONSTANT",200*ns);     
-	MPTEJ426->AddConstProperty("SCINTILLATIONYIELD", 72000*MeV);
+	MPTEJ426->AddConstProperty("SCINTILLATIONYIELD", 72000/MeV);
 	MPTEJ426->AddConstProperty("YIELDRATIO", 1.0);
-	MPTEJ426->AddConstProperty("RESOLUTIONSCALE", 1.0);
+	MPTEJ426->AddConstProperty("RESOLUTIONSCALE", 8.0);
 	MPTEJ426->DumpTable();
-    G4double birksConstant = 0.0052*mm/MeV;
+	G4double birksConstant = 0.1*mm/MeV;
 	EJ426->SetMaterialPropertiesTable(MPTEJ426);
-    EJ426->GetIonisation()->SetBirksConstant(birksConstant);
+	EJ426->GetIonisation()->SetBirksConstant(birksConstant);
 }
 /**
  * Sets the optical properties of Teflon
@@ -357,10 +356,10 @@ void Materials::SetOpticalPropertiesGS20(){
 	// Setting  Scintillation Properties
 	MPTGS20->AddProperty("FASTCOMPONENT",photonEnergyEM,emGS20,nEM);
 	MPTGS20->AddConstProperty("FASTTIMECONSTANT",50*ns);      //
-	MPTGS20->AddConstProperty("SCINTILLATIONYIELD", 3600*MeV);
+	MPTGS20->AddConstProperty("SCINTILLATIONYIELD", 3600/MeV);
 	MPTGS20->AddConstProperty("YIELDRATIO", 1.0);
-	MPTGS20->AddConstProperty("RESOLUTIONSCALE", 1.0);
-    G4double birksConstant = 0.0052*mm/MeV;
+	MPTGS20->AddConstProperty("RESOLUTIONSCALE", 8.0);
+	G4double birksConstant = 0.1*mm/MeV;
 	GS20->SetMaterialPropertiesTable(MPTGS20);
 	GS20->GetIonisation()->SetBirksConstant(birksConstant);
 }
@@ -515,9 +514,9 @@ void Materials::SetOpticalPropertiesPS(){
 	MPTPolystyrene->AddProperty("ABSLENGTH",PhotonEnergy,AbsPS,nEntries);
 	MPTPolystyrene->AddProperty("FASTCOMPONENT",PhotonEnergy, ScintilFast,nEntries);
 	MPTPolystyrene->AddConstProperty("SCINTILLATIONYIELD",1./keV);
-	MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE",1.0);
+	MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE",10.0);
 	MPTPolystyrene->AddConstProperty("FASTTIMECONSTANT", 10.*ns);
-    G4double birksConstant = 0.09*mm/MeV;
+	G4double birksConstant = 0.1*mm/MeV;
 	psDet->SetMaterialPropertiesTable(MPTPolystyrene);
 	psDet->GetIonisation()->SetBirksConstant(birksConstant);
 }
