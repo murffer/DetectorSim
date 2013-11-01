@@ -254,6 +254,7 @@ void Materials::SetOpticalPropertiesPMMA(){
  *  Light yield from Eijk
  */
 void Materials::SetOpticalPropertiesEJ426(){
+    
 	// Refrative Index
 	const G4int nRINDEX = 2;
 	G4double photonEnergyRINDEX[nRINDEX] = {3.5*eV,2.75*eV};
@@ -284,8 +285,9 @@ void Materials::SetOpticalPropertiesEJ426(){
 	MPTEJ426->AddConstProperty("YIELDRATIO", 1.0);
 	MPTEJ426->AddConstProperty("RESOLUTIONSCALE", 1.0);
 	MPTEJ426->DumpTable();
+    G4double birksConstant = 0.0052*mm/MeV;
 	EJ426->SetMaterialPropertiesTable(MPTEJ426);
-    EJ426->GetIonisation()->SetBirksConstant(0.0052*mm/MeV);
+    EJ426->GetIonisation()->SetBirksConstant(birksConstant);
 }
 /**
  * Sets the optical properties of Teflon
@@ -358,8 +360,9 @@ void Materials::SetOpticalPropertiesGS20(){
 	MPTGS20->AddConstProperty("SCINTILLATIONYIELD", 3600*MeV);
 	MPTGS20->AddConstProperty("YIELDRATIO", 1.0);
 	MPTGS20->AddConstProperty("RESOLUTIONSCALE", 1.0);
+    G4double birksConstant = 0.0052*mm/MeV;
 	GS20->SetMaterialPropertiesTable(MPTGS20);
-	GS20->GetIonisation()->SetBirksConstant(0.0052*mm/MeV);
+	GS20->GetIonisation()->SetBirksConstant(birksConstant);
 }
 /**
  * Sets the optical properties of BK7
@@ -514,8 +517,9 @@ void Materials::SetOpticalPropertiesPS(){
 	MPTPolystyrene->AddConstProperty("SCINTILLATIONYIELD",1./keV);
 	MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE",1.0);
 	MPTPolystyrene->AddConstProperty("FASTTIMECONSTANT", 10.*ns);
+    G4double birksConstant = 0.09*mm/MeV;
 	psDet->SetMaterialPropertiesTable(MPTPolystyrene);
-	psDet->GetIonisation()->SetBirksConstant(0.09*mm/MeV);
+	psDet->GetIonisation()->SetBirksConstant(birksConstant);
 }
 
 /**
