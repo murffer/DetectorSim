@@ -1,7 +1,7 @@
 #----------------------------------------------------------------------------
 # Setup the project
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-project(birksConstnat)
+project(birksConstant)
 
 option(USE_MPI "Use the GEANT4 MPI Libararies" OFF)
 if(USE_MPI)
@@ -58,15 +58,15 @@ file(GLOB headers ${PROJECT_SOURCE_DIR}/include/*.hh)
 #----------------------------------------------------------------------------
 # Add the executable, and link it to the Geant4 libraries
 #
-add_executable(birksConstnat birksConstnat.cc ${sources} ${headers})
-target_link_libraries(birksConstnat ${Geant4_LIBRARIES} )
+add_executable(birksConstant birksConstant.cc ${sources} ${headers})
+target_link_libraries(birksConstant ${Geant4_LIBRARIES} )
 
 #----------------------------------------------------------------------------
 # Copy all scripts to the build directory, i.e. the directory in which we
-# build birksConstnat. This is so that we can run the executable directly because it
+# build birksConstant. This is so that we can run the executable directly because it
 # relies on these scripts being in the current working directory.
 #
-set(birksConstnat_SCRIPTS
+set(birksConstant_SCRIPTS
   macros/co60Source.mac
   macros/gRun.mac
   macros/nRun.mac
@@ -76,7 +76,7 @@ set(birksConstnat_SCRIPTS
   gui.mac
   )
 
-foreach(_script ${birksConstnat_SCRIPTS})
+foreach(_script ${birksConstant_SCRIPTS})
   configure_file(
     ${PROJECT_SOURCE_DIR}/${_script}
     ${PROJECT_BINARY_DIR}/${_script}
@@ -88,5 +88,5 @@ endforeach()
 #----------------------------------------------------------------------------
 # Install the executable to 'bin' directory under CMAKE_INSTALL_PREFIX
 #
-install(TARGETS birksConstnat DESTINATION bin)
+install(TARGETS birksConstant DESTINATION bin)
 

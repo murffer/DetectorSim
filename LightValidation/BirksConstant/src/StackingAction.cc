@@ -35,12 +35,14 @@ void StackingAction::PrepareNewEvent(){
  * ClassifyNewTrack
  *
  * Called every time a new track needs to be classified, so we can use it to
- * determine in the new track is an optical photon
+ * determine in the new track is an optical photon. Once the track has been
+ * classified (if it is an optical photon) the track is killed.
  */
 G4ClassificationOfNewTrack StackingAction::ClassifyNewTrack(const G4Track* track){
   // Optical Photon Counter
   if(track->GetDefinition()== G4OpticalPhoton::OpticalPhotonDefinition()){
       optPhotonCounter++;
+      return fKill;
   }
   return fUrgent;
 }

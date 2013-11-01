@@ -17,7 +17,6 @@ class G4Material;
 class DetectorMessenger;
 class Materials;
 
-class PMTSD;
 
 class DetectorConstruction : public G4VUserDetectorConstruction{
     
@@ -96,10 +95,6 @@ private:
     G4double pmtRadius;           /* Radius of the PMT used in the RPM8       */
     G4double lightGuideHeight;    /* Height of the light guide to the PMT     */
     G4double sliceThickness;      /* Thickness of a detector slice  (with mounting)          */
-    
-    
-    // Sensitive Detectors
-    PMTSD*  pmtSD;               /* PMT SD  (Top PMT)        */
   
     
     G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps

@@ -33,7 +33,6 @@
 #include "G4PVPlacement.hh"
 
 #include "G4SDManager.hh"
-#include "PMTSD.hh"
 
 #include "G4VisAttributes.hh"
 #include "G4Colour.hh"
@@ -202,12 +201,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
     lightGuideLV->SetVisAttributes(atb);
     pmtLV->SetVisAttributes(atb);
 
-    
-    // Setting PMT Sensitive Detectors
-    G4SDManager* SDman = G4SDManager::GetSDMpointer();
-    pmtSD = new PMTSD("PMT/PMTSD","PMTHitCollection");
-    SDman->AddNewDetector(pmtSD);
-    pmtLV->SetSensitiveDetector(pmtSD);
 
     
     // Print Materials
