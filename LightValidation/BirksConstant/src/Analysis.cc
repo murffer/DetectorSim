@@ -71,11 +71,10 @@ void Analysis::PrepareNewRun(const G4Run* ){
  * PrepareNewEvent
  *
  * @brief - Called before each event
- * The energy deposition per slice is initialzed per event
+ * The number of optical photons created is set to 0.0
  */
 void Analysis::PrepareNewEvent(const G4Event* ){
-  // Initialize energy deposition to zero
-  nOPDetEvent = 0.0;
+
   nOPAbsEvent = 0.0;
 }
 
@@ -85,23 +84,11 @@ void Analysis::PrepareNewEvent(const G4Event* ){
  *
  * @param G4Event* event
  */
-void Analysis::EndOfEvent(const G4Event* event){
-  G4VHitsCollection *hc;
+void Analysis::EndOfEvent(const G4Event* ){
 
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  // Iterating through the hit collection to accumulate the energy deposition 
-  G4int numHitColl = event->GetHCofThisEvent()->GetNumberOfCollections();
-  for(G4int hitItter = 0; hitItter < numHitColl; hitItter++){
-    // Itterating through the hit collection
-    hc = event->GetHCofThisEvent()->GetHC(hitItter);
-    nOPDetEvent += hc->GetSize();
 
-  }
-  // Adding to the run accumulation only events with deposit energy
-  if (nOPAbsEvent > 0.0){
-    analysisManager->FillH1(2,nOPDetEvent);
   analysisManager->FillH1(1,nOPAbsEvent);
-  }
 }
 
 /**
@@ -115,9 +102,6 @@ void Analysis::EndOfRun(const G4Run* ){
     G4cout<<"\tAverage Number of Optical Photons Created: " 
       << analysisManager->GetH1(1)->mean()
       << " +/- " << analysisManager->GetH1(1)->rms()
-      << "\n\tAverage Number of Optical Photons Detected: " 
-      << analysisManager->GetH1(2)->mean() 
-      << " +/- " << analysisManager->GetH1(2)->rms()
       << G4endl;
   
   //save histograms

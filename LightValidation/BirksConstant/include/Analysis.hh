@@ -35,7 +35,6 @@ class Analysis {
     static Analysis *singleton;
 
     // Accumulation Variables
-    G4double nOPDetEvent;
     G4double nOPAbsEvent;
     HistoManager* fHistoManager; /* Histogram Manager */
 };
