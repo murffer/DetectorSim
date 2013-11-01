@@ -8,6 +8,7 @@ import sys
 sys.path.append('../')
 from MCNPMaterial import Materials 
 import subprocess
+import math
 class CylinderRPM(object):
     # Material Dictionaries
     cellForStr = '{:5d} {:d} -{:4.3f} {:d} -{:d} u={:d}\n'
@@ -80,6 +81,19 @@ class CylinderRPM(object):
                 self.surfGeo[r] = 'LightGuide'
         return self.surfGeo
     
+    def calculateDetectorArea(self):
+        """
+        Calculates the area used in a detector
+        """
+        area = 0.0
+        r = self.geoParam['CylinderLightGuideRadius']
+        while(r + self.geoParam['DetectorThickness'] < self.geoParam['CylinderRadius']):
+            area -= math.pow(r,2)
+            r += self.geoParam['DetectorThickness']
+            area += math.pow(r,2)
+            r += self.geoParam['DetectorSpacing']
+        return math.pi*area
+
     def createDetectorCylinder(self,uNum=1):
         """
         Creates a detector cylinder 
@@ -307,13 +321,26 @@ def run(loading,polymers):
             m.createInputDeck(cylinderPositions,inp,name)
             m.runModel()
 
+import glob
+def summerize(loading,polymers):
+    M = Materials()
+    for l in loading:
+        for p in polymers:
+            m  = CylinderRPM()
+            area = m.calculateDetectorArea()
+            M.GetLiMassFraction(l,p)
+
+
 import argparse
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-r','--run',action="store_true",
             default=False,help='Runs the cylinders for multiple polymers and precent loadings')
+    parser.add_argument('-a','--analysis',action="store_true",default=False,help="Analyze the results")
     parser.add_argument('loading',metavar='loading',type=float,nargs='*',action="store",
             default=(0.1,0.2,0.3),help='Precent Loading of LiF')
     args = parser.parse_args()
     if args.run:
         run(args.loading,('PS','PEN'))
+    if args.analysis:
+        summerize(args.loading,('PS','PEN'))
