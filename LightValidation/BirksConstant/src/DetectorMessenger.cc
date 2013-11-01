@@ -14,15 +14,24 @@ DetectorMessenger::DetectorMessenger(DetectorConstruction*  Det)
 { 
 
     
-  DetThickCmd = new G4UIcmdWithADoubleAndUnit("/det/setDetectorThick",this);
+  DetThickCmd = new G4UIcmdWithADoubleAndUnit("/det/setDetThick",this);
   DetThickCmd->SetGuidance("Set Thickness of the Absorber");
   DetThickCmd->SetParameterName("Size",false);
   DetThickCmd->SetRange("Size>=0.");
   DetThickCmd->SetUnitCategory("Length");
   DetThickCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
-    
 
-  UpdateCmd = new G4UIcmdWithoutParameter("/RPM8/det/update",this);
+  DetMatCmd = new G4UIcmdWithAString("/det/setDetMaterial",this);
+  DetMatCmd->SetGuidance("Set the detector material");
+  DetMatCmd->SetCandidates("GS20 PSLiF EJ426");
+  DetMatCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+
+  BirksCmd = new G4UIcmdWithADouble("/det/setBirks",this);
+  BirksCmd->SetParameterName("birks",false);
+  BirksCmd->SetRange("birks>0.");
+  BirksCmd->AvailableForStates(G4State_PreInit,G4State_Idle);
+
+  UpdateCmd = new G4UIcmdWithoutParameter("/det/update",this);
   UpdateCmd->SetGuidance("Update calorimeter geometry.");
   UpdateCmd->SetGuidance("This command MUST be applied before \"beamOn\" ");
   UpdateCmd->SetGuidance("if you changed geometrical value(s).");
