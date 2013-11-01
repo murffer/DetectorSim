@@ -29,7 +29,7 @@ Analysis::Analysis(){
  * Creates a new HistoManager
  */
 void Analysis::Initilize(){
-  fHistoManager = new HistoManager();
+    fHistoManager = new HistoManager();
 }
 /**
  * Cleaning up the analysis manager
@@ -37,7 +37,7 @@ void Analysis::Initilize(){
  * Deleting the HistoManager
  */
 void Analysis::CleanUp(){
-  delete fHistoManager;
+    delete fHistoManager;
 }
 Analysis::~Analysis(){
 }
@@ -50,20 +50,20 @@ Analysis::~Analysis(){
  * is fixed during a run.
  */
 void Analysis::PrepareNewRun(const G4Run* ){
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 #ifdef USE_MPI
 	if ( analysisManager->IsActive() ) {
-				// Creating a filename based on the rank
-			G4int rank = G4MPImanager::GetManager()-> GetRank();
-				char str[64];
-				sprintf(str, "-%03d", rank);
-				G4String fname = analysisManager->GetFileName() + G4String(str);
+        // Creating a filename based on the rank
+        G4int rank = G4MPImanager::GetManager()-> GetRank();
+        char str[64];
+        sprintf(str, "-%03d", rank);
+        G4String fname = analysisManager->GetFileName() + G4String(str);
         analysisManager->OpenFile(fname);
-  }  
+    }
 #else
 	if ( analysisManager->IsActive() ) {
-    analysisManager->OpenFile();
-  }  
+        analysisManager->OpenFile();
+    }
 #endif
 }
 
@@ -74,8 +74,8 @@ void Analysis::PrepareNewRun(const G4Run* ){
  * The number of optical photons created is set to 0.0
  */
 void Analysis::PrepareNewEvent(const G4Event* ){
-
-  nOPAbsEvent = 0.0;
+    
+    nOPAbsEvent = 0.0;
 }
 
 
@@ -85,10 +85,10 @@ void Analysis::PrepareNewEvent(const G4Event* ){
  * @param G4Event* event
  */
 void Analysis::EndOfEvent(const G4Event* ){
-
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-
-  analysisManager->FillH1(1,nOPAbsEvent);
+    
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    
+    analysisManager->FillH1(1,nOPAbsEvent);
 }
 
 /**
@@ -97,22 +97,23 @@ void Analysis::EndOfEvent(const G4Event* ){
  * Called at the end of a run, which summerizes the run
  */
 void Analysis::EndOfRun(const G4Run* ){
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  // Print some output
-    G4cout<<"\tAverage Number of Optical Photons Created: " 
-      << analysisManager->GetH1(1)->mean()
-      << " +/- " << analysisManager->GetH1(1)->rms()
-      << G4endl;
-  
-  //save histograms
-  if ( analysisManager->IsActive() ) {
-    analysisManager->Write();
-    analysisManager->CloseFile();
-  }
+    G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+    if (analysisManager->IsActive()){
+        // Print some output
+        G4cout<<"\tAverage Number of Optical Photons Created: "
+        << analysisManager->GetH1(1)->mean()
+        << " +/- " << analysisManager->GetH1(1)->rms()
+        << G4endl;
+    }
+    //save histograms
+    if ( analysisManager->IsActive() ) {
+        analysisManager->Write();
+        analysisManager->CloseFile();
+    }
 }
 /**
  * Sets the number of optical photons generated
  */
 void Analysis::SetNumOpticalPhotonsGenerated(G4int numPhotons){
-  nOPAbsEvent = numPhotons;
+    nOPAbsEvent = numPhotons;
 }
