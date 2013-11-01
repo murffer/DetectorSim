@@ -1,3 +1,13 @@
-/det/setMaterial
-/det/setBirks
+#
+/det/setDetMaterial GS20
 /det/update
+/run/beamOn 10000
+#
+/det/setDetMaterial PSLiF
+/det/update
+/run/beamOn 10000
+#
+/det/setDetMaterial EJ426
+/det/update
+/run/beamOn 10000
+#

@@ -8,9 +8,4 @@
 #
 # Setting up the analysis
 #
-/analysis/setFileName EJ426_neutron
-/analysis/h1/set 1 100 0  10000 none    # Number of Optical Photons
-/analysis/h1/set 2 100 0  10000 none    # Number of Optical Photons
-# Running through absorber thickness
-/run/beamOn 1000
-#
+/control/execute macros/BirksConstant.mac

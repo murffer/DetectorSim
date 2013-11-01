@@ -262,7 +262,7 @@ void Materials::SetOpticalPropertiesEJ426(){
 	// Absorbition Length
 	const G4int nABS=2;
 	G4double photonEnergyABS[nABS] = {3.5*eV,2.75*eV};
-	G4double AbsLengthEJ426[nABS]={40*um,40*um};
+	G4double AbsLengthEJ426[nABS]={100*um,100*um};
 
 	// Setting sctintillation to be the emission spectra
 	const G4int nEM = 10;
@@ -285,6 +285,7 @@ void Materials::SetOpticalPropertiesEJ426(){
 	MPTEJ426->AddConstProperty("RESOLUTIONSCALE", 1.0);
 	MPTEJ426->DumpTable();
 	EJ426->SetMaterialPropertiesTable(MPTEJ426);
+    EJ426->GetIonisation()->SetBirksConstant(0.0052*mm/MeV);
 }
 /**
  * Sets the optical properties of Teflon
