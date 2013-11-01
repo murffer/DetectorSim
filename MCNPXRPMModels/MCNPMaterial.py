@@ -70,8 +70,8 @@ class Materials(object):
         massFraction = self.ComputeMassFraction(compound)
         matString = self.CreateMaterialString(massFraction)
         return matString.format(mtNum)
-    
-    def GetPSLiF(self,massFractionLiF,mtNum=3):
+   
+    def GetPSLiFCompound(self,massFractionLiF):
         """
         Returns the mass fraction of PS LiF
         keywords:
@@ -80,10 +80,39 @@ class Materials(object):
         self.CheckMassFraction(massFractionLiF)
         # See pg. 35 of 3rd Lab Notebook for derivation
         q = 0.238234/massFractionLiF -0.238234
-        compound = self.ComputeCompositePolymer(q,'PS')
+        return self.ComputeCompositePolymer(q,'PS')
+
+    def GetPSLiF(self,massFractionLiF,mtNum=3):
+        """
+        Returns a MCNPX string representing the mateterial
+        """
+        compound = self.GetPSLiFCompound(massFractionLiF)
         return self.CreateMCNPXMaterial(compound,mtNum)
+   
+    def GetLiMassFraction(self,massFractionLiF,polymer):
+        """
+        Returns the mass fraction of 6-Li in the specified materail
+        """
+        if polymer == 'PS':
+            data = self.GetPSLiFCompound(massFractionLiF)
+        elif polymer == 'PEN':
+            data = self.GetPENLiFCompound(massFractionLiF)
+        else:
+           raise ValueError('Polymer {} is not in the material database'.format(polymer)) 
+        return data['6Li']
     
-        
+    def GetPENLiFCompound(self,massFractionLiF):
+        """
+        Creates a dictionary between the isotopes and the mass fractions
+        for a composite PEN LiF Compound
+        Keywords:
+            massFractionLiF - the mass fraction of LiF in the material
+        """
+        self.CheckMassFraction(massFractionLiF)
+        # See pg. 35 of 3rd Lab notebook for derivation
+        q = 0.10322/massFractionLiF - 0.10322
+        return self.ComputeCompositePolymer(q,'PEN')
+
     def GetPENLiF(self,massFractionLiF,mtNum=3):
         """
         Returns the MCNPX material for the composite PEN LiF Material
@@ -91,10 +120,7 @@ class Materials(object):
         Keywords:
             massFractionLiF - the mass fraction of LiF in the material
         """
-        self.CheckMassFraction(massFractionLiF)
-        # See pg. 35 of 3rd Lab notebook for derivation
-        q = 0.10322/massFractionLiF - 0.10322
-        compound = self.ComputeCompositePolymer(q,'PEN')
+        compound = self.GetPENLiFCompound(massFractionLiF)
         return self.CreateMCNPXMaterial(compound,mtNum)
         
 if __name__ == '__main__':
