@@ -20,15 +20,8 @@ class EventAction : public G4UserEventAction
      *
      * @param Edep - the energy deposition of the event
      */
-    void AddEdep(G4double Edep)    {fTotalEnergyDeposit += Edep;};      
-    /**
-     * @return the energy deposition of the event
-     */
-    G4double GetEnergyDeposit()    {return fTotalEnergyDeposit;};    
-    /**
-     * Sets the draw flag
-     */
-    void SetDrawFlag(G4String val) {fDrawFlag = val;};
+    void AddEdep(G4double,G4double);
+  
     /**
      * Sets the print modulos
      *
@@ -39,9 +32,11 @@ class EventAction : public G4UserEventAction
 
   private:
         RunAction*    fRunAction;       /** Pointer to RunAction    */
-    G4double               fTotalEnergyDeposit; /** Total Energy Depositon  */
-    G4String               fDrawFlag;           /** Flag to draw the energy */
+    G4double fBinWidth = 5*um;      /** Bin Sizes */
+    G4double fWorldSize = 1*cm;
+    G4double*               fTotalEnergyDeposit; /** Total Energy Depositon  */
     G4int                  fPrintModulo;        /** Print modulos           */
+    G4int fNumBins = 0;     /* Number of width bins */
 
 };
 #endif

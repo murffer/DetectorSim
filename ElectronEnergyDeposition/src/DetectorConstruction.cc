@@ -24,7 +24,7 @@
  */
 DetectorConstruction::DetectorConstruction() :fPBox(0), fLBox(0), fMaterial(0)
 {
-  fBoxSize = 10*m;
+  fBoxSize = 1*cm;
   // Creating Detector Materials
   materials = Materials::GetInstance();
   SetMaterial("G4_WATER");  
