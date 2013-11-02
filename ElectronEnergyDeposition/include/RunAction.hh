@@ -37,12 +37,11 @@ class RunAction : public G4UserRunAction
     PrimaryGeneratorAction* fPrimary;       /** Pointer to primary action    */
 
       
-    G4double*        fEdep;       /** Energy deposition in run    */
-    G4double*        fEdep2;
-    G4double fBinWidth = 5*um;      /** Bin Sizes */
-    G4double fWorldSize = 1*cm;
-
-    G4int fNumBins = 0;     /* Number of width bins */
+    G4double* fEdep;       /** Energy deposition in run */
+    G4double* fEdep2;
+    G4double fBinWidth;      /** Bin Sizes */
+    G4double fWorldSize;
+    G4int fNumBins;     /* Number of width bins */
     
 
 };

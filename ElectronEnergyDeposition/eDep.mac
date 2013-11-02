@@ -13,17 +13,17 @@
 # Simulated Ranges
 /gun/particle e-
 /gun/energy 5 keV
-/control/execute caloSizes.mac
+/run/beamOn 100000
 #
 /gun/energy 10 keV
-/control/execute caloSizes.mac
+/run/beamOn 100000
 #
 /gun/energy 50 keV
-/control/execute caloSizes.mac
+/run/beamOn 100000
 #
 /gun/energy 100 keV
-/control/execute caloSizes.mac
+/run/beamOn 100000
 #
 /gun/energy 500 keV
-/control/execute caloSizes.mac
+/run/beamOn 100000
 #
