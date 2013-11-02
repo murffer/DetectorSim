@@ -72,9 +72,15 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
  * @param val - the energy deposition
  */
 void RunAction::AddEdep(G4double xPos, G4double val){
-    G4int index = (int) xPos/fBinWidth;
-    fEdep[index] += val;
-    fEdep2[index] += val*val;
+    if (val > 0){
+        G4int index = G4int((xPos)/fBinWidth);
+        if (index > fNumBins || index < 0){
+            G4cerr<<"The bin index "<<index<<" execeds the range [0 "<<fNumBins<<"]"<<G4endl;
+            G4cerr<<"Run Action Energy: "<<val/keV<<" x position: "<<xPos/um<<" index: "<<index<<G4endl;
+        }
+        fEdep[index] += val;
+        fEdep2[index] += val*val;
+    }
 }
 
 /**
@@ -115,6 +121,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
                 <<","<<eDepTotal<<","<<eDepTotalErr<<"\n";
     }
     myfile.close();
+    G4cout<<"\tRun was "<<G4BestUnit(energy,"Energy")<<" "<<particle<<G4endl;
     G4cout<<"\tTotal Energy Deposited: "<<G4BestUnit(eDepTotal,"Energy")
         <<" +/- "<<G4BestUnit(eDepTotalErr,"Energy")
         <<G4endl;

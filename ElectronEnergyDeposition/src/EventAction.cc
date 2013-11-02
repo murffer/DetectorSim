@@ -30,9 +30,14 @@ EventAction::~EventAction(){
 }
 
 void EventAction::AddEdep(G4double xPos, G4double Edep){
-    G4int index = (int) (xPos+fWorldSize)/fBinWidth;
-    fTotalEnergyDeposit[index] += Edep;
- //   G4cout<<"Added energy "<<Edep/keV<<" to bin "<<index<<" at xPos"<<G4endl;
+    if (Edep > 0){
+        G4int index = G4int((xPos+fWorldSize*0.5)/fBinWidth);
+        if (index > fNumBins || index < 0){
+            G4cerr<<"The bin index "<<index<<" execeds the range [0 "<<fNumBins<<"]"<<G4endl;
+            G4cerr<<"Event Action Energy: "<<Edep/keV<<" x position: "<<xPos/um<<" index: "<<index<<G4endl;
+        }
+        fTotalEnergyDeposit[index] += Edep;
+    }
 }
 /**
  * Initilizes the energy deposition of the event and prints the event
@@ -71,11 +76,10 @@ void EventAction::BeginOfEventAction(const G4Event*){
 void EventAction::EndOfEventAction(const G4Event*)
 {
     /* Copying over event totals to the run */
-    
+    G4double x = fBinWidth/2;
     for (G4int i = 0; i< fNumBins; i++) {
-   //     if (fTotalEnergyDeposit[i] > 0)
-  //          G4cout<<fTotalEnergyDeposit[i]/keV<<G4endl;
-        fRunAction->AddEdep(G4double(i*fBinWidth),fTotalEnergyDeposit[i]);
+        fRunAction->AddEdep(x,fTotalEnergyDeposit[i]);
+        x += fBinWidth;
     }
     /* Cleaning up the memory */
     delete fTotalEnergyDeposit;
