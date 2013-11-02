@@ -24,7 +24,7 @@
  */
 DetectorConstruction::DetectorConstruction() :fPBox(0), fLBox(0), fMaterial(0)
 {
-  fBoxSize = 10*m;
+  fBoxSize = 1*mm;
   // Creating Detector Materials
   materials = Materials::GetInstance();
   SetMaterial("G4_WATER");  
@@ -61,7 +61,7 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes()
   G4SolidStore::GetInstance()->Clean();
 
   // Creating the new geoemtry
-  G4Box* sBox = new G4Box("World",fBoxSize/2,fBoxSize/2,fBoxSize/2);
+  G4Box* sBox = new G4Box("World",fBoxSize/2,fBoxSize*10,fBoxSize*10);
   fLBox = new G4LogicalVolume(sBox,fMaterial,"World");
   fPBox = new G4PVPlacement(0,G4ThreeVector(),fLBox,fMaterial->GetName(),0,false,0);
 

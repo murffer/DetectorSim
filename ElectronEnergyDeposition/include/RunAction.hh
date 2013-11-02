@@ -30,15 +30,21 @@ class RunAction : public G4UserRunAction
      *
      * @param - the energy deposited in the run
      */
-    void AddEdep(G4double val)     { fEdep += val; fEdep2 += val*val;};
+    void AddEdep(G4double, G4double);
   
   private:
     DetectorConstruction*   fDetector;      /** Pointer to detector geometry */
     PrimaryGeneratorAction* fPrimary;       /** Pointer to primary action    */
 
       
-    G4double        fEdep;       /** Energy deposition in run    */
-    G4double        fEdep2;
+    G4double* fEdep;       /** Energy deposition in run */
+    G4double* fEdep2;
+    G4double fEdepTotal;
+    G4double fEdepTotal2;
+    G4double fBinWidth;      /** Bin Sizes */
+    G4double fWorldSize;
+    G4int fNumBins;     /* Number of width bins */
+    
 
 };
 #endif

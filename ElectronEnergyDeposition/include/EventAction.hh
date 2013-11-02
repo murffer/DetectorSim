@@ -8,11 +8,11 @@ class EventActionMessenger;
 class RunAction;
 class EventAction : public G4UserEventAction
 {
-  public:
+public:
     EventAction(RunAction*);
     ~EventAction();
-
-  public:
+    
+public:
     virtual void BeginOfEventAction(const G4Event*);
     virtual void   EndOfEventAction(const G4Event*);
     /**
@@ -20,28 +20,15 @@ class EventAction : public G4UserEventAction
      *
      * @param Edep - the energy deposition of the event
      */
-    void AddEdep(G4double Edep)    {fTotalEnergyDeposit += Edep;};      
-    /**
-     * @return the energy deposition of the event
-     */
-    G4double GetEnergyDeposit()    {return fTotalEnergyDeposit;};    
-    /**
-     * Sets the draw flag
-     */
-    void SetDrawFlag(G4String val) {fDrawFlag = val;};
-    /**
-     * Sets the print modulos
-     *
-     * @param val - the print modulos
-     */
-    void SetPrintModulo(G4int val) {fPrintModulo = val;};
-
-
-  private:
-        RunAction*    fRunAction;       /** Pointer to RunAction    */
-    G4double               fTotalEnergyDeposit; /** Total Energy Depositon  */
-    G4String               fDrawFlag;           /** Flag to draw the energy */
-    G4int                  fPrintModulo;        /** Print modulos           */
-
+    void AddEdep(G4double,G4double);
+    
+    
+private:
+    RunAction*    fRunAction;       /** Pointer to RunAction    */
+    G4double fBinWidth;      /** Bin Sizes */
+    G4double fWorldSize;
+    G4double*               fTotalEnergyDeposit; /** Total Energy Depositon  */
+    G4int fNumBins;     /* Number of width bins */
+    
 };
 #endif
