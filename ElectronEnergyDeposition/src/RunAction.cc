@@ -121,7 +121,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
                 <<","<<eDepTotal<<","<<eDepTotalErr<<"\n";
     }
     myfile.close();
-    G4cout<<"\tRun was "<<G4BestUnit(energy,"Energy")<<" "<<particle<<G4endl;
+    G4cout<<"\tRun was "<<G4BestUnit(energy,"Energy")<<" "<<partName<<G4endl;
     G4cout<<"\tTotal Energy Deposited: "<<G4BestUnit(eDepTotal,"Energy")
         <<" +/- "<<G4BestUnit(eDepTotalErr,"Energy")
         <<G4endl;
