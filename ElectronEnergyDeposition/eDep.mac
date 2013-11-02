@@ -1,7 +1,5 @@
 #
-# Macro file for "rangeSim.cc"
-# 
-# compute the csda range of primary particle
+# Simulate the electron energy runs 
 #
 /control/verbose 0
 /run/verbose 0
