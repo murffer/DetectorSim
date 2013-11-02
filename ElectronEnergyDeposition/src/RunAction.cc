@@ -65,6 +65,7 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
         fEdep[i] = 0.0;
         fEdep2[i] = 0.0;
     }
+    fEdepTotal = fEdepTotal2 = 0.0;
 }
 /**
  * Increments the energy deposition for each run
@@ -81,6 +82,8 @@ void RunAction::AddEdep(G4double xPos, G4double val){
         fEdep[index] += val;
         fEdep2[index] += val*val;
     }
+    fEdepTotal += val;
+    fEdepTotal2 += val*val;
 }
 
 /**
@@ -121,9 +124,14 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
                 <<","<<eDepTotal<<","<<eDepTotalErr<<"\n";
     }
     myfile.close();
+    
+    /* Writing summary data to the screen */
+    fEdepTotal /= dNbOfEvents; fEdepTotal2 /= dNbOfEvents;
+    eDepRms = fEdepTotal2 - fEdepTotal*fEdepTotal;
+    if (eDepRms>0.) eDepRms = std::sqrt(eDepRms); else eDepRms = 0.;
     G4cout<<"\tRun was "<<G4BestUnit(energy,"Energy")<<" "<<partName<<G4endl;
-    G4cout<<"\tTotal Energy Deposited: "<<G4BestUnit(eDepTotal,"Energy")
-        <<" +/- "<<G4BestUnit(eDepTotalErr,"Energy")
+    G4cout<<"\tTotal Energy Deposited: "<<G4BestUnit(fEdepTotal,"Energy")
+        <<" +/- "<<G4BestUnit(eDepRms,"Energy")
         <<G4endl;
     
     /* Cleaning up memory */

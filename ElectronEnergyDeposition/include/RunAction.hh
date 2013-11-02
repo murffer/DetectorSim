@@ -39,6 +39,8 @@ class RunAction : public G4UserRunAction
       
     G4double* fEdep;       /** Energy deposition in run */
     G4double* fEdep2;
+    G4double fEdepTotal;
+    G4double fEdepTotal2;
     G4double fBinWidth;      /** Bin Sizes */
     G4double fWorldSize;
     G4int fNumBins;     /* Number of width bins */
