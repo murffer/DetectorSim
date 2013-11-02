@@ -23,10 +23,10 @@ void ExportHistogram(TFile* f,const char* histKey,const char* outputfile){
  */
 void RunPS(TFile* fN,TFile* fG){
 
-	TH1F* hN = (TH1F*) fN->Get("3");
+	TH1F* hN = (TH1F*) fN->Get("2");
   hN->Sumw2();
   hN->Scale(1.0/hN->GetIntegral());
-	TH1F* hG = (TH1F*) fG->Get("3");
+	TH1F* hG = (TH1F*) fG->Get("2");
   hG->Sumw2();
   hG->Scale(1.0/hG->GetIntegral());
 	TCanvas* c = new TCanvas();
@@ -40,8 +40,8 @@ void RunPS(TFile* fN,TFile* fG){
   c->Update();
   c->SaveAs("PSSimulatedLightOverlap.eps");
   
-  ExportHistogram(fN,"3","PSNeutronOPDist.csv");
-  ExportHistogram(fG,"3","PSGammaOPDist.csv");
+  ExportHistogram(fN,"2","PSNeutronOPDist.csv");
+  ExportHistogram(fG,"2","PSGammaOPDist.csv");
 
 }
 /**
