@@ -43,7 +43,6 @@ target_link_libraries(electronEDep ${Geant4_LIBRARIES} )
 #
 set(electronEDep_SCRIPTS
   eDep.mac 
-  caloSizes.mac
   )
 
 foreach(_script ${electronEDep_SCRIPTS})
