@@ -19,9 +19,6 @@
 /gun/energy 31.62 keV
 /run/beamOn 1000000
 #
-/gun/energy 46.42 keV
-/control/execute caloSizes.mac
-#
 /gun/energy 100 keV
 /run/beamOn 1000000
 #

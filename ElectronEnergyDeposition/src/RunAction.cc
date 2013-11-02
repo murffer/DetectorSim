@@ -15,6 +15,8 @@
 #include <iomanip>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <string>
 
 /**
  * User hook into the run of the GEANT4 simulation, mostly for obtaining
@@ -98,8 +100,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     G4double dNbOfEvents = double(NbOfEvents);
     
     /* Getting run information */
-    G4ParticleDefinition* particle = fPrimary->GetParticleGun()
-    ->GetParticleDefinition();
+    G4ParticleDefinition* particle = fPrimary->GetParticleGun()->GetParticleDefinition();
     G4String partName = particle->GetParticleName();
     G4double energy   = fPrimary->GetParticleGun()->GetParticleEnergy();
     G4Material* material = fDetector->GetMaterial();
@@ -111,7 +112,7 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     std::ofstream myfile;
     std::ostringstream filename;
     filename << material->GetName()<<"_"<<energy/keV<<"keV.csv";
-    myfile.open (filename.str());
+    myfile.open (filename.str().c_str());
     myfile <<"Position (um),Energy Deposited in Slice (keV),error,Total Energy Deposited (keV),error\n";
     
     for (G4int i = 0; i<fNumBins; i++) {
