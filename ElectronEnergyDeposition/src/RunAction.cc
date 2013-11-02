@@ -27,7 +27,7 @@ RunAction::RunAction(DetectorConstruction* det, PrimaryGeneratorAction* kin)
 :fDetector(det), fPrimary(kin)
 {
     fNumBins = 0;
-    fBinWidth = 5*um;
+    fBinWidth = 2.5*um;
     
 }
 

@@ -17,7 +17,7 @@
 EventAction::EventAction(RunAction* run)
 :fRunAction(run)
 {
-    fBinWidth = 5*um;      /** Bin Sizes */
+    fBinWidth = 2.5*um;      /** Bin Sizes */
     fWorldSize = 1*cm;
     fNumBins = 0;     /* Number of width bins */
     
