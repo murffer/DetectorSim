@@ -108,4 +108,8 @@ void RunAction::EndOfRunAction(const G4Run* aRun)
     }
     myfile.close();
     
+    /* Cleaning up memory */
+    delete fEdep;
+    delete fEdep2;
+    
 }
