@@ -172,15 +172,15 @@ void Analysis::SetWorldSize(){
  * @return the corresponding index
  */
 G4int Analysis::GetBinIndex(G4double x){
-    // Iterating down to the bin
-    G4int index = numBins-1;
-    while (x <= posBins[index] && index >= 0)
-        index --;
-    
+    // Iterating to the bin
+    G4int index = 0;
+    while (x > posBins[index]){
+        index ++;
+    }
     // Error checking
     if (index > numBins || index < 0){
         G4cerr<<"The bin index "<<index<<" execeds the range [0 "<<numBins<<"]"<<G4endl;
-        G4cerr<<" x position: "<<x/um<<" index: "<<index<<G4endl;
+        G4cerr<<"\tx position: "<<G4BestUnit(x,"Length")<<" index: "<<index<<G4endl;
     }
     return index;
 }
