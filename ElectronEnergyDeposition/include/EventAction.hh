@@ -5,11 +5,11 @@
 #include "globals.hh"
 
 class EventActionMessenger;
-class RunAction;
+class Analysis;
 class EventAction : public G4UserEventAction
 {
 public:
-    EventAction(RunAction*);
+    EventAction();
     ~EventAction();
     
 public:
@@ -24,11 +24,6 @@ public:
     
     
 private:
-    RunAction*    fRunAction;       /** Pointer to RunAction    */
-    G4double fBinWidth;      /** Bin Sizes */
-    G4double fWorldSize;
-    G4double*               fTotalEnergyDeposit; /** Total Energy Depositon  */
-    G4int fNumBins;     /* Number of width bins */
     
 };
 #endif

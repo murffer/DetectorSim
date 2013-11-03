@@ -17,6 +17,65 @@ Analysis* Analysis::singleton = 0;
 Analysis::Analysis(){
     SetWorldSize();
 }
+
+/**
+ * Adds the energy deposition of a step to the event
+ * @param xPos - the x position of the event
+ * @param eDep - the energy deposition of the event
+ */
+void Analysis::AddEDepEvent(G4double xPos, G4double eDep){
+    if (eDep > 0){
+        G4int index = GetBinIndex(xPos+worldSize*0.5);
+        eDepEvent[index] += eDep;
+    }
+}
+void Analysis::AddEDepRun(G4double xPos, G4double eDep){
+    
+}
+/**
+ * Prepares a new run
+ *
+ * Initilizes the data fields for a new run
+ * @param run object
+ */
+void Analysis::PrepareNewRun(const G4Run*){
+    // Resetting the run energy deposition
+    for (G4int i = 0; i < numBins; i++) {
+        eDepRun[i] = 0.0;
+        eDepRun2[i] = 0.0;
+    }
+}
+/**
+ * Prepares a new event
+ *
+ * Initilizes the data fields for a new event
+ * @param event object
+ */
+void Analysis::PrepareNewEvent(const G4Event*){
+    // Resetting the event energy deposition
+    for (G4int i = 0; i < numBins; i++) {
+        eDepEvent[i] = 0;
+    }
+}
+
+/**
+ * Called at the end of an evnet
+ * @param event object
+ */
+void Analysis::EndOfEvent(const G4Event*){
+    /* Copying over event totals to the run */
+    for (G4int i = 0; i< numBins; i++) {
+        AddEDepRun(posBins[i], eDepEvent[i]);
+    }
+}
+
+/**
+ * Called at the end of an event
+ * @param run object
+ */
+void Analysis::EndOfRun(const G4Run *aRun){
+    
+}
 /**
  * Sets the world size
  *

@@ -46,7 +46,7 @@ int main(int argc,char** argv) {
   EventAction* event;
   
   runManager->SetUserAction(run = new RunAction(det,prim)); 
-  runManager->SetUserAction(event = new EventAction(run));
+  runManager->SetUserAction(event = new EventAction());
   runManager->SetUserAction(new SteppingAction(event));
      
   // get the pointer to the User Interface manager 

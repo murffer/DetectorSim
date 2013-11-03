@@ -21,6 +21,8 @@ public:
     }
     
     // Accumulation Methods
+    void AddEDepEvent(G4double xPos, G4double eDep);
+    void AddEDepRun(G4double xPos, G4double eDep);
     void PrepareNewEvent(const G4Event* anEvent);
     void PrepareNewRun(const G4Run* aRun);
     void EndOfEvent(const G4Event* anEvent);
