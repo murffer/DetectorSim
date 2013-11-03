@@ -3,16 +3,14 @@
 
 #include "G4UserRunAction.hh"
 #include "globals.hh"
-#include <map>
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class G4Run;
 class G4ParticleGun;
 class DetectorConstruction;
+class Analysis;
 class PrimaryGeneratorAction;
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 class RunAction : public G4UserRunAction
 {
@@ -34,17 +32,7 @@ class RunAction : public G4UserRunAction
   
   private:
     DetectorConstruction*   fDetector;      /** Pointer to detector geometry */
-    PrimaryGeneratorAction* fPrimary;       /** Pointer to primary action    */
-
-      
-    G4double* fEdep;       /** Energy deposition in run */
-    G4double* fEdep2;
-    G4double fEdepTotal;
-    G4double fEdepTotal2;
-    G4double fBinWidth;      /** Bin Sizes */
-    G4double fWorldSize;
-    G4int fNumBins;     /* Number of width bins */
-    
+    PrimaryGeneratorAction* fPrimary;       /** Pointer to primary action    */    
 
 };
 #endif

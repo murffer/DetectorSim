@@ -27,6 +27,7 @@ public:
     void PrepareNewRun(const G4Run* aRun);
     void EndOfEvent(const G4Event* anEvent);
     void EndOfRun(const G4Run* aRun);
+    void WriteRun(G4String partName,G4String matName,G4double e);
     
 private:
     // Singleton Analysis
@@ -58,6 +59,8 @@ private:
     G4double eDepEvent[50];
     G4double eDepRun[50];
     G4double eDepRun2[50];
+    G4double eDepRunTotal;
+    G4double eDepRunTotal2;
 };
 
 #endif
