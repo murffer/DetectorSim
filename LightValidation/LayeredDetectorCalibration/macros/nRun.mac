@@ -8,9 +8,16 @@
 #
 # Setting up the analysis
 #
+/det/setMaterial EJ426
+/det/update
 /analysis/setFileName EJ426_neutron
 /analysis/h1/set 1 100 0  10000 none    # Number of Optical Photons
 /analysis/h1/set 2 100 0  10000 none    # Number of Optical Photons
-# Running through absorber thickness
-/run/beamOn 1000
+/run/beamOn 100000
 #
+/det/setMaterial PSLiF
+/det/update
+/analysis/setFileName PS_neutron
+/analysis/h1/set 1 100 0  10000 none    # Number of Optical Photons
+/analysis/h1/set 2 100 0  10000 none    # Number of Optical Photons
+/run/beamOn 100000
