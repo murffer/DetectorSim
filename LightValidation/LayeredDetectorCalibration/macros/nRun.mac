@@ -1,0 +1,16 @@
+# Setting up verbosity
+/tracking/verbose 0
+/run/verbose 0
+#
+# Setting up the source
+#
+/control/execute macros/neutronSource.mac
+#
+# Setting up the analysis
+#
+/analysis/setFileName EJ426_neutron
+/analysis/h1/set 1 100 0  10000 none    # Number of Optical Photons
+/analysis/h1/set 2 100 0  10000 none    # Number of Optical Photons
+# Running through absorber thickness
+/run/beamOn 1000
+#

@@ -1,0 +1,17 @@
+# Setting up verbosity
+/tracking/verbose 0
+/run/verbose 0
+# 
+# Running the co60 beam source
+#
+/control/execute macros/co60Source.mac
+#
+# Setting up the analysis
+#
+/analysis/setFileName GS20_Gamma
+/analysis/h1/set 1 100 0  1.4 MeV none # Energy Depostion
+/analysis/h1/set 2 100 0  10000 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  10000 none    # Number of Optical Photons
+# Running through absorber thickness
+/run/beamOn 1000000
+#
