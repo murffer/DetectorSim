@@ -35,7 +35,7 @@ private:
     static Analysis *singleton;
 
     // Fixed Bin Positions
-    static const G4int numBins = 50;
+    static const G4int numBins = 100;
     static G4double posBins[numBins];
 
     
