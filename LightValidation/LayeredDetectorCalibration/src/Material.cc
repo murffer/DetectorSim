@@ -351,14 +351,14 @@ void Materials::SetOpticalPropertiesGS20(){
 	G4MaterialPropertiesTable* MPTGS20 = new G4MaterialPropertiesTable();
 	MPTGS20->AddProperty("RINDEX",photonEnergyRINDEX,RefractiveIndexGlass,nRINDEX);
 	MPTGS20->AddProperty("ABSLENGTH",photonEnergyABS,AbsLengthGlass,nABS);
-	// Setting  Scintillation Properties
-	MPTGS20->AddProperty("FASTCOMPONENT",photonEnergyEM,emGS20,nEM);
-	MPTGS20->AddConstProperty("FASTTIMECONSTANT",50*ns);      //
-	MPTGS20->AddConstProperty("SCINTILLATIONYIELD", 3600*MeV);
-	MPTGS20->AddConstProperty("YIELDRATIO", 1.0);
-	MPTGS20->AddConstProperty("RESOLUTIONSCALE", 1.0);
-	GS20->SetMaterialPropertiesTable(MPTGS20);
-	GS20->GetIonisation()->SetBirksConstant(0.0052*mm/MeV);
+    // Setting  Scintillation Properties
+	  MPTGS20->AddProperty("FASTCOMPONENT",photonEnergyEM,emGS20,nEM);
+    MPTGS20->AddConstProperty("FASTTIMECONSTANT",50*ns);      //
+    MPTGS20->AddConstProperty("SCINTILLATIONYIELD", 3600/MeV);
+    MPTGS20->AddConstProperty("YIELDRATIO", 1.0);
+    MPTGS20->AddConstProperty("RESOLUTIONSCALE", 8);
+    GS20->SetMaterialPropertiesTable(MPTGS20);
+    GS20->GetIonisation()->SetBirksConstant(0.0135*mm/MeV);
 }
 /**
  * Sets the optical properties of BK7
@@ -510,11 +510,11 @@ void Materials::SetOpticalPropertiesPS(){
 	MPTPolystyrene->AddProperty("RINDEX",PhotonEnergy,RefractiveIndexPS,nEntries);
 	MPTPolystyrene->AddProperty("ABSLENGTH",PhotonEnergy,AbsPS,nEntries);
 	MPTPolystyrene->AddProperty("FASTCOMPONENT",PhotonEnergy, ScintilFast,nEntries);
-	MPTPolystyrene->AddConstProperty("SCINTILLATIONYIELD",1./keV);
-	MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE",1.0);
-	MPTPolystyrene->AddConstProperty("FASTTIMECONSTANT", 10.*ns);
-	psDet->SetMaterialPropertiesTable(MPTPolystyrene);
-	psDet->GetIonisation()->SetBirksConstant(0.09*mm/MeV);
+    MPTPolystyrene->AddConstProperty("SCINTILLATIONYIELD",3000/MeV);
+    MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE",10);
+    MPTPolystyrene->AddConstProperty("FASTTIMECONSTANT", 10.*ns);
+    psDet->SetMaterialPropertiesTable(MPTPolystyrene);
+    psDet->GetIonisation()->SetBirksConstant(0.2*mm/MeV);
 }
 
 /**
