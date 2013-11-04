@@ -304,11 +304,11 @@ void Materials::SetOpticalPropertiesPS(){
     MPTPolystyrene->AddProperty("RINDEX",PhotonEnergy,RefractiveIndexPS,nEntries);
     MPTPolystyrene->AddProperty("ABSLENGTH",PhotonEnergy,AbsPS,nEntries);
     MPTPolystyrene->AddProperty("FASTCOMPONENT",PhotonEnergy, ScintilFast,nEntries);
-    MPTPolystyrene->AddConstProperty("SCINTILLATIONYIELD",1500/MeV);
+    MPTPolystyrene->AddConstProperty("SCINTILLATIONYIELD",3000/MeV);
     MPTPolystyrene->AddConstProperty("RESOLUTIONSCALE",10);
     MPTPolystyrene->AddConstProperty("FASTTIMECONSTANT", 10.*ns);
     psDet->SetMaterialPropertiesTable(MPTPolystyrene);
-    psDet->GetIonisation()->SetBirksConstant(0.02*mm/MeV);
+    psDet->GetIonisation()->SetBirksConstant(0.2*mm/MeV);
 }
 
 /**
