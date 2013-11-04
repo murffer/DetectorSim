@@ -1,0 +1,18 @@
+// Teflon Data (from DOI 10.1117/1.2965541)
+// Teflon is also Polytetrafluoroethylene, which could be flurinated polyethene
+// Index of Reflection (These are about the correct range from Wikipedia - )
+E (eV)= 8.5506    4.7232    3.2627    2.4921    2.0160    1.6926    1.4586    1.2815    1.1427    1.0311    0.9393    0.8625    0.7973
+n = 1.4300    1.3300    1.3150    1.3100    1.3050    1.3050    1.3000    1.2900    1.2975    1.2970    1.2960    1.2950    1.2950
+// Absorbition length (this is from the GEANT4 lXe example, assiuming flu
+ G4double wls_Energy[] = {2.00*eV,2.87*eV,2.90*eV,3.47*eV}; // 619 nm to 357 nm
+  G4double AbsFiber[wlsnum]={9.00*m,9.00*m,0.1*mm,0.1*mm};
+// Reflectance - http://dx.doi.org/10.1016/j.nima.2010.09.027 (this is supported by Fig. 8 of http://arxiv.org/pdf/0910.1056v1.pdf for low wavelenghts)
+// In addition Janecek has a reflentance of 0.99
+e = 6.1992    4.9594    4.1328    3.5424    3.0996    2.7552    2.4797    2.2543    2.0664    1.9074    1.7712
+R = [0   0.9 0.905 0.91 0.915 0.905 0.9 0.9 0.9 0.9 0.9]
+  
+// Glass
+// Index of Reflection n(lambda) = 1.472+3760/(lambda)^2 - doi:10.1016/j.nima.2010.09.027 (these agree mostly with wikipeida)
+// lambda range is from 145 nm to 1555 nm
+e =  8.5506    4.7232    3.2627    2.4921    2.0160    1.6926    1.4586    1.2815    1.1427    1.0311    0.9393    0.8625    0.7973
+n = 1.6508    1.5266    1.4980    1.4872    1.4819    1.4790    1.4772    1.4760    1.4752    1.4746    1.4742    1.4738    1.4736
