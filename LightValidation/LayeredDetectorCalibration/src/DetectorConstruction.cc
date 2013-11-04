@@ -72,6 +72,26 @@ G4VPhysicalVolume* DetectorConstruction::Construct(){
     // Creating Detector Materials
     materials = Materials::GetInstance();
     
+		// Geometry parameters
+    pmtRadius = 2.54*cm;
+    pmtThickness = 5*mm;
+    
+    mountThickness = 100*um;
+    refThickness = 3.33*mm;
+    
+    pmmaWidth = 10.16*cm;
+    pmmaHeight = 15.24*cm;
+    pmmaThickness = 6*cm;
+
+    detectorThickness = 100*um;
+    lightGuideHeight = 5.08*cm;
+    
+    absMaterial = FindMaterial("EJ426");
+    pmtMaterial = FindMaterial("BK7");
+    cladMaterial = FindMaterial("G4_TEFLON");
+    mountMaterial = FindMaterial("Silicone");
+    lightGuideMaterial = FindMaterial("G4_PLEXIGLASS");
+    
     // Physical World
     G4VPhysicalVolume* world = ConstructVolumes();
     
@@ -132,25 +152,6 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
     G4LogicalVolumeStore::GetInstance()->Clean();
     G4SolidStore::GetInstance()->Clean();
     
-    // Geometry parameters
-    pmtRadius = 2.54*cm;
-    pmtThickness = 5*mm;
-    
-    mountThickness = 100*um;
-    refThickness = 3.33*mm;
-    
-    pmmaWidth = 10.16*cm;
-    pmmaHeight = 15.24*cm;
-    pmmaThickness = 6*cm;
-
-    detectorThickness = 100*um;
-    lightGuideHeight = 5.08*cm;
-    
-    absMaterial = FindMaterial("EJ426");
-    pmtMaterial = FindMaterial("BK7");
-    cladMaterial = FindMaterial("G4_TEFLON");
-    mountMaterial = FindMaterial("Silicone");
-    lightGuideMaterial = FindMaterial("G4_PLEXIGLASS");
     
     /* World */
     worldS = new G4Box("World",25*cm,25*cm,25*cm);
@@ -309,7 +310,14 @@ void DetectorConstruction::SetOpticalSurfaces(){
     // the optical grease.
      */
 }
-
+/**
+ * SetsDetectorMaterial
+ *
+ * Sets the detector material
+ */
+void DetectorConstruction::SetDetectorMaterial(G4String name){
+	absMaterial = FindMaterial(name);
+}
 /**
  * SetMountingThickness
  *

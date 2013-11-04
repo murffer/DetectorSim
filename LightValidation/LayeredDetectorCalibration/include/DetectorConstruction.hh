@@ -29,7 +29,8 @@ public:
     G4VPhysicalVolume* ConstructVolumes();                      /* Construct the detector volumes */
     
     G4Material* FindMaterial(G4String);                                 /* Finds a Material     */
-    
+   
+		void SetDetectorMaterial(G4String);
     void SetAbsorberThickness(G4double);
     void SetReflectorThickness(G4double);
     void SetMountingThickness(G4double);

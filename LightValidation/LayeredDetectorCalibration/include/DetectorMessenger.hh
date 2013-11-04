@@ -22,12 +22,12 @@ class DetectorMessenger: public G4UImessenger
   private:
     DetectorConstruction* Detector;
     
-    G4UIdirectory*             RPM8Dir;
     G4UIdirectory*             detDir;
     G4UIcmdWithADoubleAndUnit* AbsThickCmd;
     G4UIcmdWithADoubleAndUnit* MntThickCmd;
     G4UIcmdWithADoubleAndUnit* RefThickCmd;
     G4UIcmdWithoutParameter*   UpdateCmd;
+		G4UIcmdWithAString*			   DetMatCmd;
 };
 
 #endif
