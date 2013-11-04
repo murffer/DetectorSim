@@ -262,7 +262,7 @@ void Materials::SetOpticalPropertiesEJ426(){
 	// Absorbition Length
 	const G4int nABS=2;
 	G4double photonEnergyABS[nABS] = {3.5*eV,2.75*eV};
-	G4double AbsLengthEJ426[nABS]={40*um,40*um};
+	G4double AbsLengthEJ426[nABS]={1*mm,1*mm};
 
 	// Setting sctintillation to be the emission spectra
 	const G4int nEM = 10;
