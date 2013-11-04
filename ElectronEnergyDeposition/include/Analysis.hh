@@ -35,18 +35,9 @@ private:
     static Analysis *singleton;
 
     // Fixed Bin Positions
-    const G4int numBins = 50;
-    const G4double posBins[50] = {
-        0.1000*um , 0.6551*um , 4.2919*um , 28.1177*um , 184.2070*um ,
-        0.1207*um , 0.7906*um , 5.1795*um , 33.9322*um , 222.2996*um ,
-        0.1456*um , 0.9541*um , 6.2506*um , 40.9492*um , 268.2696*um ,
-        0.1758*um , 1.1514*um , 7.5431*um , 49.4171*um , 323.7458*um ,
-        0.2121*um , 1.3895*um , 9.1030*um , 59.6362*um , 390.6940*um ,
-        0.2560*um , 1.6768*um , 10.9854*um , 71.9686*um , 471.4866*um ,
-        0.3089*um , 2.0236*um , 13.2571*um , 86.8511*um , 568.9866*um ,
-        0.3728*um , 2.4421*um , 15.9986*um , 104.8113*um , 686.6488*um ,
-        0.4498*um , 2.9471*um , 19.3070*um , 126.4855*um , 828.6428*um ,
-        0.5429*um , 3.5565*um , 23.2995*um , 152.6418*um , 1000.0000*um};
+    static const G4int numBins = 50;
+    static G4double posBins[numBins];
+
     
     // Helper methods
     G4int GetBinIndex(G4double);
@@ -56,11 +47,12 @@ private:
     G4double worldSize;
     
     // Accumulation variables
-    G4double eDepEvent[50];
-    G4double eDepRun[50];
-    G4double eDepRun2[50];
+    G4double eDepEvent[numBins];
+    G4double eDepRun[numBins];
+    G4double eDepRun2[numBins];
     G4double eDepRunTotal;
     G4double eDepRunTotal2;
 };
+
 
 #endif

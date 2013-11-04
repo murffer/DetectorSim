@@ -116,23 +116,22 @@ void Analysis::EndOfRun(const G4Run *aRun){
  */
 void Analysis::WriteRun(G4String partName, G4String matName, G4double energy){
     
-    G4double eDepRms ,eDepTotal ,eDepTotalErr ,x;
+    G4double eDepRms ,eDepTotal ,eDepTotalErr;
     std::ofstream myfile;
     std::ostringstream filename;
     filename << matName<<"_"<<energy/keV<<"keV.csv";
     myfile.open (filename.str().c_str());
     myfile <<"Position (um),Energy Deposited in Slice (keV),error,Total Energy Deposited (keV),error\n";
     
-    eDepRms = eDepTotal = eDepTotalErr = x = 0;
+    eDepRms = eDepTotal = eDepTotalErr = 0;
     for (G4int i = 0; i<numBins; i++) {
-        x = (posBins[i]-x)/2.0;
+    
         eDepRms = eDepRun2[i] - eDepRun[i]*eDepRun[i];
         if (eDepRms>0.) eDepRms = std::sqrt(eDepRms); else eDepRms = 0.;
         eDepTotal += eDepRun[i];
         eDepTotalErr = sqrt(pow(eDepTotalErr, 2.0)+pow(eDepRms, 2));
-        myfile<<x/um<<","<<eDepRun[i]/keV<<","<<eDepRms/keV
+        myfile<<posBins[i]/um<<","<<eDepRun[i]/keV<<","<<eDepRms/keV
         <<","<<eDepTotal<<","<<eDepTotalErr<<"\n";
-        x = posBins[i];
     }
     myfile.close();
     
@@ -184,3 +183,15 @@ G4int Analysis::GetBinIndex(G4double x){
     }
     return index;
 }
+
+G4double Analysis::posBins[] = {
+    0.1000*um , 0.1207*um , 0.1456*um , 0.1758*um , 0.2121*um ,
+    0.2560*um , 0.3089*um , 0.3728*um , 0.4498*um , 0.5429*um ,
+    0.6551*um , 0.7906*um , 0.9541*um , 1.1514*um , 1.3895*um ,
+    1.6768*um , 2.0236*um , 2.4421*um , 2.9471*um , 3.5565*um ,
+    4.2919*um , 5.1795*um , 6.2506*um , 7.5431*um , 9.1030*um ,
+    10.9854*um , 13.2571*um , 15.9986*um , 19.3070*um , 23.2995*um ,
+    28.1177*um , 33.9322*um , 40.9492*um , 49.4171*um , 59.6362*um ,
+    71.9686*um , 86.8511*um , 104.8113*um , 126.4855*um , 152.6418*um ,
+    184.2070*um , 222.2996*um , 268.2696*um , 323.7458*um , 390.6940*um ,
+    471.4866*um , 568.9866*um , 686.6488*um , 828.6428*um , 1000.0000*um};
