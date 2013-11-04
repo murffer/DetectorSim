@@ -36,3 +36,16 @@ Icon
 Session.vim
 .netrwhist
 *~
+# Ignoring Speficfied Output Files
+LightQuenching/*.txt
+LightQuenching/*.csv
+LightValidation/BirksConstant/Birks_*.txt
+LightValidation/GS20Calibration/*.csv
+LightYeildEDep/*.csv
+#	MCNPXRPMModels/
+#	RangeSim/README
+#	RangeSim/TestEm1.in
+#	RangeSim/TestEm1.out
+#	SecElectronDistribution/
+#	WLSScintBar/
+nothing added to commit but untracked files present (use "git add" to track)
