@@ -322,6 +322,19 @@ def run(loading,polymers):
             m.createInputDeck(cylinderPositions,inp,name)
             m.runModel()
 
+def createInputPlotDecks():
+    positions = list()
+    positions.append(((4.23,10.16),(4.23,-10.16)))
+    positions.append(((4.23,7.625),(4.23,0),(4.23,-7.625)))
+    positions.append(((4.23,9.15),(4.23,3.05),(4.23,-3.05),(4.23,-9.15)))
+    for pos in positions:
+        m  = CylinderRPM()
+        m.createSurfaceGeo()
+        m.createDetectorCylinder()
+        inp='Cylinder_{}.mcnp'.format(len(pos))
+        name='OUTCylinder_{}.'.format(len(pos))
+        m.createInputDeck(pos,inp,name)
+
 def computeMassLi(polymer,loading,density=1.1):
     """ 
     Computes the mass of Li for a given polymer and loading
@@ -358,11 +371,15 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-r','--run',action="store_true",
             default=False,help='Runs the cylinders for multiple polymers and precent loadings')
+    parser.add_argument('-p','--plot',action="store_true",
+            default=False,help='Creates input decks for plotting')
     parser.add_argument('-a','--analysis',action="store_true",default=False,help="Analyze the results")
     parser.add_argument('loading',metavar='loading',type=float,nargs='*',action="store",
             default=(0.1,0.2,0.3),help='Precent Loading of LiF')
     args = parser.parse_args()
     if args.run:
         run(args.loading,('PS','PEN'))
+    if args.plot:
+        createInputPlotDecks()
     if args.analysis:
         summerize()
