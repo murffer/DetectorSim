@@ -151,7 +151,6 @@ void Materials::CreateMaterials(){
 	EJ426->AddMaterial(nistMan->FindOrBuildMaterial("G4_F"),0.253);
 	EJ426->AddMaterial(nistMan->FindOrBuildMaterial("G4_Zn"),0.447);
 	EJ426->AddMaterial(nistMan->FindOrBuildMaterial("G4_S"),0.219);
-	G4cout<<EJ426;
 
 	//--------------------------------------------------
 	// LiF Polystyrene
@@ -283,7 +282,6 @@ void Materials::SetOpticalPropertiesEJ426(){
 	MPTEJ426->AddConstProperty("SCINTILLATIONYIELD", 72000*MeV);
 	MPTEJ426->AddConstProperty("YIELDRATIO", 1.0);
 	MPTEJ426->AddConstProperty("RESOLUTIONSCALE", 1.0);
-	MPTEJ426->DumpTable();
 	EJ426->SetMaterialPropertiesTable(MPTEJ426);
 }
 /**

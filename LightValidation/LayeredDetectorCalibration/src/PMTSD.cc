@@ -22,9 +22,11 @@ PMTSD::~PMTSD(){ }
 void PMTSD::Initialize(G4HCofThisEvent* HCE){
 
     // Create Hits Collection
-    hitCollection = new PhotonHitsCollection(SensitiveDetectorName,collectionName[0]); 
-    G4int HCID = G4SDManager::GetSDMpointer()->GetCollectionID(collectionName[0]);
-    HCE->AddHitsCollection( HCID, hitCollection );
+    hitCollection = new PhotonHitsCollection(SensitiveDetectorName,collectionName[0]);
+    
+    static G4int HCID = -1;
+    if (HCID<0) HCID = GetCollectionID(0);
+    HCE->AddHitsCollection( HCID,hitCollection);
 }
 
 /**
@@ -45,7 +47,6 @@ G4bool PMTSD::ProcessHits(G4Step* aStep,G4TouchableHistory*){
     newHit->SetKineticEnergy (aStep->GetPreStepPoint()->GetKineticEnergy());
     newHit->SetArrivalTime(theTrack->GetGlobalTime());
     hitCollection->insert( newHit );
-    
     return true;
 }
 

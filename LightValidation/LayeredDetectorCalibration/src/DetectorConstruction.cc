@@ -42,6 +42,7 @@
 #include "G4TransportationManager.hh"
 #include "G4UserLimits.hh"
 
+PMTSD* DetectorConstruction::pmtSD = NULL;
 /**
  * DetectorConstruction
  *
@@ -206,14 +207,12 @@ G4VPhysicalVolume* DetectorConstruction::ConstructVolumes(){
 
     
     // Setting PMT Sensitive Detectors
-    G4SDManager* SDman = G4SDManager::GetSDMpointer();
-    pmtSD = new PMTSD("PMT/PMTSD","PMTHitCollection");
-    SDman->AddNewDetector(pmtSD);
+    if (!pmtSD){
+        G4SDManager* SDman = G4SDManager::GetSDMpointer();
+        pmtSD = new PMTSD("PMT/PMTSD","PMTHitCollection");
+        SDman->AddNewDetector(pmtSD);
+    }
     pmtLV->SetSensitiveDetector(pmtSD);
-
-    
-    // Print Materials
-    G4cout<<*(G4Material::GetMaterialTable());
     
     // Printing basic information about the geometry
     PrintParameters();

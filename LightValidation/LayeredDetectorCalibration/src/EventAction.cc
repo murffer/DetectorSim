@@ -29,5 +29,4 @@ void EventAction::BeginOfEventAction(const G4Event* event){
  */
 void EventAction::EndOfEventAction(const G4Event* event){  
     Analysis::GetInstance()->EndOfEvent(event);
-    G4cout<<"End of event: "<<event->GetEventID()<<G4endl;
 }

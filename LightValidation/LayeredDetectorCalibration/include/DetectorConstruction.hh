@@ -100,7 +100,7 @@ private:
     
     
     // Sensitive Detectors
-    PMTSD*  pmtSD;               /* PMT SD  (Top PMT)        */
+    static PMTSD*  pmtSD;               /* PMT SD  (Top PMT)        */
   
     
     G4bool  fCheckOverlaps; // option to activate checking of volumes overlaps

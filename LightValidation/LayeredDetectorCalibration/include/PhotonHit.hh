@@ -14,30 +14,34 @@
  * Contians:
  *  - Positon, arrival time, and kinetic energy
  */
+class G4VTouchable;
 class PhotonHit : public G4VHit {
-	public:
-		PhotonHit();
-		~PhotonHit();
-
-
-		inline void* operator new(size_t);
-		inline void operator delete(void*);
-
-		void Print();
-
-	private:
-		G4ThreeVector pos;			            /* Position of the hit                    */
-		G4double kEnergy;                   /* Kinetic Energy of the particle         */
-    G4double arrivalTime;               /* Global time (time since current event) */
-
-	public:
-		void SetPosition(G4ThreeVector p)			{pos = p;};
-		void SetKineticEnergy(G4double E)     {kEnergy = E;};
+public:
+    PhotonHit();
+    ~PhotonHit();
+    
+    PhotonHit(const PhotonHit &right);
+    const PhotonHit& operator=(const PhotonHit& right);
+    G4int operator==(const PhotonHit& right) const;
+    
+    inline void* operator new(size_t);
+    inline void operator delete(void*);
+    
+    void Print();
+    
+private:
+    G4ThreeVector pos;       /* Position of the hit */
+    G4double kEnergy;        /* Kinetic Energy of the particle     */
+    G4double arrivalTime;    /* Global time (time since current event) */
+    
+public:
+    void SetPosition(G4ThreeVector p)			{pos = p;};
+    void SetKineticEnergy(G4double E)     {kEnergy = E;};
     void SetArrivalTime(G4double t)              {arrivalTime = t;};
-
-		G4ThreeVector GetPosition()			    {return pos;};
+    
+    G4ThreeVector GetPosition()			    {return pos;};
     G4double GetArrivalTime()           {return arrivalTime;};
-		G4double GetKineticEnergy()         {return kEnergy;};
+    G4double GetKineticEnergy()         {return kEnergy;};
 };
 
 typedef G4THitsCollection<PhotonHit> PhotonHitsCollection;
@@ -49,9 +53,7 @@ inline void* PhotonHit::operator new(size_t){
 	return aHit;
 }
 
-
 inline void PhotonHit::operator delete(void *aHit){
 	PhotonHitAllocator.FreeSingle((PhotonHit*) aHit);
 }
 #endif
-

@@ -21,7 +21,7 @@
 PhysicsList::PhysicsList() : G4VModularPhysicsList() {
     currentDefaultCut   = 10*nm;
 
-    // SetVerboseLevel(1);
+  
 
     // Adding Physics List
     RegisterPhysics( new HadronPhysicsQGSP_BERT_HP());
@@ -29,6 +29,8 @@ PhysicsList::PhysicsList() : G4VModularPhysicsList() {
     RegisterPhysics( new G4OpticalPhysics());
     RegisterPhysics( new G4EmStandardPhysics_option4());
    // RegisterPhysics( new G4EmDNAPhysics());
+    
+      SetVerboseLevel(0);
 }
 
 /**

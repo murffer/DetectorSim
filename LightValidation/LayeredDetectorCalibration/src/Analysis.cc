@@ -110,7 +110,6 @@ void Analysis::EndOfEvent(const G4Event* event){
  * Called at the end of a run, which summerizes the run
  */
 void Analysis::EndOfRun(const G4Run* ){
-    G4cout<<"End of run in analysis"<<G4endl;
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   // Print some output
     if ( analysisManager->IsActive() ){
@@ -127,7 +126,6 @@ void Analysis::EndOfRun(const G4Run* ){
     analysisManager->Write();
     analysisManager->CloseFile();
   }
-    G4cout<<"Cleaned up the end of run in analysis"<<G4endl;
 }
 /**
  * Sets the number of optical photons generated
