@@ -6,9 +6,9 @@ export G4WORKDIR=/home/murffer/G4DetectorSim/LightValidation/LayeredDetectorCali
 function JobSetup()
 {
   echo "#!/bin/bash" > job
-  echo "#PBS -q gen2" >> job
+  echo "#PBS -q gen1" >> job
   echo "#PBS -V" >> job
-  echo "#PBS -l nodes=2:ppn=4" >> job
+  echo "#PBS -l nodes=3:ppn=2" >> job
   echo "export PBS_O_WORKDIR=$G4WORKDIR" >> job
   echo 'cd $PBS_O_WORKDIR' >> job
 }

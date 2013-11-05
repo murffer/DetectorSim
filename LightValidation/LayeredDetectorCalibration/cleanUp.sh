@@ -11,8 +11,8 @@ then
 fi
 if test -n "$(find . -maxdepth 1 -name 'EJ426_gamma-0*.root' -print -quit)"
 then
-	hadd -f -v 1 EJ426_Gamma.root EJ426_Gamma-0*.root
-	rm EJ426_Gamma-0*.root
+	hadd -f -v 1 EJ426_Gamma.root EJ426_gamma-0*.root
+	rm EJ426_gamma-0*.root
 fi
 
 # PS Data output
@@ -23,6 +23,6 @@ then
 fi
 if test -n "$(find . -maxdepth 1 -name 'PSLiF_gamma-0*.root' -print -quit)"
 then
-	hadd -f -v 1 PSLiF_Gamma.root PSLiF_Gamma-0*.root
-	rm PSLiF_Gamma-0*.root
+	hadd -f -v 1 PSLiF_Gamma.root PSLiF_gamma-0*.root
+	rm PSLiF_gamma-0*.root
 fi
