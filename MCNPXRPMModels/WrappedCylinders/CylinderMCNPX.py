@@ -3,12 +3,12 @@
 """ 
 MCNPX Model for Cylindrical RPM8
 """
-#import mctal
 import sys
 sys.path.append('../')
 from MCNPMaterial import Materials 
 import subprocess
 import math
+import mctal
 class CylinderRPM(object):
     # Material Dictionaries
     cellForStr = '{:5d} {:d} -{:4.3f} {:d} -{:d} u={:d}\n'
@@ -321,15 +321,37 @@ def run(loading,polymers):
             m.createInputDeck(cylinderPositions,inp,name)
             m.runModel()
 
-import glob
-def summerize(loading,polymers):
+def computeMassLi(polymer,loading,density=1.1):
+    """ 
+    Computes the mass of Li for a given polymer and loading
+    """
     M = Materials()
-    for l in loading:
-        for p in polymers:
-            m  = CylinderRPM()
-            area = m.calculateDetectorArea()
-            massLi = area*217.0*M.GetLiMassFraction(l,p)*1.1
-            print 'Mass li is: {:5.2f} for a loading of {:5.2f}'.format(massLi,l)
+    m  = CylinderRPM()
+    area = m.calculateDetectorArea()
+    massLi = area*217.0*M.GetLiMassFraction(loading,polymer)*density
+    return massLi
+
+def extractRunInfo(filename):
+    """
+    Extracts the loading and polymer from the file name
+    """
+    tokens = filename.split('_')
+    loading = tokens[1].strip('LiF')
+    polymer = tokens[2].strip('.m')
+    return (float(loading)/100, polymer)
+
+import glob
+def summerize():
+    files = glob.glob('OUTCylinder*.m')
+    for f in files:
+        print f
+        runParam = extractRunInfo(f)
+        massLi = computeMassLi(runParam[1],runParam[0])
+        print massLi
+        m = mctal.MCTAL(f)
+        t = m.tallies[54]
+        # Returning the total
+        print t.data[-1],t.errors[-1]
 
 import argparse
 if __name__ == '__main__':
@@ -343,4 +365,4 @@ if __name__ == '__main__':
     if args.run:
         run(args.loading,('PS','PEN'))
     if args.analysis:
-        summerize(args.loading,('PS','PEN'))
+        summerize()
