@@ -16,13 +16,13 @@ then
 fi
 
 # PS Data output
-if test -n "$(find . -maxdepth 1 -name 'PSLiF_neutron-0*.root' -print -quit)"
+if test -n "$(find . -maxdepth 1 -name 'PS_neutron-0*.root' -print -quit)"
 then
-	hadd -f -v 1 PSLiF_neutron.root PSLiF_neutron-0*.root
-	rm PSLiF_neutron-0*.root
+	hadd -f -v 1 PSLiF_neutron.root PS_neutron-0*.root
+	rm PS_neutron-0*.root
 fi
-if test -n "$(find . -maxdepth 1 -name 'PSLiF_gamma-0*.root' -print -quit)"
+if test -n "$(find . -maxdepth 1 -name 'PS_gamma-0*.root' -print -quit)"
 then
-	hadd -f -v 1 PSLiF_Gamma.root PSLiF_gamma-0*.root
-	rm PSLiF_gamma-0*.root
+	hadd -f -v 1 PSLiF_Gamma.root PS_gamma-0*.root
+	rm PS_gamma-0*.root
 fi
