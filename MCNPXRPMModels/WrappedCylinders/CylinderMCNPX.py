@@ -4,6 +4,7 @@
 MCNPX Model for Cylindrical RPM8
 """
 import sys
+sys.path.append('../MCNPTools/')
 sys.path.append('../')
 from MCNPMaterial import Materials 
 import subprocess
