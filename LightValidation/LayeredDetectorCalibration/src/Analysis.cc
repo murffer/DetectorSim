@@ -98,7 +98,7 @@ void Analysis::EndOfEvent(const G4Event* event){
 
   }
   // Adding to the run accumulation only events with deposit energy
-  if (nOPAbsEvent > 0.0){
+    if (nOPAbsEvent > 0.0 && analysisManager->IsActive()){
     analysisManager->FillH1(2,nOPDetEvent);
   analysisManager->FillH1(1,nOPAbsEvent);
   }
@@ -110,8 +110,10 @@ void Analysis::EndOfEvent(const G4Event* event){
  * Called at the end of a run, which summerizes the run
  */
 void Analysis::EndOfRun(const G4Run* ){
+    G4cout<<"End of run in analysis"<<G4endl;
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   // Print some output
+    if ( analysisManager->IsActive() ){
     G4cout<<"\tAverage Number of Optical Photons Created: " 
       << analysisManager->GetH1(1)->mean()
       << " +/- " << analysisManager->GetH1(1)->rms()
@@ -119,12 +121,13 @@ void Analysis::EndOfRun(const G4Run* ){
       << analysisManager->GetH1(2)->mean() 
       << " +/- " << analysisManager->GetH1(2)->rms()
       << G4endl;
-  
+    }
   //save histograms
   if ( analysisManager->IsActive() ) {
     analysisManager->Write();
     analysisManager->CloseFile();
   }
+    G4cout<<"Cleaned up the end of run in analysis"<<G4endl;
 }
 /**
  * Sets the number of optical photons generated

@@ -57,6 +57,7 @@ fCheckOverlaps(true){
  * Deconstructor
  */
 DetectorConstruction::~DetectorConstruction(){
+    G4cout<<"Cleaning up the detector"<<G4endl;
     // Deleting the messenger and materials if they exist
     if (detectorMessenger) delete detectorMessenger;
     if (materials)         delete materials;
