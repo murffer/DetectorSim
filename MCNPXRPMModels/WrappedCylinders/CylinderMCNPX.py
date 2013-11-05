@@ -15,7 +15,7 @@ class CylinderRPM(object):
     cellForStr = '{:5d} {:d} -{:4.3f} {:d} -{:d} u={:d}\n'
     surfForStr = '{:5d} cz {:5.3f}\n'
     tranForStr = '*tr{:d} {:4.3f} {:4.3f} 0.000\n'
-    geoParam={'RPM8Size':12.7,'DetectorThickness':0.01,'DetectorSpacing':0.4,
+    geoParam={'RPM8Size':12.7,'DetectorThickness':0.01,'DetectorSpacing':0.8,
                'CylinderLightGuideRadius':0.5,'CylinderRadius':2.5}
     
     def __init__(self,inp='INP.mcnp'):
@@ -310,7 +310,10 @@ def run(loading,polymers):
     """
     Runs a matrix of loading and polymers
     """
+    cylinderPositions = ((4.23,10.16),(4.23,-10.16))
+    cylinderPositions = ((4.23,7.625),(4.23,0),(4.23,-7.625))
     cylinderPositions = ((4.23,9.15),(4.23,3.05),(4.23,-3.05),(4.23,-9.15))
+    cylinderPositions = ((4.23,10.16),(4.23,5.08),(4.23,0.0),(4.23,-5.08),(4.23,-10.16))
     for l in loading:
         for p in polymers:
             m  = CylinderRPM()
