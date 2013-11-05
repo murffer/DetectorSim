@@ -80,7 +80,9 @@ class Materials(object):
         self.CheckMassFraction(massFractionLiF)
         # See pg. 35 of 3rd Lab Notebook for derivation
         q = 0.238234/massFractionLiF -0.238234
-        return self.ComputeCompositePolymer(q,'PS')
+        compound = self.ComputeCompositePolymer(q,'PS')
+        massFraction = self.ComputeMassFraction(compound)
+        return massFraction
 
     def GetPSLiF(self,massFractionLiF,mtNum=3):
         """
@@ -111,7 +113,9 @@ class Materials(object):
         self.CheckMassFraction(massFractionLiF)
         # See pg. 35 of 3rd Lab notebook for derivation
         q = 0.10322/massFractionLiF - 0.10322
-        return self.ComputeCompositePolymer(q,'PEN')
+        compound = self.ComputeCompositePolymer(q,'PEN')
+        massFraction = self.ComputeMassFraction(compound)
+        return massFraction
 
     def GetPENLiF(self,massFractionLiF,mtNum=3):
         """

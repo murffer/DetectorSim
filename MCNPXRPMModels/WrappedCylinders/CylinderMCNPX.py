@@ -328,8 +328,8 @@ def summerize(loading,polymers):
         for p in polymers:
             m  = CylinderRPM()
             area = m.calculateDetectorArea()
-            M.GetLiMassFraction(l,p)
-
+            massLi = area*217.0*M.GetLiMassFraction(l,p)*1.1
+            print 'Mass li is: {:5.2f} for a loading of {:5.2f}'.format(massLi,l)
 
 import argparse
 if __name__ == '__main__':
