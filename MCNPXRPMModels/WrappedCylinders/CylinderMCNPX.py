@@ -344,16 +344,15 @@ def extractRunInfo(filename):
 import glob
 def summerize():
     files = glob.glob('OUTCylinder*.m')
+    s = 'Polymer, loading, mass Li, count rate, error, count rate per mass\n'
     for f in files:
-        print f
         runParam = extractRunInfo(f)
         massLi = computeMassLi(runParam[1],runParam[0])
-        print massLi
         m = mctal.MCTAL(f)
         t = m.tallies[54]
-        # Returning the total
-        print t.data[-1],t.errors[-1]
-
+        countRate = t.data[-1]*2.3E3
+        s += '{}, {:5.2f}  ,  {:5.3f} ,   {:5.3f}   , {:4.2f} ,   {:5.3f}\n'.format(runParam[1].ljust(7),runParam[0],massLi,countRate,countRate*t.errors[-1],countRate/massLi)
+    print s
 import argparse
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
