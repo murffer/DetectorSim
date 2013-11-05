@@ -310,7 +310,7 @@ def run(loading,polymers):
     """
     Runs a matrix of loading and polymers
     """
-    cylinderPositions = ((4.23,10.16),(4.23,-10.16))
+    cylinderPositions = ((4.23,9.15),(4.23,3.05),(4.23,-3.05),(4.23,-9.15))
     for l in loading:
         for p in polymers:
             m  = CylinderRPM()
