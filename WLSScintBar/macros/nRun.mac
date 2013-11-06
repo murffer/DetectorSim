@@ -1,0 +1,17 @@
+# Setting up verbosity
+/tracking/verbose 0
+/run/verbose 0
+#
+# Setting up the source
+#
+/control/execute macros/neutronSource.mac
+#
+# Setting up the analysis
+#
+/analysis/setFileName GS20_Neutron 
+/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
+/analysis/h1/set 2 100 0  10000 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  10000 none    # Number of Optical Photons
+# Running through absorber thickness
+/run/beamOn 100000
+#

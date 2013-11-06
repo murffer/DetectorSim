@@ -1,0 +1,110 @@
+#
+# Macro file 
+#
+/run/verbose 0
+/control/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+#
+/run/initialize
+#
+/gps/particle opticalphoton
+/gps/ene/type Mono
+/gps/ene/mono 3.94 eV
+#
+/gps/pos/type Point
+/gps/ang/type iso
+/gps/pos/centre 0.0 0.0 0.0 cm
+#
+#/control/execute vis.mac
+#
+# Setting up 1000 um
+#
+/analysis/setFileName ScintSlab_100um
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/det/setScintThickness 100 um
+/det/Update
+/run/beamOn 100000
+#
+# Setting up 0.1 mm
+#
+/analysis/setFileName ScintSlab_100um
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/det/setScintThickness 0.1 mm
+/det/Update
+/run/beamOn 100000
+#
+# Setting up 0.22 mm
+#
+/analysis/setFileName ScintSlab_220um
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/det/setScintThickness 0.22 mm
+/det/Update
+/run/beamOn 100000
+#
+# Setting up 4.6 mm
+#
+/analysis/setFileName ScintSlab_460um
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/det/setScintThickness 0.46 mm
+/det/Update
+/run/beamOn 100000
+#
+# Setting up 1 mm
+#
+/analysis/setFileName ScintSlab_1mm
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/det/setScintThickness 1 mm
+/det/Update
+/run/beamOn 100000
+#
+# Setting up 2.2 mm
+#
+/analysis/setFileName ScintSlab_2.2mm
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/det/setScintThickness 2.2 mm
+/det/Update
+/run/beamOn 100000
+#
+# Setting up 4.6 mm
+#
+/analysis/setFileName ScintSlab_4.6mm
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/det/setScintThickness 4.6 mm
+/det/Update
+/run/beamOn 100000
+#
+# Setting up 1 cm
+#
+/analysis/setFileName ScintSlab_10mm
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/det/setScintThickness 10 mm
+/det/Update
+/run/beamOn 100000
+#
+# Setting up 10 cm
+#
+/analysis/setFileName ScintSlab_10cm
+/analysis/h1/set 1 100 0  5 ms      # Resolution 
+/analysis/h1/set 2 100 0  2 none    # Number of Optical Photons
+/analysis/h1/set 3 100 0  2 none    # Number of Optical Photons
+/det/setScintThickness 10 cm
+/det/Update
+/run/beamOn 100000
+#
