@@ -7,42 +7,42 @@
 #
 #
 /run/initialize
-/analysis/h1/set 1 100 0  5000    # Number of optical photons created
+/analysis/h1/set 1 100 0  8000    # Number of optical photons created
 /analysis/setFileName electronOP
 /gun/particle e-
 /gun/energy 0.1 MeV
 /run/beamOn 100000
 #
-/analysis/h1/set 1 100 0  5000    # Number of optical photons created
+/analysis/h1/set 1 100 0  8000    # Number of optical photons created
 /analysis/setFileName alphaOP
 /gun/particle alpha
 /gun/energy 2.05 MeV
 /run/beamOn 100000
 #
 /analysis/setFileName tritonOP
-/analysis/h1/set 1 100 0  5000    # Number of optical photons created
+/analysis/h1/set 1 100 0  8000    # Number of optical photons created
 /gun/particle triton
 /gun/energy 2.73 MeV
 /run/beamOn 100000
 
 /analysis/setFileName none
-/analysis/h1/set 1 100 0  5000    # Number of optical photons created
+/analysis/h1/set 1 100 0  8000    # Number of optical photons created
 /gun/particle alpha
 /gun/energy 1.78 MeV
 /run/beamOn 100000
 
-/analysis/h1/set 1 100 0  5000    # Number of optical photons created
+/analysis/h1/set 1 100 0  8000    # Number of optical photons created
 /gun/particle e-
 /gun/energy 4.78 MeV
 /run/beamOn 100000
 
-/analysis/h1/set 1 100 0  5000    # Number of optical photons created
+/analysis/h1/set 1 100 0  8000    # Number of optical photons created
 /gun/particle e-
 /gun/energy 2.78 MeV
 /run/beamOn 100000
 
 /gun/particle ion
 /gun/ion 3 7
-/analysis/h1/set 1 100 0  5000    # Number of optical photons created
+/analysis/h1/set 1 100 0  8000    # Number of optical photons created
 /gun/energy 1.02 MeV
 /run/beamOn 10000
