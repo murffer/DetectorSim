@@ -42,6 +42,7 @@ G4ClassificationOfNewTrack StackingAction::ClassifyNewTrack(const G4Track* track
   // Optical Photon Counter
   if(track->GetDefinition()== G4OpticalPhoton::OpticalPhotonDefinition()){
       optPhotonCounter++;
+			return fKill;
   }
   return fUrgent;
 }

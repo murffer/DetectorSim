@@ -1,0 +1,56 @@
+#
+/control/execute macros/neutronSource.mac
+#
+# Setting up the detector
+#
+/PolymerTransport/det/setAbsMat GS20
+/PolymerTransport/det/setGapMat G4_PLEXIGLASS
+/PolymerTransport/det/setAbsThick 2 mm
+/PolymerTransport/det/setGapThick 1 cm
+/PolymerTransport/det/setRadius 10 cm
+/PolymerTransport/det/update
+#
+/analysis/setFileName GS20_neutron
+/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
+/analysis/h1/set 2 100 0  8000 none    # Number of Optical Photons
+/run/beamOn 100000
+#
+/PolymerTransport/det/setAbsMat PSLiF 
+/PolymerTransport/det/setGapMat G4_PLEXIGLASS
+/PolymerTransport/det/setAbsThick 50 um
+/PolymerTransport/det/setGapThick 1 cm
+/PolymerTransport/det/setRadius 10 cm
+/PolymerTransport/det/update
+#
+/analysis/setFileName GS20_neutron
+/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
+/analysis/h1/set 2 100 0  5000 none    # Number of Optical Photons
+/run/beamOn 100000
+#
+# Setting up the Gamma Runs 
+#
+/control/execute macros/co60Source.mac
+#
+/PolymerTransport/det/setAbsMat GS20
+/PolymerTransport/det/setGapMat G4_PLEXIGLASS
+/PolymerTransport/det/setAbsThick 2 mm
+/PolymerTransport/det/setGapThick 1 cm
+/PolymerTransport/det/setRadius 10 cm
+/PolymerTransport/det/update
+#
+/analysis/setFileName GS20_gamma
+/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
+/analysis/h1/set 2 100 0  8000 none    # Number of Optical Photons
+/run/beamOn 100000
+#
+/PolymerTransport/det/setAbsMat PSLiF 
+/PolymerTransport/det/setGapMat G4_PLEXIGLASS
+/PolymerTransport/det/setAbsThick 50 um
+/PolymerTransport/det/setGapThick 1 cm
+/PolymerTransport/det/setRadius 10 cm
+/PolymerTransport/det/update
+#
+/analysis/setFileName GS20_gamma
+/analysis/h1/set 1 100 0  5.0 MeV none # Energy Depostion
+/analysis/h1/set 2 100 0  5000 none    # Number of Optical Photons
+/run/beamOn 100000
