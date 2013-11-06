@@ -1,0 +1,3 @@
+[submodule "MCNPXRPMModels/MCNPTools"]
+	path = MCNPXRPMModels/MCNPTools
+	url = git://github.com/murffer/MCNPTools.git
