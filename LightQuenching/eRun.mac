@@ -7,34 +7,34 @@
 /gun/particle e-
 #
 /run/initialize
-/analysis/h1/set 1 100 0  25000    # Number of optical photons created
+/analysis/h1/set 1 100 0  5000    # Number of optical photons created
 /gun/energy 2.15 MeV
 /run/beamOn 10000
 #
-/analysis/h1/set 1 100 0  15000    # Number of optical photons created
+/analysis/h1/set 1 100 0  5000    # Number of optical photons created
 /gun/energy 1 MeV
 /run/beamOn 10000
 #
-/analysis/h1/set 1 100 0  15000    # Number of optical photons created
+/analysis/h1/set 1 100 0  5000    # Number of optical photons created
 /gun/energy 464 keV
 /run/beamOn 10000
 #
-/analysis/h1/set 1 100 0  15000    # Number of optical photons created
+/analysis/h1/set 1 100 0  5000    # Number of optical photons created
 /gun/energy 215 keV
 /run/beamOn 10000
 #
-/analysis/h1/set 1 100 0  15000    # Number of optical photons created
+/analysis/h1/set 1 100 0  5000    # Number of optical photons created
 /gun/energy 100 keV
 /run/beamOn 10000
 #
-/analysis/h1/set 1 100 0  15000    # Number of optical photons created
+/analysis/h1/set 1 100 0  5000    # Number of optical photons created
 /gun/energy 46.4 keV
 /run/beamOn 10000
 #
-/analysis/h1/set 1 100 0  15000    # Number of optical photons created
+/analysis/h1/set 1 100 0  5000    # Number of optical photons created
 /gun/energy 21.5 keV
 /run/beamOn 10000
 #
-/analysis/h1/set 1 100 0  15000    # Number of optical photons created
+/analysis/h1/set 1 100 0  5000    # Number of optical photons created
 /gun/energy 10 keV
 /run/beamOn 10000
