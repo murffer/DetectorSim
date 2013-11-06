@@ -14,3 +14,11 @@ The ThreeTubeData.txt is the results fo the runs having three tubes of material 
    `cylinderPositions = ((4.23,7.625),(4.23,0),(4.23,-7.625))`
 The FourTubeData.csv is the results for having four tubes spaced equally in the RPM8 footprint, spaced equally.
 	 `cylinderPositions = ((4.23,9.15),(4.23,3.05),(4.23,-3.05),(4.23,-9.15))`
+
+## Layered Detector
+
+A brief script was written to analyaze create input decks for the plotting of the optinal goemetries, and for writing out the geometires.
+The geometries can be made into a form suitable for latex by the following comamnds:
+
+		 cat TableOutput.txt | cut -d':' -f1 --complement | tr '[:blank:]' ' & '  > output
+		 cat output | sed 's/$/\\\\/g'
