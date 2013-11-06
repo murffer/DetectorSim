@@ -17,14 +17,14 @@
 #
 /analysis/setFileName Co60_25mm
 /analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
-/analysis/h1/set 2 100 0  1000 none    # Number of Optical Photons
+/analysis/h1/set 2 100 0  5000 none    # Number of Optical Photons
 /PolymerTransport/det/setAbsThick 2.5 cm
 /PolymerTransport/det/update
 /run/beamOn 1000000
 #
 /analysis/setFileName Co60_1mm
 /analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
-/analysis/h1/set 2 100 0  1000 none    # Number of Optical Photons
+/analysis/h1/set 2 100 0  5000 none    # Number of Optical Photons
 /PolymerTransport/det/setAbsThick 1.0 mm
 /PolymerTransport/det/update
 /run/beamOn 1000000
@@ -32,35 +32,35 @@
 #
 /analysis/setFileName Co60_250um
 /analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
-/analysis/h1/set 2 100 0  1000 none    # Number of Optical Photons
+/analysis/h1/set 2 100 0  5000 none    # Number of Optical Photons
 /PolymerTransport/det/setAbsThick 0.25 mm
 /PolymerTransport/det/update
 /run/beamOn 1000000
 #
 /analysis/setFileName Co60_100um
 /analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
-/analysis/h1/set 2 100 0  1000 none    # Number of Optical Photons
+/analysis/h1/set 2 100 0  5000 none    # Number of Optical Photons
 /PolymerTransport/det/setAbsThick 0.1 mm
 /PolymerTransport/det/update
 /run/beamOn 1000000
 #
 /analysis/setFileName Co60_50um
 /analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
-/analysis/h1/set 2 100 0  1000 none    # Number of Optical Photons
+/analysis/h1/set 2 100 0  5000 none    # Number of Optical Photons
 /PolymerTransport/det/setAbsThick 50 um
 /PolymerTransport/det/update
 /run/beamOn 1000000
 #
 /analysis/setFileName Co60_25um
 /analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
-/analysis/h1/set 2 100 0  1000 none    # Number of Optical Photons
+/analysis/h1/set 2 100 0  5000 none    # Number of Optical Photons
 /PolymerTransport/det/setAbsThick 25 um
 /PolymerTransport/det/update
 /run/beamOn 1000000
 #
 /analysis/setFileName Co60_10um
 /analysis/h1/set 1 100 0  1.5 MeV none # Energy Depostion
-/analysis/h1/set 2 100 0  1000 none    # Number of Optical Photons
+/analysis/h1/set 2 100 0  5000 none    # Number of Optical Photons
 /PolymerTransport/det/setAbsThick 10 um
 /PolymerTransport/det/update
 /run/beamOn 1000000
