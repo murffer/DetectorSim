@@ -1,9 +1,9 @@
-G4DetectorSim
-=============
+DetectorSim
+===========
 
-Simulation of Radiation Detectors with GEANT4
+Simulation of Radiation Detectors with GEANT4 and MCNPX
 
-# Simulated Physics and Detectors
+## Simulated Physics and Detectors
   
 These simulations are intended to highlight basic physics of scintillators
 
@@ -11,17 +11,19 @@ These simulations are intended to highlight basic physics of scintillators
   + ParticleTracks - A demonstration of the track structure from different charged particles
   + RangeSim - Simulates the range of various charged particles
 
-The following simulations are intended to expore more complex interaction sof the a detector.
+The following simulations are intended to expore more complex interactions of a detector.
 
   + LightYieldEDep - The light yield as a function of energy deposition and film thickness
 
-# Light Background
+## Light Background
   
   + ScintillationSlab - A single scintillation bar. The optical photons are collected on a single PMT
   + WLSScintBar - A single scintillating bar sandwiched between two WLS shifting bars
 
-# LightValidation
+## LightValidation
 
 Simulations for the light validation of differnet detector designs. The simulations included are:
 
-	+ GS20Calibration
+  + GS20Calibration
+  + PSCalibration
+  + LayeredDetectorValidation
