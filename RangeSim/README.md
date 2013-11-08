@@ -38,16 +38,17 @@ Five run macros have been provided to simulate the ranges of various particles o
   + erange.mac - the range of different energy electrons in polystyrene
   + gammaRange.mac - the range of gammas in polystyrene
   + rxnProductRange.mac - the range of the reaction products of pertinent neutron interactions
+
 ## Histograms and Analysis
  
-rangeSim produces several histograms which are saved as rangeSim.root by default.Content of these histograms:  
+rangeSim produces several histograms which are saved as rangeSim.root by default. Content of these histograms:  
 
- 1.  track length of primary particle
- 2.  number of steps primary particle
- 3.  step size of primary particle
- 4.  total energy deposit
- 5.  energy of charged secondaries at creation
- 6.  energy of neutral secondaries at creation      
+ + track length of primary particle
+ + number of steps primary particle
+ + step size of primary particle
+ + total energy deposit
+ + energy of charged secondaries at creation
+ + energy of neutral secondaries at creation      
       
 The histograms are managed by G4AnalysisManager class and its Messenger. The histograms can be individually activated with the command :
    `/analysis/h1/set id nbBins  valMin valMax unit` 
@@ -56,10 +57,9 @@ where unit is the desired unit for the histograms (MeV or keV, deg or mrad, etc.
 One can control the name of the histograms file with the command:
    `/analysis/setFileName  name`  (default rangeSim)
    
-     
-   It is also possible to print selected histograms on an ascii file:
-   /analysis/h1/setAscii id
-   All selected histograms will be written on a file name.ascii  (default rangeSim)
+It is also possible to print selected histograms on an ascii file:
+   `/analysis/h1/setAscii id`
+All selected histograms will be written on a file name.ascii  (default rangeSim)
 
 A utility file, `Range.C` has been written to plot the charged particle creation energies for the alpha, triton, and Co60 runs.  This can be loaded into the root enviroment with:
     
