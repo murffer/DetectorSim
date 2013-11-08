@@ -1,11 +1,11 @@
 Tracking
 ========
 
-Provides tracking of primary particle. Currently the defaults are an alphan (2.05 MeV), triton (2.78 MeV)  and two electrons (10 keV and 100 keV).
+Provides tracking of primary particle. Currently the defaults are an alpha (2.05 MeV), triton (2.78 MeV)  and two electrons (10 keV and 100 keV). Currently this is only intended to demonstrate the different particle track structures, and thus no analysis is provided.
 
 ## Compile Instructions
 
-This program was built with CMAKE.  It is assumed that the enviorment is setup such that the variable `G4INSTALL_CMAKE` is set to the instllation files for GEANT4 for cmake. The code can be built by the following commands:
+This program was built with CMAKE.  It is assumed that the environment is setup such that the variable `G4INSTALL_CMAKE` is set to the installation files for GEANT4 for cmake. The code can be built by the following commands:
 
   > mkdir build;
   > cd build;

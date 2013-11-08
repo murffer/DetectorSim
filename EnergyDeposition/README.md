@@ -1,73 +1,23 @@
 EnergyDeposition
+================
 
   Simulation of the energy deposition in a thin film.
 
-  Setup Simulations
-    msRun - runs methylstyrene samples of various thickness
+## Geometry
 
-TO RUN:
-  > make GNUmakefile
-  > ./bin/Linux-g++/polymerFilm
+The geometry of this simulation is a cylindrical detector mounted on a thin PMMA base. The source is a beam of particles shot perpendicular into the detector. Various materials are available for use for the simulation, including polystyrene and methyltyrene of various loadings. It should be notated that the loadings of the films could be improved to use a method that takes in the percent loading and either the chemical formula or compound name and calculates the materials from there.
 
-  To run the methylstyrene simulations:
-  > ./msRun SAMPLENAME (i.e. MS1, MS2 .... MS6)
+## Run Macros
 
-CONTENTS:
-  
-  MACROS:
-    gui.mac - GUI for the GEANT4 
-    vis.mac - Detector visulationization macro
-    MSSamplesMacros/gRun.mac       - gamma gun macro 
-    MSSamplesMacros/nRun.mac       - neutron gun macro
-    MSSamplesMacros/Thickness.mac  - thickness runs
+Two run macros are included in this for the simulation of neutrons and gammas. They are:
+  + macros/nRun.mac
+  + macros/gRun.mac
+The other two macros (`macros/neutronSource.mac` and `macros/gammaSource.mac`) are utility scripts that setup the Co-60 source or a 0.025 eV neutron beam source.
 
-analysis.py
-MS_GammaOutput.txt
-MS_NeutronOutput.txt
-msRun.sh
-polymerFilm.cc
-README
-run.sh
-subJobs.sh
+## Compile and building
 
-analysis:
-Makefile
-PlotHistograms.C
+This project is setup to use the CMAKE tools as described previously. In addition, `subJobs.sh` can be used to submit jobs to the cluster. These jobs are not paralleled.
 
-bin:
+## Analysis and Histograms
 
-include:
-Analysis.hh
-AnalysisMessenger.hh
-CaloHit.hh
-CaloSensitiveDetector.hh
-DetectorConstruction.hh
-DetectorMessenger.hh
-EventAction.hh
-HadronicPhysics.hh
-PhysicsList.hh
-PrimaryGeneratorAction.hh
-RunAction.hh
-
-macros:
-co60Source.mac
-gRun.mac
-neutronSource.mac
-nRun.mac
-
-
-src:
-Analysis.cc
-AnalysisMessenger.cc
-CaloHit.cc
-CaloSensitiveDetector.cc
-DetectorConstruction.cc
-DetectorMessenger.cc
-EventAction.cc
-HadronicPhysics.cc
-PhysicsList.cc
-PrimaryGeneratorAction.cc
-RunAction.cc
-
-tmp:
-Linux-g++
+The output of this simulation is a ROOT file that contains two histograms (when the histograms are activated). The first, `eDep`, is the total energy deposited in the event. The second, `posEDep`, is a 2D histogram of the position of first interaction and the corresponding total energy deposition. An analysis script, `analysis.py` has been written in python to assist in the summarizing and plotting of this histograms. It may be desirable to pipe the output of the python script directly into a file an allow the ROOT messages to print to the screen; this can be accomplished with `python analysis.py > output.csv`
