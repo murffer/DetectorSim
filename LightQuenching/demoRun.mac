@@ -10,7 +10,7 @@
 /analysis/h1/set 1 100 0  8000    # Number of optical photons created
 /analysis/setFileName electronOP
 /gun/particle e-
-/gun/energy 0.1 MeV
+/gun/energy 0.0190 MeV
 /run/beamOn 100000
 #
 /analysis/h1/set 1 100 0  8000    # Number of optical photons created
