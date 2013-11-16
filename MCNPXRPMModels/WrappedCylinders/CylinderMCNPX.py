@@ -316,15 +316,63 @@ def run(loading,polymers):
     cylinderPositions = ((4.23,10.16),(4.23,5.08),(4.23,0.0),(4.23,-5.08),(4.23,-10.16))
     for l in loading:
         for p in polymers:
-            m  = CylinderRPM()
-            m.createSurfaceGeo()
-            m.setMaterial(l,p)
-            m.createDetectorCylinder()
-            inp='Cylinder_{}LiF_{}.mcnp'.format(int(l*100),p)
-            name='OUTCylinder_{}LiF_{}.'.format(int(l*100),p)
-            m.createInputDeck(cylinderPositions,inp,name)
-            m.runModel()
+            RunCylinder(l,p,cylinderPositions)
 
+def RunCylinder(l,p,cylinderPositions):
+    """
+    Runs an mcnpx model of the cylinder of loading l, polymer p, with
+    cylinder positions cylinderPositions.
+
+    Keywords:
+        l - loading of the films
+        p - polymer
+        cylinderPositions - the cylinder positons
+    """
+    # Creating input and output deck names
+    posString = ''
+    for pos in cylinderPositions:
+        posString += '{:3.2f}_'.format(pos[0])
+    posString = posString.rstrip('_')
+    inp='Cylinder_{}LiF_{}_XPOS_{}.mcnp'.format(int(l*100),p,posString)
+    name='OUTCylinder_{}LiF_{}_XPOS_{}.'.format(int(l*100),p,posString)
+    # Creating and running the model
+    m  = CylinderRPM()
+    m.createSurfaceGeo()
+    m.setMaterial(l,p)
+    m.createDetectorCylinder()
+    m.createInputDeck(cylinderPositions,inp,name)
+    #m.runModel()
+
+def CreatePositions(yPos,numXPertubations):
+    """
+    Creates and returns an array of positions, using a set array of y 
+    positions, with equally spaced number of numXPertubations.
+
+    Keywords:
+        yPos - the number of y positions (or spacing of the cylinders). The
+            number of elements in this array corresponds to the number of
+            cylinders that are simulated.
+        numXPertubations - the number of pertubations in x. The arrays 
+            positions returned are spaced linerly in the x from 2.54 to 
+            10.16 cm
+    """
+    pos = list()
+    xVals = np.linspace(2.54,10.16,numXPertubations)
+    for x in xVals:
+        for y in yPos:
+            pos.append((x,y))
+    print pos
+    return pos
+
+def PositionOptimization(loading,polymers,positions):
+    """
+    Runs a matrix of loading, polymers and positions
+    """
+    for l in loading:
+        for p in polymers:
+            for pos in positions:
+                RunCylinder(l,p,pos)
+    
 def createInputPlotDecks():
     positions = list()
     positions.append(((4.23,10.16),(4.23,-10.16)))
