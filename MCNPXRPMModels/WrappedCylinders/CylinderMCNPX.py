@@ -361,16 +361,9 @@ def CreatePositions(yPos,numXPertubations):
     """
     pos = list()
     xVals = np.linspace(2.54,10.16,numXPertubations)
-    print yPos
-    print xVals
-    pos = itertools.product(xVals,yPos)
-    pos = [item for item in pos]
-    # print pert
-       # for x in pert:
-       #     cylPos = list()
-       #     for y in yPos:
-       #         cylPos.append((x,y))
-       # pos.append(cylPos)
+    xPos = [i for i in itertools.product(xVals,repeat=len(yPos))]
+    for x in xPos:
+        pos.append(zip(x,yPos))
     return pos
 
 def PositionOptimization(loading,polymers,positions):
