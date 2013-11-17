@@ -335,8 +335,8 @@ def RunCylinder(l,p,cylinderPositions):
     for pos in cylinderPositions:
         posString += '{:2.1f}-'.format(pos[0])
     posString = posString.rstrip('-')
-    inp='Cylinder_{}LiF_{}_{}.mcnp'.format(int(l*100),p,posString)
-    name='OUTCylinder_{}LiF_{}_{}.'.format(int(l*100),p,posString)
+    inp='Cyl_{}LiF_{}_{}.mcnp'.format(int(l*100),p,posString)
+    name='OUTCyl_{}LiF_{}_{}.'.format(int(l*100),p,posString)
     print inp
     # Creating and running the model
     m  = CylinderRPM()
@@ -344,7 +344,7 @@ def RunCylinder(l,p,cylinderPositions):
     m.setMaterial(l,p)
     m.createDetectorCylinder()
     m.createInputDeck(cylinderPositions,inp,name)
-    #m.runModel()
+    m.runModel()
 
 def CreatePositions(yPos,numXPertubations):
     """
@@ -373,14 +373,13 @@ def PositionOptimization(loading,polymers,positions):
     for l in loading:
         for p in polymers:
             for pos in positions:
-                print pos
                 RunCylinder(l,p,pos)
     
 def createInputPlotDecks():
     positions = list()
     positions.append(((4.23,10.16),(4.23,-10.16)))
     positions.append(((4.23,7.625),(4.23,0),(4.23,-7.625)))
-    positions.append(((4.23,9.15),(4.23,3.05),(4.23,-3.05),(4.23,-9.15)))
+    #positions.append(((4.23,9.15),(4.23,3.05),(4.23,-3.05),(4.23,-9.15)))
     for pos in positions:
         m  = CylinderRPM()
         m.createSurfaceGeo()
@@ -439,10 +438,8 @@ if __name__ == '__main__':
     if args.optimize > 0:
         yPos = (7.625,0,-7.625)
         yPos = (9.15,3.05,-3.05,-9.15)
-        yPos = (10.16,5.08,0.0,-5.08,-10.16)
+        #yPos = (10.16,5.08,0.0,-5.08,-10.16)
         pos = CreatePositions(yPos,args.optimize)
-        print 'Positions:'
-        print pos
         loading = (0.3,)
         polymers = ('PS',)
         PositionOptimization(loading,polymers,pos)
