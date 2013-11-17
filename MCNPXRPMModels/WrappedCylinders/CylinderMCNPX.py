@@ -10,6 +10,8 @@ from MCNPMaterial import Materials
 import subprocess
 import math
 import mctal
+import numpy as np
+import itertools
 class CylinderRPM(object):
     # Material Dictionaries
     cellForStr = '{:5d} {:d} -{:4.3f} {:d} -{:d} u={:d}\n'
@@ -331,10 +333,11 @@ def RunCylinder(l,p,cylinderPositions):
     # Creating input and output deck names
     posString = ''
     for pos in cylinderPositions:
-        posString += '{:3.2f}_'.format(pos[0])
-    posString = posString.rstrip('_')
-    inp='Cylinder_{}LiF_{}_XPOS_{}.mcnp'.format(int(l*100),p,posString)
-    name='OUTCylinder_{}LiF_{}_XPOS_{}.'.format(int(l*100),p,posString)
+        posString += '{:2.1f}-'.format(pos[0])
+    posString = posString.rstrip('-')
+    inp='Cylinder_{}LiF_{}_{}.mcnp'.format(int(l*100),p,posString)
+    name='OUTCylinder_{}LiF_{}_{}.'.format(int(l*100),p,posString)
+    print inp
     # Creating and running the model
     m  = CylinderRPM()
     m.createSurfaceGeo()
@@ -358,10 +361,16 @@ def CreatePositions(yPos,numXPertubations):
     """
     pos = list()
     xVals = np.linspace(2.54,10.16,numXPertubations)
-    for x in xVals:
-        for y in yPos:
-            pos.append((x,y))
-    print pos
+    print yPos
+    print xVals
+    pos = itertools.product(xVals,yPos)
+    pos = [item for item in pos]
+    # print pert
+       # for x in pert:
+       #     cylPos = list()
+       #     for y in yPos:
+       #         cylPos.append((x,y))
+       # pos.append(cylPos)
     return pos
 
 def PositionOptimization(loading,polymers,positions):
@@ -371,6 +380,7 @@ def PositionOptimization(loading,polymers,positions):
     for l in loading:
         for p in polymers:
             for pos in positions:
+                print pos
                 RunCylinder(l,p,pos)
     
 def createInputPlotDecks():
@@ -425,6 +435,7 @@ if __name__ == '__main__':
     parser.add_argument('-p','--plot',action="store_true",
             default=False,help='Creates input decks for plotting')
     parser.add_argument('-a','--analysis',action="store_true",default=False,help="Analyze the results")
+    parser.add_argument('-o','--optimize',action='store',type=int,default=0,help='Run a number of optimizations on the positions')
     parser.add_argument('loading',metavar='loading',type=float,nargs='*',action="store",
             default=(0.1,0.2,0.3),help='Precent Loading of LiF')
     args = parser.parse_args()
@@ -432,5 +443,15 @@ if __name__ == '__main__':
         run(args.loading,('PS','PEN'))
     if args.plot:
         createInputPlotDecks()
+    if args.optimize > 0:
+        yPos = (7.625,0,-7.625)
+        yPos = (9.15,3.05,-3.05,-9.15)
+        yPos = (10.16,5.08,0.0,-5.08,-10.16)
+        pos = CreatePositions(yPos,args.optimize)
+        print 'Positions:'
+        print pos
+        loading = (0.3,)
+        polymers = ('PS',)
+        PositionOptimization(loading,polymers,pos)
     if args.analysis:
         summerize()
