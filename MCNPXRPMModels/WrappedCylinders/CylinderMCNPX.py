@@ -12,6 +12,7 @@ import math
 import mctal
 import numpy as np
 import itertools
+import os
 class CylinderRPM(object):
     # Material Dictionaries
     cellForStr = '{:5d} {:d} -{:4.3f} {:d} -{:d} u={:d}\n'
@@ -360,7 +361,7 @@ def CreatePositions(yPos,numXPertubations):
             10.16 cm
     """
     pos = list()
-    xVals = np.linspace(2.54,10.16,numXPertubations)
+    xVals = np.linspace(2.54,7,numXPertubations)
     xPos = [i for i in itertools.product(xVals,repeat=len(yPos))]
     for x in xPos:
         pos.append(zip(x,yPos))
@@ -407,6 +408,19 @@ def extractRunInfo(filename):
     polymer = tokens[2].strip('.m')
     return (float(loading)/100, polymer)
 
+###########################################################################
+#                                                                         # 
+#                     Summerizes / Analysis                               # 
+#                                                                         # 
+###########################################################################
+def GetInteractionRate(f,tallyNum=54,src=2.3E3):
+    """
+    Returns the interaction rate of the mctal file
+    """
+    m = mctal.MCTAL(f)
+    t = m.tallies[tallyNum]
+    return (t.data[-1]*src,t.errors[-1]*t.data[-1]*src)
+
 import glob
 def summerize():
     files = glob.glob('OUTCylinder*.m')
@@ -414,11 +428,39 @@ def summerize():
     for f in files:
         runParam = extractRunInfo(f)
         massLi = computeMassLi(runParam[1],runParam[0])
-        m = mctal.MCTAL(f)
-        t = m.tallies[54]
-        countRate = t.data[-1]*2.3E3
-        s += '{}, {:5.2f}  ,  {:5.3f} ,   {:5.3f}   , {:4.2f} ,   {:5.3f}\n'.format(runParam[1].ljust(7),runParam[0],massLi,countRate,countRate*t.errors[-1],countRate/massLi)
+        countRate = GetInteractionRate(f)
+        s += '{}, {:5.2f}  ,  {:5.3f} ,   {:5.3f}   , {:4.2f} ,   {:5.3f}\n'.format(runParam[1].ljust(7),runParam[0],massLi,countRate[0],countRate[1],countRate[0]/massLi)
     print s
+
+def OptimizationSummary(path):
+    """
+    Summerizes the Optimization Output
+    """
+    # Getting the files
+    if not os.path.isdir(path):
+        raise IOError('Path {} is not found'.format(path))
+    files = glob.glob(path+'/*.m')
+    if not files:
+        print 'No files matched the pattern'
+        return
+    # Parsing the files
+    data = dict()
+    for f in files:
+        name = os.path.splitext(os.path.split(f)[1])[0]
+        data[name] = GetInteractionRate(f)
+    # Max value
+    sortedKeys = sorted(data, key=data.get,reverse=True)
+    #sortedKeys = sorted(data.items(), key=lambda x : float(x[1][0]),reverse=True)
+    for key in sortedKeys[0:9]:
+        print '{} -> {:5.2f} +/- {:5.2f}'.format(key,data[key][0],data[key][1])
+    for key in sortedKeys[-6:-1]:
+        print '{} -> {:5.2f} +/- {:5.2f}'.format(key,data[key][0],data[key][1])
+
+###########################################################################
+#                                                                         # 
+#                                  MAIN                                   # 
+#                                                                         # 
+###########################################################################
 import argparse
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -427,7 +469,8 @@ if __name__ == '__main__':
     parser.add_argument('-p','--plot',action="store_true",
             default=False,help='Creates input decks for plotting')
     parser.add_argument('-a','--analysis',action="store_true",default=False,help="Analyze the results")
-    parser.add_argument('-o','--optimize',action='store',type=int,default=0,help='Run a number of optimizations on the positions')
+    parser.add_argument('path', nargs='?', default='CylPosOpt',help='Specifiy the output directory to summerize')
+    parser.add_argument('-o','--optimize',action='store',type=int,default=0,help='Run a number of optimizations on the positions. If 0 is entered (default) than a summary is preformed on the directory provided with path')
     parser.add_argument('loading',metavar='loading',type=float,nargs='*',action="store",
             default=(0.1,0.2,0.3),help='Precent Loading of LiF')
     args = parser.parse_args()
@@ -438,10 +481,12 @@ if __name__ == '__main__':
     if args.optimize > 0:
         yPos = (7.625,0,-7.625)
         yPos = (9.15,3.05,-3.05,-9.15)
-        #yPos = (10.16,5.08,0.0,-5.08,-10.16)
+        yPos = (10.16,5.08,0.0,-5.08,-10.16)
         pos = CreatePositions(yPos,args.optimize)
         loading = (0.3,)
         polymers = ('PS',)
         PositionOptimization(loading,polymers,pos)
+    if args.optimize == 0:
+        OptimizationSummary(args.path)
     if args.analysis:
         summerize()
