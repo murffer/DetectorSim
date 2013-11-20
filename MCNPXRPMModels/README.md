@@ -5,8 +5,9 @@ Simulation of the RPM8 geometries with MCNPX. Two differnet types of models are 
 
 A utility file, `MCNPMaterial.py` is included to assit in the creation of various mixtures of LiF loaded PEN and PS. It is expected to be used primary for the `GetPSLiF` method and the `GetPENLiF` methods. 
 
-The TwoTubeData.txt is the results of the runs with two tubes of material.
+The TwoTubeData.txt is the results of the runs with two tubes of material, positioned at 
    `cylinderPositions = ((4.23,10.16),(4.23,-10.16))`
+In this simulation the dictionary for the geometry was:
     geoParam={'RPM8Size':12.7,'DetectorThickness':0.01,'DetectorSpacing':0.4,
                'CylinderLightGuideRadius':0.5,'CylinderRadius':2.5}
 
