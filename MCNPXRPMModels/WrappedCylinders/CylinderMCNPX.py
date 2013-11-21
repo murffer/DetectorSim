@@ -361,7 +361,7 @@ def CreatePositions(yPos,numXPertubations):
             10.16 cm
     """
     pos = list()
-    xVals = np.linspace(2.54,7,numXPertubations)
+    xVals = np.linspace(2.54,10,numXPertubations)
     xPos = [i for i in itertools.product(xVals,repeat=len(yPos))]
     for x in xPos:
         pos.append(zip(x,yPos))
@@ -456,6 +456,18 @@ def OptimizationSummary(path):
     for key in sortedKeys[-6:-1]:
         print '{} -> {:5.2f} +/- {:5.2f}'.format(key,data[key][0],data[key][1])
 
+def cleanup(path):
+    files = glob.glob(path+'/OUTCyl_*.m')
+    for f in files:
+        head,tail = os.path.split(f)
+        numCylinders = tail.count('-')+1
+        if numCylinders == 3:
+            newdir = 'ThreeCylPosOpt'
+        elif numCylinders == 4:
+            newdir = 'FourCylPosOpt'
+        elif numCylinders == 5:
+            newdir = 'FiveCylPosOpt'
+        os.rename(f,os.path.join(newdir,tail))
 ###########################################################################
 #                                                                         # 
 #                                  MAIN                                   # 
@@ -468,11 +480,12 @@ if __name__ == '__main__':
             default=False,help='Runs the cylinders for multiple polymers and precent loadings')
     parser.add_argument('-p','--plot',action="store_true",
             default=False,help='Creates input decks for plotting')
+    parser.add_argument('-c','--clean',action="store_true",
+            default=False,help='Cleans up the files')
     parser.add_argument('-a','--analysis',action="store_true",default=False,help="Analyze the results")
     parser.add_argument('path', nargs='?', default='CylPosOpt',help='Specifiy the output directory to summerize')
-    parser.add_argument('-o','--optimize',action='store',type=int,default=0,help='Run a number of optimizations on the positions. If 0 is entered (default) than a summary is preformed on the directory provided with path')
-    parser.add_argument('loading',metavar='loading',type=float,nargs='*',action="store",
-            default=(0.1,0.2,0.3),help='Precent Loading of LiF')
+    parser.add_argument('-o','--optimize',action='store',type=int,default=-1,help='Run a number of optimizations on the positions. If 0 is entered a summary is preformed on the directory provided with path')
+    parser.add_argument('loading',metavar='loading',type=float,nargs='*',action="store",default=(0.1,0.2,0.3),help='Precent Loading of LiF')
     args = parser.parse_args()
     if args.run:
         run(args.loading,('PS','PEN'))
@@ -481,7 +494,7 @@ if __name__ == '__main__':
     if args.optimize > 0:
         yPos = (7.625,0,-7.625)
         yPos = (9.15,3.05,-3.05,-9.15)
-        yPos = (10.16,5.08,0.0,-5.08,-10.16)
+        #yPos = (10.16,5.08,0.0,-5.08,-10.16)
         pos = CreatePositions(yPos,args.optimize)
         loading = (0.3,)
         polymers = ('PS',)
@@ -490,3 +503,5 @@ if __name__ == '__main__':
         OptimizationSummary(args.path)
     if args.analysis:
         summerize()
+    if args.clean:
+        cleanup(os.getcwd())
