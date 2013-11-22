@@ -10,8 +10,10 @@ The geometry of this simulation is a cylindrical detector mounted on a thin PMMA
 ## Run Macros
 
 Two run macros are included in this for the simulation of neutrons and gammas. They are:
+
   + macros/nRun.mac
   + macros/gRun.mac
+  
 The other two macros (`macros/neutronSource.mac` and `macros/gammaSource.mac`) are utility scripts that setup the Co-60 source or a 0.025 eV neutron beam source.
 
 ## Compile and building
