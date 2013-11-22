@@ -10,14 +10,15 @@ The geometry is a box representing a 'semi infinite' homogeneous medium. The def
 ## Physics List
 
 The physics lists are from the the G4 kernel, with specialized cuts. The options of the physics list are:
-   - "emstandard_opt0" recommended standard EM physics for LHC
-   - "emstandard_opt1" best CPU performance standard physics for LHC
-   - "emstandard_opt2"     
-   - "emstandard_opt3" best current advanced EM options. 
+
+  - "emstandard_opt0" recommended standard EM physics for LHC
+  - "emstandard_opt1" best CPU performance standard physics for LHC
+  - "emstandard_opt2"     
+  - "emstandard_opt3" best current advanced EM options. 
   
-  PhysicsList contains also G4Decay and G4RadioactiveDecay processes
-             
-  Physics lists and options can be (re)set with UI commands. A few commands have been added to PhysicsList, in order to set the production threshold for secondaries for gamma and e-/e+.
+PhysicsList contains also G4Decay and G4RadioactiveDecay processes.
+The physics lists and options can be (re)set with UI commands. 
+A few commands have been added to PhysicsList, in order to set the production threshold for secondaries for gamma and e-/e+.
   
 ## Run / Compiling
 
@@ -34,10 +35,11 @@ The interactive mode of `rangeSim` with with visualization can be run with:
      Idle> exit
 
 Five run macros have been provided to simulate the ranges of various particles of interest. They are:
-  + eRangeDist.mac - the distribution of an electron in polystyrene
-  + erange.mac - the range of different energy electrons in polystyrene
-  + gammaRange.mac - the range of gammas in polystyrene
-  + rxnProductRange.mac - the range of the reaction products of pertinent neutron interactions
+
+ + eRangeDist.mac - the distribution of an electron in polystyrene
+ + erange.mac - the range of different energy electrons in polystyrene
+ + gammaRange.mac - the range of gammas in polystyrene
+ + rxnProductRange.mac - the range of the reaction products of pertinent neutron interactions
 
 ## Histograms and Analysis
  
@@ -54,8 +56,7 @@ The histograms are managed by G4AnalysisManager class and its Messenger. The his
 
    `/analysis/h1/set id nbBins  valMin valMax unit` 
 
-where unit is the desired unit for the histograms (MeV or keV, deg or mrad, etc..)
-   
+where unit is the desired unit for the histograms (MeV or keV,  etc..).
 One can control the name of the histograms file with the command:
 
    `/analysis/setFileName  name`  (default rangeSim)
@@ -64,10 +65,9 @@ It is also possible to print selected histograms on an ascii file:
 
    `/analysis/h1/setAscii id`
    
-All selected histograms will be written on a file name.ascii  (default rangeSim)
-
+All selected histograms will be written on a file name.ascii  (default rangeSim).
 A utility file, `Range.C` has been written to plot the charged particle creation energies for the alpha, triton, and Co60 runs.  This can be loaded into the root enviroment with:
     
-    root[#] .L Range.C
-    root[#] main()
+      root[#] .L Range.C
+      root[#] main()
 
